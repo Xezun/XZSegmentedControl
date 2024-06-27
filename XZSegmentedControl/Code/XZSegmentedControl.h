@@ -25,6 +25,7 @@ typedef NS_ENUM(NSUInteger, XZSegmentedControlIndicatorStyle) {
     XZSegmentedControlIndicatorStyle2,
 };
 
+/// 使用自定义视图作为 item 时，应遵循的协议。
 @protocol XZSegmentedControlItemView <NSObject>
 @property (nonatomic, setter=setSelected:) BOOL isSelected;
 @optional
@@ -98,9 +99,22 @@ typedef NS_ENUM(NSUInteger, XZSegmentedControlIndicatorStyle) {
 
 @end
 
+
+/// 使用自定义视图时的数据源协议。
 @protocol XZSegmentedControlDataSource <NSObject>
+/// 获取 item 的数量。
+/// - Parameter segmentedControl: 调用此方法的对象
 - (NSInteger)numberOfItemsInSegmentedControl:(XZSegmentedControl *)segmentedControl;
-- (__kindof UIView<XZSegmentedControlItemView> *)segmentedControl:(XZSegmentedControl *)segmentedControl viewForItemAtIndex:(NSInteger)index reusingView:(nullable __kindof UIView<XZSegmentedControlItemView> *)menuItemView;
+/// 数据源应在此方法中返回 item 的自定义视图。
+/// - Parameters:
+///   - segmentedControl: 调用此方法的对象
+///   - index: item 的位置索引
+///   - reusingView: 可供重用的视图
+- (__kindof UIView<XZSegmentedControlItemView> *)segmentedControl:(XZSegmentedControl *)segmentedControl viewForItemAtIndex:(NSInteger)index reusingView:(nullable __kindof UIView<XZSegmentedControlItemView> *)reusingView;
+/// 返回 item 的大小。
+/// - Parameters:
+///   - segmentedControl: 调用此方法的对象
+///   - index: item 的位置索引
 - (CGSize)segmentedControl:(XZSegmentedControl *)segmentedControl sizeForItemAtIndex:(NSInteger)index;
 @end
 

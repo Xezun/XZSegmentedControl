@@ -202,16 +202,6 @@
     return cell;
 }
 
-//- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
-//    XZSegmentedControlHeaderFooterView *wrapperView = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:kReuseIdentifier forIndexPath:indexPath];
-//    if ([kind isEqualToString:UICollectionElementKindSectionHeader]) {
-//        wrapperView.itemView = _headerView;
-//    } else if ([kind isEqualToString:UICollectionElementKindSectionFooter]) {
-//        wrapperView.itemView = _footerView;
-//    }
-//    return wrapperView;
-//}
-
 - (BOOL)beginTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event {
     return NO;
 }
@@ -236,33 +226,6 @@
     }
     return collectionViewLayout.itemSize;
 }
-
-//- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
-//    switch (collectionViewLayout.scrollDirection) {
-//        case UICollectionViewScrollDirectionHorizontal:
-//            return CGSizeMake(_headerView.frame.size.width, self.bounds.size.height);
-//
-//        case UICollectionViewScrollDirectionVertical:
-//            return CGSizeMake(self.bounds.size.width, _headerView.frame.size.height);
-//
-//        default:
-//            return CGSizeZero;
-//    }
-//
-//}
-//
-//- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section {
-//    switch (collectionViewLayout.scrollDirection) {
-//        case UICollectionViewScrollDirectionHorizontal:
-//            return CGSizeMake(_footerView.frame.size.width, self.bounds.size.height);
-//
-//        case UICollectionViewScrollDirectionVertical:
-//            return CGSizeMake(self.bounds.size.width, _footerView.frame.size.height);
-//
-//        default:
-//            return CGSizeZero;
-//    }
-//}
 
 #pragma mark - 属性
 

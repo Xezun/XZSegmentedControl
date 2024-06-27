@@ -527,7 +527,7 @@
                 CGFloat const width2 = [item.text boundingRectWithSize:size options:options attributes:@{
                     NSFontAttributeName: self.selectedTitleFont
                 } context:nil].size.width;
-                item.size = CGSizeMake(MAX(width1, width2) + 10.0, bounds.size.height);
+                item.size = CGSizeMake(MAX(MAX(width1, width2) + 10.0, self.itemSize.width), bounds.size.height);
             }
             break;
         case XZSegmentedControlDirectionVertical:
@@ -541,7 +541,7 @@
                 CGFloat const height2 = [item.text boundingRectWithSize:size options:options attributes:@{
                     NSFontAttributeName: self.selectedTitleFont
                 } context:nil].size.height;
-                item.size = CGSizeMake(bounds.size.width, MAX(height1, height2) + 10.0);
+                item.size = CGSizeMake(bounds.size.width, MAX(MAX(height1, height2) + 10.0, self.itemSize.height));
             }
             break;
         default:

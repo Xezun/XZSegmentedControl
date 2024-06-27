@@ -11,7 +11,7 @@
 Pod::Spec.new do |s|
   s.name             = 'XZSegmentedControl'
   s.version          = '1.0.0'
-  s.summary          = '对原生框架的拓展，提高开发效率'
+  s.summary          = 'A customizable segmented control for iOS'
 
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?
@@ -20,8 +20,8 @@ Pod::Spec.new do |s|
 #   * Finally, don't worry about the indent, CocoaPods strips it!
 
   s.description      = <<-DESC
-                       XZSegmentedControl 包含了对原生框架的拓展，丰富了原生框架的功能，提高了开发效率。
-                       DESC
+  XZSegmentedControl is a powerfull customizable replacement of UISegmentedControl。
+  DESC
 
   s.homepage         = 'https://github.com/Xezun/XZSegmentedControl'
   # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
@@ -37,7 +37,7 @@ Pod::Spec.new do |s|
   
   s.subspec 'Code' do |ss|
     ss.source_files = 'XZSegmentedControl/Code/**/*.{h,m}'
-    ss.dependency 'XZDefines'
+    ss.project_header_files = 'XZSegmentedControl/Code/**/Private/*.h'
   end
   
  

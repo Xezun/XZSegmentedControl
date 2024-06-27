@@ -461,8 +461,8 @@
     _flowLayout = [[XZSegmentedControlFlowLayout alloc] init];
     _flowLayout.minimumLineSpacing      = 0;
     _flowLayout.minimumInteritemSpacing = 0;
-    _flowLayout.sectionHeadersPinToVisibleBounds = YES;
-    _flowLayout.sectionFootersPinToVisibleBounds = YES;
+    _flowLayout.sectionHeadersPinToVisibleBounds = NO;
+    _flowLayout.sectionFootersPinToVisibleBounds = NO;
     switch (direction) {
         case XZSegmentedControlDirectionHorizontal:
             _flowLayout.itemSize        = CGSizeMake(49.0, bounds.size.height);
@@ -490,8 +490,6 @@
     [self addSubview:_collectionView];
     
     [_collectionView registerClass:[XZSegmentedControlItemView class] forCellWithReuseIdentifier:kReuseIdentifier];
-    [_collectionView registerClass:[XZSegmentedControlHeaderFooterView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:kReuseIdentifier];
-    [_collectionView registerClass:[XZSegmentedControlHeaderFooterView class] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:kReuseIdentifier];
     _collectionView.delegate   = self;
     _collectionView.dataSource = self;
 }

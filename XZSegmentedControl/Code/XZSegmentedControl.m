@@ -463,13 +463,12 @@
     _flowLayout.minimumInteritemSpacing = 0;
     _flowLayout.sectionHeadersPinToVisibleBounds = NO;
     _flowLayout.sectionFootersPinToVisibleBounds = NO;
+    _flowLayout.itemSize = CGSizeZero;
     switch (direction) {
         case XZSegmentedControlDirectionHorizontal:
-            _flowLayout.itemSize        = CGSizeMake(49.0, bounds.size.height);
             _flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
             break;
         case XZSegmentedControlDirectionVertical:
-            _flowLayout.itemSize        = CGSizeMake(bounds.size.width, 49.0);
             _flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
             break;
         default:
@@ -525,7 +524,7 @@
                 CGFloat const width2 = [item.text boundingRectWithSize:size options:options attributes:@{
                     NSFontAttributeName: self.selectedTitleFont
                 } context:nil].size.width;
-                item.size = CGSizeMake(MAX(MAX(width1, width2) + 10.0, self.itemSize.width), bounds.size.height);
+                item.size = CGSizeMake(MAX(ceil(MAX(width1, width2)) + 10.0, self.itemSize.width), bounds.size.height);
             }
             break;
         case XZSegmentedControlDirectionVertical:
@@ -539,7 +538,7 @@
                 CGFloat const height2 = [item.text boundingRectWithSize:size options:options attributes:@{
                     NSFontAttributeName: self.selectedTitleFont
                 } context:nil].size.height;
-                item.size = CGSizeMake(bounds.size.width, MAX(MAX(height1, height2) + 10.0, self.itemSize.height));
+                item.size = CGSizeMake(bounds.size.width, MAX(ceil(MAX(height1, height2)) + 10.0, self.itemSize.height));
             }
             break;
         default:

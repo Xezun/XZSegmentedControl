@@ -51,7 +51,7 @@ typedef NS_ENUM(NSUInteger, XZSegmentedControlIndicatorStyle) {
 @property (nonatomic, strong, nullable) __kindof UIView *footerView;
 
 /// item 的大小。优先使用代理方法返回的大小。
-/// @discussion 使用 titles 时 item 的大小会根据字体自动计算。
+/// @discussion 使用 titles 时 item 的大小会根据字体自动计算，此属性将作为最小值使用。
 @property (nonatomic) CGSize itemSize;
 /// item 间距。
 @property (nonatomic) CGFloat itemSpacing;
@@ -75,17 +75,25 @@ typedef NS_ENUM(NSUInteger, XZSegmentedControlIndicatorStyle) {
 
 @property (nonatomic, weak) id<XZSegmentedControlDataSource> dataSource;
 
+/// 当使用数据源时，必须使用此方法更新视图。
 - (void)reloadData;
 - (void)insertItemAtIndex:(NSInteger)index;
 - (void)removeItemAtIndex:(NSInteger)index;
 
 - (__kindof UIView *)viewForItemAtIndex:(NSInteger)index;
 
+/// 使用 item 标题文本作为数据源。
+/// @note 设置此属性，将取消 dataSource 的设置。
+/// @note 每个 item 的宽度，将根据字体自动计算，同时受 itemSize 属性约束。
 @property (nonatomic, copy, nullable) NSArray<NSString *> *titles;
 
+/// 普通 item 文本颜色。该属性仅在使用 titles 时生效。
 @property (nonatomic, strong, null_resettable) UIColor *titleColor;
-@property (nonatomic, strong, null_resettable) UIFont  *titleFont;
+/// 被选择的 item 的文本颜色。该属性仅在使用 titles 时生效。
 @property (nonatomic, strong, null_resettable) UIColor *selectedTitleColor;
+/// 普通 item 文本字体。该属性仅在使用 titles 时生效。
+@property (nonatomic, strong, null_resettable) UIFont  *titleFont;
+/// 被选中的 item 文本字体。该属性仅在使用 titles 时生效。
 @property (nonatomic, strong, null_resettable) UIFont  *selectedTitleFont;
 
 @end

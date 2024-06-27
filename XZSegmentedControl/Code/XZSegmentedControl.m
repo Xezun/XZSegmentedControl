@@ -407,6 +407,8 @@
 }
 
 - (void)setTitles:(NSArray<NSString *> *)titles {
+    _dataSource = nil;
+    
     if (titles.count == 0) {
         _titles = nil;
     } else if (_titles.count > titles.count) {

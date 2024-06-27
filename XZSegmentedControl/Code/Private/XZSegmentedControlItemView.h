@@ -12,12 +12,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface XZSegmentedControlItemView : UICollectionViewCell
 @property (nonatomic, strong) UIView<XZSegmentedControlItemView> *itemView;
-@property (nonatomic, strong) UILabel *textLabel;
-@property (nonatomic, strong) UIImageView *imageView;
-@property (nonatomic, strong, readonly) UILabel *textLabelIfLoaded;
-@property (nonatomic, strong, readonly) UIImageView *imageViewIfLoaded;
-//@property (nonatomic, strong, readonly) UIImageView *backgroundView;
-//@property (nonatomic, strong, readonly) UIImageView *selectedBackgroundView;
 @end
 
 NS_ASSUME_NONNULL_END

@@ -18,6 +18,7 @@
         self.textAlignment = NSTextAlignmentCenter;
         self.textColor     = segmentedControl.titleColor;
         self.font          = segmentedControl.titleFont;
+        self.numberOfLines = 2;
     }
     return self;
 }

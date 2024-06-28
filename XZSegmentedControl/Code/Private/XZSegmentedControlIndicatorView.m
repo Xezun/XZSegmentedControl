@@ -21,7 +21,6 @@
 
 - (void)applyLayoutAttributes:(XZSegmentedControlIndicatorLayoutAttributes *)layoutAttributes {
     if (layoutAttributes.image) {
-        self.backgroundColor = nil;
         if (_imageView == nil) {
             _imageView = [[UIImageView alloc] initWithFrame:self.bounds];
             _imageView.contentMode = UIViewContentModeScaleAspectFit;
@@ -29,35 +28,22 @@
             [self addSubview:_imageView];
         }
         _imageView.image = layoutAttributes.image;
-    } else if (layoutAttributes.color) {
+    } else {
         [_imageView removeFromSuperview];
         _imageView = nil;
-        self.backgroundColor = layoutAttributes.color;
-    } else {
-        self.backgroundColor = UIColor.blueColor;
     }
-}
-
-- (void)willTransitionFromLayout:(UICollectionViewLayout *)oldLayout toLayout:(UICollectionViewLayout *)newLayout {
-    NSLog(@"%@ ----- %@", oldLayout, newLayout);
-}
-
-- (void)didTransitionFromLayout:(UICollectionViewLayout *)oldLayout toLayout:(UICollectionViewLayout *)newLayout {
-    NSLog(@"%@ ----- %@", oldLayout, newLayout);
+    
+    self.backgroundColor = layoutAttributes.color;
 }
 
 @end
 
 @implementation XZSegmentedControlIndicatorLayoutAttributes
-
-- (void)setImage:(UIImage *)image {
-    _image = image;
-    _color = nil;
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        _color = UIColor.blueColor;
+    }
+    return self;
 }
-
-- (void)setColor:(UIColor *)color {
-    _image = nil;
-    _color = color;
-}
-
 @end

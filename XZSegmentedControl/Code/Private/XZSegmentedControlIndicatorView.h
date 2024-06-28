@@ -13,8 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 @interface XZSegmentedControlIndicatorLayoutAttributes : UICollectionViewLayoutAttributes
-@property (nonatomic, strong) UIColor *color;
-@property (nonatomic, strong) UIImage *image;
+@property (nonatomic, strong, nullable) UIColor *color;
+@property (nonatomic, strong, nullable) UIImage *image;
 @end
 
 NS_ASSUME_NONNULL_END

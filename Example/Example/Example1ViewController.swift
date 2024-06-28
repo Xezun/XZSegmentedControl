@@ -19,7 +19,6 @@ class Example1ViewController: UIViewController {
         super.viewDidLoad()
         
         segmentedControl.indicatorSize  = CGSize.init(width: 20.0, height: 3.0)
-        segmentedControl.indicatorStyle = .style1;
         segmentedControl.indicatorColor = .red
         segmentedControl.titles         = self.titles
         segmentedControl.itemSpacing    = 10;

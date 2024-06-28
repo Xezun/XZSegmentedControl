@@ -96,6 +96,15 @@
     [self __xz_updateTitlesIfNeeded];
 }
 
+- (void)setIndicatorClass:(Class)indicatorClass {
+    _flowLayout.indicatorClass = indicatorClass;
+}
+
+- (Class)indicatorClass {
+    return _flowLayout.indicatorClass;
+}
+
+
 - (void)setSelectedIndex:(NSInteger)selectedIndex animated:(BOOL)animated {
     [self setSelectedIndex:selectedIndex animated:animated focuses:YES];
 }

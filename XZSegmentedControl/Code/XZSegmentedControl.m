@@ -12,7 +12,6 @@
 #import "XZSegmentedControlItemView.h"
 #import "XZSegmentedControlTextItem.h"
 #import "XZSegmentedControlTextView.h"
-#import "XZSegmentedControlHeaderFooterView.h"
 
 #define kReuseIdentifier @"reuseIdentifier"
 
@@ -96,6 +95,15 @@
     [self __xz_updateTitlesIfNeeded];
 }
 
+- (void)setIndicatorClass:(Class)indicatorClass {
+    _flowLayout.indicatorClass = indicatorClass;
+}
+
+- (Class)indicatorClass {
+    return _flowLayout.indicatorClass;
+}
+
+
 - (void)setSelectedIndex:(NSInteger)selectedIndex animated:(BOOL)animated {
     [self setSelectedIndex:selectedIndex animated:animated focuses:YES];
 }
@@ -106,7 +114,7 @@
     XZSegmentedControlItemView *oldView = (id)[_collectionView cellForItemAtIndexPath:oldIndexPath];
     oldView.itemView.isSelected = NO;
     
-    _flowLayout.selectedIndex = selectedIndex;
+    [_flowLayout setSelectedIndex:selectedIndex animated:animated];
     
     NSIndexPath *newIndexPath = [NSIndexPath indexPathForItem:selectedIndex inSection:0];
     XZSegmentedControlItemView *newView = (id)[_collectionView cellForItemAtIndexPath:newIndexPath];
@@ -306,6 +314,8 @@
 
 - (void)setItemSize:(CGSize)itemSize {
     _flowLayout.itemSize = itemSize;
+    
+    [self __xz_setNeedsUpdateTitles];
 }
 
 
@@ -463,7 +473,7 @@
     _flowLayout.minimumInteritemSpacing = 0;
     _flowLayout.sectionHeadersPinToVisibleBounds = NO;
     _flowLayout.sectionFootersPinToVisibleBounds = NO;
-    _flowLayout.itemSize = CGSizeZero;
+    _flowLayout.itemSize = CGSizeMake(1.0, 1.0);
     switch (direction) {
         case XZSegmentedControlDirectionHorizontal:
             _flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
@@ -494,12 +504,13 @@
 }
 
 - (void)__xz_setNeedsUpdateTitles {
-    if (_needsUpdateTitles) {
+    if (_needsUpdateTitles || _titles.count == 0) {
         return;
     }
     _needsUpdateTitles = YES;
     [NSRunLoop.mainRunLoop performInModes:@[NSRunLoopCommonModes] block:^{
         [self __xz_updateTitlesIfNeeded];
+        [self->_collectionView reloadData];
     }];
 }
 

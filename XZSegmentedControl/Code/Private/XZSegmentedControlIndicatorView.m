@@ -20,8 +20,11 @@
 }
 
 - (void)applyLayoutAttributes:(XZSegmentedControlIndicatorLayoutAttributes *)layoutAttributes {
+    // 在 -preferredLayoutAttributesFittingAttributes: 方法设置代理无效。
+    // 可能的原因是这个方法参数是复制份，而不是原份。
+    layoutAttributes.delegate = self;
+    
     if (layoutAttributes.image) {
-        self.backgroundColor = nil;
         if (_imageView == nil) {
             _imageView = [[UIImageView alloc] initWithFrame:self.bounds];
             _imageView.contentMode = UIViewContentModeScaleAspectFit;
@@ -29,35 +32,44 @@
             [self addSubview:_imageView];
         }
         _imageView.image = layoutAttributes.image;
-    } else if (layoutAttributes.color) {
+    } else {
         [_imageView removeFromSuperview];
         _imageView = nil;
-        self.backgroundColor = layoutAttributes.color;
-    } else {
-        self.backgroundColor = UIColor.blueColor;
     }
-}
-
-- (void)willTransitionFromLayout:(UICollectionViewLayout *)oldLayout toLayout:(UICollectionViewLayout *)newLayout {
-    NSLog(@"%@ ----- %@", oldLayout, newLayout);
-}
-
-- (void)didTransitionFromLayout:(UICollectionViewLayout *)oldLayout toLayout:(UICollectionViewLayout *)newLayout {
-    NSLog(@"%@ ----- %@", oldLayout, newLayout);
+    
+    self.backgroundColor = layoutAttributes.color;
 }
 
 @end
 
 @implementation XZSegmentedControlIndicatorLayoutAttributes
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        _color = UIColor.blueColor;
+    }
+    return self;
+}
 
 - (void)setImage:(UIImage *)image {
-    _image = image;
-    _color = nil;
+    if (_image != image) {
+        _image = image;
+        [_delegate applyLayoutAttributes:self];
+    }
 }
 
 - (void)setColor:(UIColor *)color {
-    _image = nil;
-    _color = color;
+    if (_color != color) {
+        _color = color;
+        [_delegate applyLayoutAttributes:self];
+    }
 }
 
+- (id)copyWithZone:(NSZone *)zone {
+    XZSegmentedControlIndicatorLayoutAttributes *new = [super copyWithZone:zone];
+    new->_image = _image;
+    new->_color = _color;
+    new->_delegate = _delegate;
+    return new;
+}
 @end

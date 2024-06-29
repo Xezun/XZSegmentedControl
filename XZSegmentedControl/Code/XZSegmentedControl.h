@@ -20,9 +20,11 @@ typedef NS_ENUM(NSUInteger, XZSegmentedControlDirection) {
 /// 指示器样式。
 typedef NS_ENUM(NSUInteger, XZSegmentedControlIndicatorStyle) {
     /// 矩形色块指示器：横向滚动时，指示器在 item 底部；纵向滚动时，指示器在 item 右侧。
-    XZSegmentedControlIndicatorStyle1,
+    XZSegmentedControlIndicatorStyleMarkLine,
     /// 矩形色块指示器：横向滚动时，指示器在 item 顶部；纵向滚动时，指示器在 item 左侧。
-    XZSegmentedControlIndicatorStyle2,
+    XZSegmentedControlIndicatorStyleLeadLine,
+    /// 使用自定义指示器，需实现`dataSource`方法。
+    XZSegmentedControlIndicatorStyleCustom,
 };
 
 /// 使用自定义视图作为 item 时，应遵循的协议。
@@ -57,10 +59,6 @@ typedef NS_ENUM(NSUInteger, XZSegmentedControlIndicatorStyle) {
 /// item 间距。
 @property (nonatomic) CGFloat itemSpacing;
 
-/// 使用色块作为指示器，设置此属性，会清除 indicatorImage 的设置。
-@property (nonatomic, strong, nullable) UIColor *indicatorColor;
-/// 使用图片作为指示器，图片的大小受 indicatorSize 属性影响。
-@property (nonatomic, strong, nullable) UIImage *indicatorImage;
 /// 指定长宽，若为零，则使用默认值。
 /// @li 横向滚动时，宽度默认为 item 的宽度，高度为 3.0 点。
 /// @li 纵向滚动时，高度默认为 item 的高度，宽度为 3.0 点。
@@ -68,6 +66,29 @@ typedef NS_ENUM(NSUInteger, XZSegmentedControlIndicatorStyle) {
 @property (nonatomic) CGSize indicatorSize;
 /// 指示器样式。
 @property (nonatomic) XZSegmentedControlIndicatorStyle indicatorStyle;
+/// 使用内置样式时，使用 `.blueColor` 色块作为指示器。
+/// @note 设置为 `nil` 表示没有颜色，适合设置图片。
+@property (nonatomic, strong, nullable) UIColor *indicatorColor;
+/// 使用内置式时，使用图片作为指示器。
+/// @note 图片展示受 `indicatorSize` 属性影响。
+/// @note 如果设置时 `indicatorSize` 为空，则将 `indicatorImage.size` 设置为 `indicatorSize` 的值。
+/// @note 本属性与 `indicatorColor` 是同时生效的，但是可以将 `indicatorColor` 置空。
+@property (nonatomic, strong, nullable) UIImage *indicatorImage;
+/// 注册自定义的指示器。必须是 `UICollectionReusableView` 的子类。
+/// @note
+/// 必须先设置使用 `XZSegmentedControlIndicatorStyleCustom` 样式，然后才能设置此属性。
+/// @discussion
+/// 自定义指示器，可以在 `-preferredLayoutAttributesFittingAttributes:` 方法中调整指示器 frame 值，该值默认与 item.frame 相同。
+/// @code
+/// - (UICollectionViewLayoutAttributes *)preferredLayoutAttributesFittingAttributes:(UICollectionViewLayoutAttributes *)layoutAttributes {
+///     layoutAttributes.zIndex = -1;
+///     layoutAttributes.frame  = ... // set the indicator's frame as you wish
+///     return layoutAttributes;
+/// }
+/// @endcode
+/// @discussion
+/// 自定义指示器，还可以通过 `XZSegmentedControlIndicatorView` 协议的 `+prepareLayoutAttributes` 类方法来预处理布局。
+@property (nonatomic, null_resettable) Class indicatorClass;
 
 @property (nonatomic, readonly) NSInteger numberOfSegments;
 
@@ -116,6 +137,11 @@ typedef NS_ENUM(NSUInteger, XZSegmentedControlIndicatorStyle) {
 ///   - segmentedControl: 调用此方法的对象
 ///   - index: item 的位置索引
 - (CGSize)segmentedControl:(XZSegmentedControl *)segmentedControl sizeForItemAtIndex:(NSInteger)index;
+@end
+
+/// 由于在 `UICollectionReusableView` 的 `-preferredLayoutAttributesFittingAttributes:` 方法中，无法修改 `zIndex` 属性，所以定义了此协议。
+@protocol XZSegmentedControlIndicatorView <NSObject>
++ (void)collectionViewLayout:(UICollectionViewFlowLayout *)flowLayout prepareLayoutForAttributes:(UICollectionViewLayoutAttributes *)layoutAttributes;
 @end
 
 NS_ASSUME_NONNULL_END

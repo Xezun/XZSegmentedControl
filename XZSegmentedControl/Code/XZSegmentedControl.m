@@ -314,6 +314,8 @@
 
 - (void)setItemSize:(CGSize)itemSize {
     _flowLayout.itemSize = itemSize;
+    
+    [self __xz_setNeedsUpdateTitles];
 }
 
 
@@ -502,12 +504,13 @@
 }
 
 - (void)__xz_setNeedsUpdateTitles {
-    if (_needsUpdateTitles) {
+    if (_needsUpdateTitles || _titles.count == 0) {
         return;
     }
     _needsUpdateTitles = YES;
     [NSRunLoop.mainRunLoop performInModes:@[NSRunLoopCommonModes] block:^{
         [self __xz_updateTitlesIfNeeded];
+        [self->_collectionView reloadData];
     }];
 }
 

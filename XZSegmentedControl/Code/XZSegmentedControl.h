@@ -75,8 +75,10 @@ typedef NS_ENUM(NSUInteger, XZSegmentedControlIndicatorStyle) {
 /// @note 本属性与 `indicatorColor` 是同时生效的，但是可以将 `indicatorColor` 置空。
 @property (nonatomic, strong, nullable) UIImage *indicatorImage;
 /// 注册自定义的指示器。必须是 `UICollectionReusableView` 的子类。
-/// @note 必须先设置使用 `XZSegmentedControlIndicatorStyleCustom` 样式，设置才会生效。
-/// @discussion 自定义指示器，可以在 `-preferredLayoutAttributesFittingAttributes:` 方法中调整指示器 frame 值，该值默认与 item.frame 相同。
+/// @note
+/// 必须先设置使用 `XZSegmentedControlIndicatorStyleCustom` 样式，然后才能设置此属性。
+/// @discussion
+/// 自定义指示器，可以在 `-preferredLayoutAttributesFittingAttributes:` 方法中调整指示器 frame 值，该值默认与 item.frame 相同。
 /// @code
 /// - (UICollectionViewLayoutAttributes *)preferredLayoutAttributesFittingAttributes:(UICollectionViewLayoutAttributes *)layoutAttributes {
 ///     layoutAttributes.zIndex = -1;
@@ -84,7 +86,9 @@ typedef NS_ENUM(NSUInteger, XZSegmentedControlIndicatorStyle) {
 ///     return layoutAttributes;
 /// }
 /// @endcode
-@property (nonatomic, nullable) Class indicatorClass;
+/// @discussion
+/// 自定义指示器，还可以通过 `XZSegmentedControlIndicatorView` 协议的 `+prepareLayoutAttributes` 类方法来预处理布局。
+@property (nonatomic, null_resettable) Class indicatorClass;
 
 @property (nonatomic, readonly) NSInteger numberOfSegments;
 
@@ -133,6 +137,11 @@ typedef NS_ENUM(NSUInteger, XZSegmentedControlIndicatorStyle) {
 ///   - segmentedControl: 调用此方法的对象
 ///   - index: item 的位置索引
 - (CGSize)segmentedControl:(XZSegmentedControl *)segmentedControl sizeForItemAtIndex:(NSInteger)index;
+@end
+
+/// 由于在 `UICollectionReusableView` 的 `-preferredLayoutAttributesFittingAttributes:` 方法中，无法修改 `zIndex` 属性，所以定义了此协议。
+@protocol XZSegmentedControlIndicatorView <NSObject>
++ (void)collectionViewLayout:(UICollectionViewFlowLayout *)flowLayout prepareLayoutForAttributes:(UICollectionViewLayoutAttributes *)layoutAttributes;
 @end
 
 NS_ASSUME_NONNULL_END

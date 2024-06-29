@@ -115,7 +115,7 @@
     XZSegmentedControlItemView *oldView = (id)[_collectionView cellForItemAtIndexPath:oldIndexPath];
     oldView.itemView.isSelected = NO;
     
-    _flowLayout.selectedIndex = selectedIndex;
+    [_flowLayout setSelectedIndex:selectedIndex animated:animated];
     
     NSIndexPath *newIndexPath = [NSIndexPath indexPathForItem:selectedIndex inSection:0];
     XZSegmentedControlItemView *newView = (id)[_collectionView cellForItemAtIndexPath:newIndexPath];
@@ -472,7 +472,7 @@
     _flowLayout.minimumInteritemSpacing = 0;
     _flowLayout.sectionHeadersPinToVisibleBounds = NO;
     _flowLayout.sectionFootersPinToVisibleBounds = NO;
-    _flowLayout.itemSize = CGSizeZero;
+    _flowLayout.itemSize = CGSizeMake(1.0, 1.0);
     switch (direction) {
         case XZSegmentedControlDirectionHorizontal:
             _flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;

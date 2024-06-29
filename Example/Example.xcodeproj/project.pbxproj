@@ -9,15 +9,20 @@
 /* Begin PBXBuildFile section */
 		294DF8812C19CFDE0023E41F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294DF8802C19CFDE0023E41F /* AppDelegate.swift */; };
 		294DF8832C19CFDE0023E41F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294DF8822C19CFDE0023E41F /* SceneDelegate.swift */; };
-		294DF8852C19CFDE0023E41F /* Example1ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294DF8842C19CFDE0023E41F /* Example1ViewController.swift */; };
+		294DF8852C19CFDE0023E41F /* ExampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294DF8842C19CFDE0023E41F /* ExampleViewController.swift */; };
 		294DF8882C19CFDE0023E41F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 294DF8862C19CFDE0023E41F /* Main.storyboard */; };
 		294DF88A2C19CFDF0023E41F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 294DF8892C19CFDF0023E41F /* Assets.xcassets */; };
 		294DF88D2C19CFDF0023E41F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 294DF88B2C19CFDF0023E41F /* LaunchScreen.storyboard */; };
 		294DF8982C19CFDF0023E41F /* ExampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294DF8972C19CFDF0023E41F /* ExampleTests.swift */; };
 		294DF8A22C19CFE00023E41F /* ExampleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294DF8A12C19CFE00023E41F /* ExampleUITests.swift */; };
 		294DF8A42C19CFE00023E41F /* ExampleUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294DF8A32C19CFE00023E41F /* ExampleUITestsLaunchTests.swift */; };
-		29CD635B2C2C4E2800BDAB64 /* Example2ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29CD635A2C2C4E2800BDAB64 /* Example2ViewController.swift */; };
 		29CD635D2C2D787800BDAB64 /* ExampleTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29CD635C2C2D787800BDAB64 /* ExampleTestViewController.swift */; };
+		29CD635F2C2E7BF800BDAB64 /* ExampleSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29CD635E2C2E7BF800BDAB64 /* ExampleSettingsViewController.swift */; };
+		29CD63612C2E7C2800BDAB64 /* ExampleSizeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29CD63602C2E7C2800BDAB64 /* ExampleSizeViewController.swift */; };
+		29CD63632C2E852A00BDAB64 /* ExampleSelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29CD63622C2E852A00BDAB64 /* ExampleSelectViewController.swift */; };
+		29CD63652C2E872A00BDAB64 /* ExampleColorSelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29CD63642C2E872A00BDAB64 /* ExampleColorSelectViewController.swift */; };
+		29CD63672C2E924A00BDAB64 /* ExampleImageSelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29CD63662C2E924A00BDAB64 /* ExampleImageSelectViewController.swift */; };
+		29CD63692C2E955E00BDAB64 /* ExampleSegmentedControlIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29CD63682C2E955E00BDAB64 /* ExampleSegmentedControlIndicatorView.swift */; };
 		59E15C18067457479ACADEA3 /* Pods_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 67A9B5850C28A1112C6F15FC /* Pods_Example.framework */; };
 		CC43A69F5314125D15460630 /* Pods_ExampleTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D88C379986373C2D4B2ACBA /* Pods_ExampleTests.framework */; };
 		DCC7F8A4681B6AAF9F8784DA /* Pods_ExampleUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C428CC0BAFAE0D6F0088D21 /* Pods_ExampleUITests.framework */; };
@@ -44,7 +49,7 @@
 		294DF87D2C19CFDE0023E41F /* Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		294DF8802C19CFDE0023E41F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		294DF8822C19CFDE0023E41F /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		294DF8842C19CFDE0023E41F /* Example1ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Example1ViewController.swift; sourceTree = "<group>"; };
+		294DF8842C19CFDE0023E41F /* ExampleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleViewController.swift; sourceTree = "<group>"; };
 		294DF8872C19CFDE0023E41F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		294DF8892C19CFDF0023E41F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		294DF88C2C19CFDF0023E41F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -54,8 +59,13 @@
 		294DF89D2C19CFE00023E41F /* ExampleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ExampleUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		294DF8A12C19CFE00023E41F /* ExampleUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleUITests.swift; sourceTree = "<group>"; };
 		294DF8A32C19CFE00023E41F /* ExampleUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		29CD635A2C2C4E2800BDAB64 /* Example2ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Example2ViewController.swift; sourceTree = "<group>"; };
 		29CD635C2C2D787800BDAB64 /* ExampleTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleTestViewController.swift; sourceTree = "<group>"; };
+		29CD635E2C2E7BF800BDAB64 /* ExampleSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleSettingsViewController.swift; sourceTree = "<group>"; };
+		29CD63602C2E7C2800BDAB64 /* ExampleSizeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleSizeViewController.swift; sourceTree = "<group>"; };
+		29CD63622C2E852A00BDAB64 /* ExampleSelectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleSelectViewController.swift; sourceTree = "<group>"; };
+		29CD63642C2E872A00BDAB64 /* ExampleColorSelectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleColorSelectViewController.swift; sourceTree = "<group>"; };
+		29CD63662C2E924A00BDAB64 /* ExampleImageSelectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleImageSelectViewController.swift; sourceTree = "<group>"; };
+		29CD63682C2E955E00BDAB64 /* ExampleSegmentedControlIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleSegmentedControlIndicatorView.swift; sourceTree = "<group>"; };
 		2B791975BF2894531F4C7657 /* Pods-Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Example.debug.xcconfig"; path = "Target Support Files/Pods-Example/Pods-Example.debug.xcconfig"; sourceTree = "<group>"; };
 		37EAF59554F23A3576D4F9BF /* Pods-ExampleUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ExampleUITests.debug.xcconfig"; path = "Target Support Files/Pods-ExampleUITests/Pods-ExampleUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		5D88C379986373C2D4B2ACBA /* Pods_ExampleTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ExampleTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -136,9 +146,14 @@
 			children = (
 				294DF8802C19CFDE0023E41F /* AppDelegate.swift */,
 				294DF8822C19CFDE0023E41F /* SceneDelegate.swift */,
-				294DF8842C19CFDE0023E41F /* Example1ViewController.swift */,
-				29CD635A2C2C4E2800BDAB64 /* Example2ViewController.swift */,
+				294DF8842C19CFDE0023E41F /* ExampleViewController.swift */,
 				29CD635C2C2D787800BDAB64 /* ExampleTestViewController.swift */,
+				29CD635E2C2E7BF800BDAB64 /* ExampleSettingsViewController.swift */,
+				29CD63602C2E7C2800BDAB64 /* ExampleSizeViewController.swift */,
+				29CD63622C2E852A00BDAB64 /* ExampleSelectViewController.swift */,
+				29CD63642C2E872A00BDAB64 /* ExampleColorSelectViewController.swift */,
+				29CD63662C2E924A00BDAB64 /* ExampleImageSelectViewController.swift */,
+				29CD63682C2E955E00BDAB64 /* ExampleSegmentedControlIndicatorView.swift */,
 				294DF8862C19CFDE0023E41F /* Main.storyboard */,
 				294DF8892C19CFDF0023E41F /* Assets.xcassets */,
 				294DF88B2C19CFDF0023E41F /* LaunchScreen.storyboard */,
@@ -395,10 +410,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				29CD635B2C2C4E2800BDAB64 /* Example2ViewController.swift in Sources */,
-				294DF8852C19CFDE0023E41F /* Example1ViewController.swift in Sources */,
+				29CD63612C2E7C2800BDAB64 /* ExampleSizeViewController.swift in Sources */,
+				29CD635F2C2E7BF800BDAB64 /* ExampleSettingsViewController.swift in Sources */,
+				294DF8852C19CFDE0023E41F /* ExampleViewController.swift in Sources */,
+				29CD63652C2E872A00BDAB64 /* ExampleColorSelectViewController.swift in Sources */,
 				294DF8812C19CFDE0023E41F /* AppDelegate.swift in Sources */,
 				29CD635D2C2D787800BDAB64 /* ExampleTestViewController.swift in Sources */,
+				29CD63692C2E955E00BDAB64 /* ExampleSegmentedControlIndicatorView.swift in Sources */,
+				29CD63672C2E924A00BDAB64 /* ExampleImageSelectViewController.swift in Sources */,
+				29CD63632C2E852A00BDAB64 /* ExampleSelectViewController.swift in Sources */,
 				294DF8832C19CFDE0023E41F /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

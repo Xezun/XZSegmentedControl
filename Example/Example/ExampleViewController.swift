@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  ExampleViewController.swift
 //  Example
 //
 //  Created by 徐臻 on 2024/6/12.
@@ -8,7 +8,7 @@
 import UIKit
 import XZSegmentedControl
 
-class Example1ViewController: UIViewController {
+class ExampleViewController: UIViewController {
 
     @IBOutlet weak var segmentedControl: XZSegmentedControl!
     var pageViewController: UIPageViewController!
@@ -18,24 +18,16 @@ class Example1ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        segmentedControl.indicatorSize  = CGSize.init(width: 20.0, height: 3.0)
-        segmentedControl.indicatorColor = .red
+        if segmentedControl.direction == .horizontal {
+            segmentedControl.indicatorSize  = CGSize.init(width: 20.0, height: 3.0)
+        } else {
+            segmentedControl.indicatorSize  = CGSize.init(width: 3.0, height: 20.0)
+        }
+        segmentedControl.indicatorColor = .systemRed
         segmentedControl.titles         = self.titles
         segmentedControl.itemSpacing    = 10;
         segmentedControl.titleFont      = .systemFont(ofSize: 17.0)
         segmentedControl.selectedTitleFont = .boldSystemFont(ofSize: 18.0)
-        
-        let headerView = UIButton.init(type: .system)
-        headerView.setTitle(" + ", for: .normal)
-        headerView.backgroundColor = .white
-        headerView.frame.size = CGSize.init(width: 40, height: 40)
-        segmentedControl.headerView = headerView
-        
-        let footerView = UIButton.init(type: .system)
-        footerView.setTitle(" - ", for: .normal)
-        footerView.backgroundColor = .white
-        footerView.frame.size = CGSize.init(width: 40, height: 40)
-        segmentedControl.footerView = footerView
         
         segmentedControl.addTarget(self, action: #selector(segmentedControlValueChanged(_:)), for: .valueChanged)
         
@@ -66,9 +58,21 @@ class Example1ViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let identifier = segue.identifier else { return }
         if identifier == "page" {
+            
+        }
+        switch identifier {
+        case "page":
             pageViewController = segue.destination as? UIPageViewController;
+        case "settings":
+            if let vc = segue.destination as? ExampleSettingsViewController {
+                vc.segmentedControl = self.segmentedControl
+            }
+        default:
+            fatalError()
         }
     }
+    
+    
 
     lazy var viewControllers: [UIViewController] = titles.map { title in
         let vc = ExampleTestViewController.init()
@@ -78,7 +82,7 @@ class Example1ViewController: UIViewController {
     
 }
 
-extension Example1ViewController: UIPageViewControllerDataSource {
+extension ExampleViewController: UIPageViewControllerDataSource {
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         guard let index = viewControllers.firstIndex(of: viewController) else { return nil }
@@ -97,7 +101,7 @@ extension Example1ViewController: UIPageViewControllerDataSource {
     }
 }
 
-extension Example1ViewController: UIPageViewControllerDelegate {
+extension ExampleViewController: UIPageViewControllerDelegate {
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
         guard completed else {
             return

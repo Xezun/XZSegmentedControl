@@ -12,7 +12,6 @@
 #import "XZSegmentedControlItemView.h"
 #import "XZSegmentedControlTextItem.h"
 #import "XZSegmentedControlTextView.h"
-#import "XZSegmentedControlHeaderFooterView.h"
 
 #define kReuseIdentifier @"reuseIdentifier"
 

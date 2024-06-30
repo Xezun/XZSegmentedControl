@@ -89,6 +89,9 @@ typedef NS_ENUM(NSUInteger, XZSegmentedControlIndicatorStyle) {
 /// @discussion
 /// 自定义指示器，还可以通过 `XZSegmentedControlIndicatorView` 协议的 `+prepareLayoutAttributes` 类方法来预处理布局。
 @property (nonatomic, null_resettable) Class indicatorClass;
+/// 值 selectedIndex 的变化进度。
+@property (nonatomic) CGFloat indicatorTransiton;
+
 
 @property (nonatomic, readonly) NSInteger numberOfSegments;
 
@@ -139,9 +142,17 @@ typedef NS_ENUM(NSUInteger, XZSegmentedControlIndicatorStyle) {
 - (CGSize)segmentedControl:(XZSegmentedControl *)segmentedControl sizeForItemAtIndex:(NSInteger)index;
 @end
 
+@protocol XZSegmentedControlIndicatorLayoutAttributes <NSObject>
+@property (nonatomic, strong, nullable) UIColor *color;
+@property (nonatomic, strong, nullable) UIImage *image;
+@property (nonatomic) CGFloat indicatorTransiton;
+@property (nonatomic) CGRect indicatorTransitonRect; 
+@end
+
 /// 由于在 `UICollectionReusableView` 的 `-preferredLayoutAttributesFittingAttributes:` 方法中，无法修改 `zIndex` 属性，所以定义了此协议。
 @protocol XZSegmentedControlIndicatorView <NSObject>
-+ (void)collectionViewLayout:(UICollectionViewFlowLayout *)flowLayout prepareLayoutForAttributes:(UICollectionViewLayoutAttributes *)layoutAttributes;
++ (void)collectionViewLayout:(UICollectionViewFlowLayout *)flowLayout prepareLayoutForAttributes:(UICollectionViewLayoutAttributes<XZSegmentedControlIndicatorLayoutAttributes> *)layoutAttributes;
 @end
+
 
 NS_ASSUME_NONNULL_END

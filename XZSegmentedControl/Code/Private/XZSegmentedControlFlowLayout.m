@@ -110,7 +110,7 @@
         _indicatorLayoutAttributes = [XZSegmentedControlIndicatorLayoutAttributes layoutAttributesForDecorationViewOfKind:NSStringFromClass(_indicatorClass) withIndexPath:indexPath];
         // 复制自定义属性
         if (oldValue) {
-            _indicatorLayoutAttributes.delegate = oldValue.delegate;
+            _indicatorLayoutAttributes.indicatorView = oldValue.indicatorView;
             _indicatorLayoutAttributes.image = oldValue.image;
             _indicatorLayoutAttributes.color = oldValue.color;
         }

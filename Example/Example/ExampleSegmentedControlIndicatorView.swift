@@ -10,8 +10,8 @@ import XZSegmentedControl
 
 class ExampleSegmentedControlIndicatorView: UICollectionReusableView, XZSegmentedControlIndicatorView {
     
-    static func collectionViewLayout(_ flowLayout: UICollectionViewFlowLayout, prepareLayoutFor layoutAttributes: UICollectionViewLayoutAttributes) {
-        layoutAttributes.zIndex = .min
+    static func collectionViewLayout(_ flowLayout: UICollectionViewFlowLayout, prepareLayoutForAttributes layoutAttributes: XZSegmentedControlIndicatorLayoutAttributes) {
+        layoutAttributes.zIndex = -111
         if !layoutAttributes.frame.isEmpty {
             if flowLayout.scrollDirection == .horizontal {
                 layoutAttributes.frame = layoutAttributes.frame.insetBy(dx: 0, dy: 5)
@@ -21,6 +21,7 @@ class ExampleSegmentedControlIndicatorView: UICollectionReusableView, XZSegmente
         }
     }
     
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         

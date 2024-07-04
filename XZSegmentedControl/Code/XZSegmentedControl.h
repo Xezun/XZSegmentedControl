@@ -142,16 +142,16 @@ typedef NS_ENUM(NSUInteger, XZSegmentedControlIndicatorStyle) {
 - (CGSize)segmentedControl:(XZSegmentedControl *)segmentedControl sizeForItemAtIndex:(NSInteger)index;
 @end
 
-@protocol XZSegmentedControlIndicatorLayoutAttributes <NSObject>
+@interface XZSegmentedControlIndicatorLayoutAttributes : UICollectionViewLayoutAttributes
 @property (nonatomic, strong, nullable) UIColor *color;
 @property (nonatomic, strong, nullable) UIImage *image;
 @property (nonatomic) CGFloat indicatorTransiton;
-@property (nonatomic) CGRect indicatorTransitonRect; 
+@property (nonatomic) CGRect indicatorTransitonRect;
 @end
 
 /// 由于在 `UICollectionReusableView` 的 `-preferredLayoutAttributesFittingAttributes:` 方法中，无法修改 `zIndex` 属性，所以定义了此协议。
 @protocol XZSegmentedControlIndicatorView <NSObject>
-+ (void)collectionViewLayout:(UICollectionViewFlowLayout *)flowLayout prepareLayoutForAttributes:(UICollectionViewLayoutAttributes<XZSegmentedControlIndicatorLayoutAttributes> *)layoutAttributes;
++ (void)collectionViewLayout:(UICollectionViewFlowLayout *)flowLayout prepareLayoutForAttributes:(XZSegmentedControlIndicatorLayoutAttributes *)layoutAttributes NS_SWIFT_NAME(collectionViewLayout(_:prepareLayoutForAttributes:));
 @end
 
 

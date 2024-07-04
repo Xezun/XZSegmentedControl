@@ -22,7 +22,7 @@
 - (void)applyLayoutAttributes:(XZSegmentedControlIndicatorLayoutAttributes *)layoutAttributes {
     // 在 -preferredLayoutAttributesFittingAttributes: 方法设置代理无效。
     // 可能的原因是这个方法参数是复制份，而不是原份。
-    layoutAttributes.delegate = self;
+    layoutAttributes.indicatorView = self;
     
     if (layoutAttributes.image) {
         if (_imageView == nil) {
@@ -42,7 +42,14 @@
 
 @end
 
+
+
+
 @implementation XZSegmentedControlIndicatorLayoutAttributes
+
+@synthesize indicatorTransiton = _indicatorTransiton;
+@synthesize indicatorTransitonRect = _indicatorTransitonRect;
+
 - (instancetype)init {
     self = [super init];
     if (self) {
@@ -54,14 +61,14 @@
 - (void)setImage:(UIImage *)image {
     if (_image != image) {
         _image = image;
-        [_delegate applyLayoutAttributes:self];
+        [_indicatorView applyLayoutAttributes:self];
     }
 }
 
 - (void)setColor:(UIColor *)color {
     if (_color != color) {
         _color = color;
-        [_delegate applyLayoutAttributes:self];
+        [_indicatorView applyLayoutAttributes:self];
     }
 }
 
@@ -69,7 +76,7 @@
     XZSegmentedControlIndicatorLayoutAttributes *new = [super copyWithZone:zone];
     new->_image = _image;
     new->_color = _color;
-    new->_delegate = _delegate;
+    new->_indicatorView = _indicatorView;
     return new;
 }
 @end

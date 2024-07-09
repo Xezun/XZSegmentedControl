@@ -37,8 +37,8 @@ class ExampleSettingsViewController: UITableViewController {
                 switch segmentedControl?.indicatorStyle {
                 case .markLine:
                     cell.detailTextLabel?.text = ".markLine"
-                case .leadLine:
-                    cell.detailTextLabel?.text = ".leadLine"
+                case .noteLine:
+                    cell.detailTextLabel?.text = ".noteLine"
                 case .custom:
                     cell.detailTextLabel?.text = ".custom"
                 default:
@@ -91,8 +91,8 @@ class ExampleSettingsViewController: UITableViewController {
     @IBAction func unwindToSubmitIndicatorStyle(_ unwindSegue: UIStoryboardSegue) {
         guard let sourceViewController = unwindSegue.source as? ExampleSelectViewController else { return }
         switch sourceViewController.value {
-        case "leadLine":
-            segmentedControl?.indicatorStyle = .leadLine
+        case "noteLine":
+            segmentedControl?.indicatorStyle = .noteLine
         case "markLine":
             segmentedControl?.indicatorStyle = .markLine
         case "custom":
@@ -174,8 +174,8 @@ class ExampleSettingsViewController: UITableViewController {
             (segue.destination as? ExampleSizeViewController)?.value = segmentedControl.indicatorSize
         case "indicatorStyle":
             switch segmentedControl.indicatorStyle {
-            case .leadLine:
-                (segue.destination as? ExampleSelectViewController)?.value = "leadLine"
+            case .noteLine:
+                (segue.destination as? ExampleSelectViewController)?.value = "noteLine"
             case .markLine:
                 (segue.destination as? ExampleSelectViewController)?.value = "markLine"
             case .custom:

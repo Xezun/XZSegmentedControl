@@ -11,6 +11,11 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface XZSegmentedControlFlowLayout : UICollectionViewFlowLayout
+@property (nonatomic, weak, readonly) XZSegmentedControl *segmentedControl;
+- (instancetype)initWithSegmentedControl:(XZSegmentedControl *)segmentedControl NS_DESIGNATED_INITIALIZER;
+- (instancetype)init NS_UNAVAILABLE;
+- (nullable instancetype)initWithCoder:(NSCoder *)coder NS_UNAVAILABLE;
+
 @property (nonatomic) NSInteger selectedIndex;
 - (void)setSelectedIndex:(NSInteger)selectedIndex animated:(BOOL)animated;
 @property (nonatomic, strong, nullable) UIColor *indicatorColor;

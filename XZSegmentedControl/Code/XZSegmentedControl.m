@@ -108,8 +108,10 @@
     [self setSelectedIndex:selectedIndex animated:animated focuses:YES];
 }
 
-- (void)setSelectedIndex:(NSInteger)selectedIndex animated:(BOOL)animated focuses:(BOOL)focuses {
+- (void)setSelectedIndex:(NSInteger const)selectedIndex animated:(BOOL)animated focuses:(BOOL)focuses {
     NSInteger const oldValue = _flowLayout.selectedIndex;
+    if (selectedIndex == oldValue) return;
+    
     NSIndexPath *oldIndexPath = [NSIndexPath indexPathForItem:oldValue inSection:0];
     XZSegmentedControlItemView *oldView = (id)[_collectionView cellForItemAtIndexPath:oldIndexPath];
     oldView.itemView.isSelected = NO;
@@ -169,10 +171,15 @@
     }
 }
 
-- (UIView *)viewForItemAtIndex:(NSInteger)index {
+- (UIView *)viewForSegmentAtIndex:(NSInteger)index {
     NSIndexPath *indexPath = [NSIndexPath indexPathForItem:index inSection:0];
     XZSegmentedControlItemView *cell = (id)[_collectionView cellForItemAtIndexPath:indexPath];
     return [cell itemView];
+}
+
+- (CGRect)frameForSegmentAtIndex:(NSInteger)index {
+    NSIndexPath *indexPath = [NSIndexPath indexPathForItem:index inSection:0];
+    return [_flowLayout layoutAttributesForItemAtIndexPath:indexPath].frame;
 }
 
 #pragma mark - <UICollectionViewDataSource>
@@ -194,7 +201,7 @@
     NSInteger const index = indexPath.item;
     NSInteger const _selectedIndex = self.selectedIndex;
     if (_dataSource) {
-        UIView<XZSegmentedControlItemView> *itemView = [_dataSource segmentedControl:self viewForItemAtIndex:index reusingView:cell.itemView];
+        UIView<XZSegmentedControlItemView> *itemView = [_dataSource segmentedControl:self viewForSegmentAtIndex:index reusingView:cell.itemView];
         itemView.isSelected = (index == _selectedIndex);
         cell.itemView = itemView;
     } else if (_titles != nil) {
@@ -476,7 +483,7 @@
         _selectedTitleColor = UIColor.blueColor;
     }
     
-    _flowLayout = [[XZSegmentedControlFlowLayout alloc] init];
+    _flowLayout = [[XZSegmentedControlFlowLayout alloc] initWithSegmentedControl:self];
     _flowLayout.minimumLineSpacing      = 0;
     _flowLayout.minimumInteritemSpacing = 0;
     _flowLayout.sectionHeadersPinToVisibleBounds = NO;

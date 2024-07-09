@@ -8,18 +8,19 @@
 import UIKit
 import XZSegmentedControl
 
-class ExampleSegmentedControlIndicatorView: UICollectionReusableView, XZSegmentedControlIndicatorView {
+class ExampleSegmentedControlIndicatorView: XZSegmentedControlIndicatorView {
     
-    static func collectionViewLayout(_ flowLayout: UICollectionViewFlowLayout, prepareLayoutForAttributes layoutAttributes: XZSegmentedControlIndicatorLayoutAttributes) {
-        layoutAttributes.zIndex = -111
-        if !layoutAttributes.frame.isEmpty {
-            if flowLayout.scrollDirection == .horizontal {
-                layoutAttributes.frame = layoutAttributes.frame.insetBy(dx: 0, dy: 5)
-            } else {
-                layoutAttributes.frame = layoutAttributes.frame.insetBy(dx: 5, dy: 0)
-            }
+    override class func segmentedControl(_ segmentedControl: XZSegmentedControl, prepareForLayoutAttributes indicatorLayoutAttributes: XZSegmentedControlIndicatorLayoutAttributes) {
+        indicatorLayoutAttributes.zIndex = -111
+        
+        let frame = segmentedControl.frameForSegment(at: segmentedControl.selectedIndex)
+        if segmentedControl.direction == .horizontal {
+            indicatorLayoutAttributes.frame = frame.insetBy(dx: 0, dy: 5)
+        } else {
+            indicatorLayoutAttributes.frame = frame.insetBy(dx: 5, dy: 0)
         }
     }
+    
     
 
     override init(frame: CGRect) {

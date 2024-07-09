@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <XZSegmentedControl/XZSegmentedControlIndicatorView.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -19,11 +20,19 @@ typedef NS_ENUM(NSUInteger, XZSegmentedControlDirection) {
 
 /// 指示器样式。
 typedef NS_ENUM(NSUInteger, XZSegmentedControlIndicatorStyle) {
-    /// 矩形色块指示器：横向滚动时，指示器在 item 底部；纵向滚动时，指示器在 item 右侧。
+    /// 矩形色块指示器：
+    ///
+    /// 横向滚动时，指示器在 segment 底部；
+    ///
+    /// 纵向滚动时，指示器在 segment 右侧。
     XZSegmentedControlIndicatorStyleMarkLine,
-    /// 矩形色块指示器：横向滚动时，指示器在 item 顶部；纵向滚动时，指示器在 item 左侧。
-    XZSegmentedControlIndicatorStyleLeadLine,
-    /// 使用自定义指示器，需实现`dataSource`方法。
+    /// 矩形色块指示器：
+    ///
+    /// 横向滚动时，指示器在 segment 顶部；
+    ///
+    /// 纵向滚动时，指示器在 segment 左侧。
+    XZSegmentedControlIndicatorStyleNoteLine,
+    /// 使用自定义指示器。
     XZSegmentedControlIndicatorStyleCustom,
 };
 
@@ -74,20 +83,17 @@ typedef NS_ENUM(NSUInteger, XZSegmentedControlIndicatorStyle) {
 /// @note 如果设置时 `indicatorSize` 为空，则将 `indicatorImage.size` 设置为 `indicatorSize` 的值。
 /// @note 本属性与 `indicatorColor` 是同时生效的，但是可以将 `indicatorColor` 置空。
 @property (nonatomic, strong, nullable) UIImage *indicatorImage;
-/// 注册自定义的指示器。必须是 `UICollectionReusableView` 的子类。
+/// 注册自定义的指示器的类，必须是 `XZSegmentedControlIndicatorView` 的子类。
 /// @note
 /// 必须先设置使用 `XZSegmentedControlIndicatorStyleCustom` 样式，然后才能设置此属性。
 /// @discussion
 /// 自定义指示器，可以在 `-preferredLayoutAttributesFittingAttributes:` 方法中调整指示器 frame 值，该值默认与 item.frame 相同。
 /// @code
 /// - (UICollectionViewLayoutAttributes *)preferredLayoutAttributesFittingAttributes:(UICollectionViewLayoutAttributes *)layoutAttributes {
-///     layoutAttributes.zIndex = -1;
 ///     layoutAttributes.frame  = ... // set the indicator's frame as you wish
 ///     return layoutAttributes;
 /// }
 /// @endcode
-/// @discussion
-/// 自定义指示器，还可以通过 `XZSegmentedControlIndicatorView` 协议的 `+prepareLayoutAttributes` 类方法来预处理布局。
 @property (nonatomic, null_resettable) Class indicatorClass;
 /// 值 selectedIndex 的变化进度。
 @property (nonatomic) CGFloat indicatorTransiton;
@@ -105,7 +111,8 @@ typedef NS_ENUM(NSUInteger, XZSegmentedControlIndicatorStyle) {
 - (void)insertItemAtIndex:(NSInteger)index;
 - (void)removeItemAtIndex:(NSInteger)index;
 
-- (__kindof UIView *)viewForItemAtIndex:(NSInteger)index;
+- (__kindof UIView *)viewForSegmentAtIndex:(NSInteger)index;
+- (CGRect)frameForSegmentAtIndex:(NSInteger)index;
 
 /// 使用 item 标题文本作为数据源。
 /// @note 设置此属性，将取消 dataSource 的设置。
@@ -134,7 +141,7 @@ typedef NS_ENUM(NSUInteger, XZSegmentedControlIndicatorStyle) {
 ///   - segmentedControl: 调用此方法的对象
 ///   - index: item 的位置索引
 ///   - reusingView: 可供重用的视图
-- (__kindof UIView<XZSegmentedControlItemView> *)segmentedControl:(XZSegmentedControl *)segmentedControl viewForItemAtIndex:(NSInteger)index reusingView:(nullable __kindof UIView<XZSegmentedControlItemView> *)reusingView;
+- (__kindof UIView<XZSegmentedControlItemView> *)segmentedControl:(XZSegmentedControl *)segmentedControl viewForSegmentAtIndex:(NSInteger)index reusingView:(nullable __kindof UIView<XZSegmentedControlItemView> *)reusingView;
 /// 返回 item 的大小。
 /// - Parameters:
 ///   - segmentedControl: 调用此方法的对象
@@ -142,17 +149,9 @@ typedef NS_ENUM(NSUInteger, XZSegmentedControlIndicatorStyle) {
 - (CGSize)segmentedControl:(XZSegmentedControl *)segmentedControl sizeForItemAtIndex:(NSInteger)index;
 @end
 
-@interface XZSegmentedControlIndicatorLayoutAttributes : UICollectionViewLayoutAttributes
-@property (nonatomic, strong, nullable) UIColor *color;
-@property (nonatomic, strong, nullable) UIImage *image;
-@property (nonatomic) CGFloat indicatorTransiton;
-@property (nonatomic) CGRect indicatorTransitonRect;
-@end
 
-/// 由于在 `UICollectionReusableView` 的 `-preferredLayoutAttributesFittingAttributes:` 方法中，无法修改 `zIndex` 属性，所以定义了此协议。
-@protocol XZSegmentedControlIndicatorView <NSObject>
-+ (void)collectionViewLayout:(UICollectionViewFlowLayout *)flowLayout prepareLayoutForAttributes:(XZSegmentedControlIndicatorLayoutAttributes *)layoutAttributes NS_SWIFT_NAME(collectionViewLayout(_:prepareLayoutForAttributes:));
-@end
+
+
 
 
 NS_ASSUME_NONNULL_END

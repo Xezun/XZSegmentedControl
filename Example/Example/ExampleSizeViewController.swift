@@ -42,13 +42,13 @@ class ExampleSizeViewController: UITableViewController {
     @IBAction func heightControlValueChanged(_ sender: UISegmentedControl) {
         switch sender.selectedSegmentIndex {
         case 0:
-            value.height += 1
-        case 1:
-            break;
-        case 2:
             if value.height > 0 {
                 value.height -= 1
             }
+        case 1:
+            break;
+        case 2:
+            value.height += 1
         default:
             break
         }

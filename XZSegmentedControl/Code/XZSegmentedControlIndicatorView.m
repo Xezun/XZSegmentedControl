@@ -32,20 +32,6 @@
     return self;
 }
 
-- (void)setImage:(UIImage *)image {
-    if (_image != image) {
-        _image = image;
-        [_indicatorView applyLayoutAttributes:self];
-    }
-}
-
-- (void)setColor:(UIColor *)color {
-    if (_color != color) {
-        _color = color;
-        [_indicatorView applyLayoutAttributes:self];
-    }
-}
-
 - (id)copyWithZone:(NSZone *)zone {
     XZSegmentedControlIndicatorLayoutAttributes *new = [super copyWithZone:zone];
     new->_image = _image;

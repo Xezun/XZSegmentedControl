@@ -31,6 +31,7 @@
 
 - (void)setIndicatorColor:(UIColor *)indicatorColor {
     _indicatorLayoutAttributes.color = indicatorColor;
+    [_indicatorLayoutAttributes.indicatorView applyLayoutAttributes:_indicatorLayoutAttributes];
 }
 
 - (UIImage *)indicatorImage {
@@ -42,6 +43,7 @@
         self.indicatorSize = indicatorImage.size;
     }
     _indicatorLayoutAttributes.image = indicatorImage;
+    [_indicatorLayoutAttributes.indicatorView applyLayoutAttributes:_indicatorLayoutAttributes];
 }
 
 - (void)setIndicatorStyle:(XZSegmentedControlIndicatorStyle)indicatorStyle {

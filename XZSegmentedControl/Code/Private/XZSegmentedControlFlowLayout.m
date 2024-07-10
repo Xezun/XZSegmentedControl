@@ -152,6 +152,7 @@
     [context invalidateDecorationElementsOfKind:NSStringFromClass(_indicatorClass) atIndexPaths:@[
         [NSIndexPath indexPathForItem:0 inSection:0]
     ]];
+    // 将下面的语句放在 UIView.animate 中，只会有一个淡入淡出的效果。
     [self invalidateLayoutWithContext:context];
 }
 

@@ -45,14 +45,19 @@ class ExampleSettingsViewController: UITableViewController {
                     fatalError()
                 }
             case 2:
-                cell.detailTextLabel?.text = "◼︎"
-                cell.detailTextLabel?.textColor = segmentedControl?.indicatorColor
+                if let indicatorColor = segmentedControl?.indicatorColor {
+                    cell.detailTextLabel?.text = "◼︎"
+                    cell.detailTextLabel?.textColor = indicatorColor
+                } else {
+                    cell.detailTextLabel?.text = "nil"
+                    cell.detailTextLabel?.textColor = .black
+                }
             case 3:
                 if let image = segmentedControl?.indicatorImage {
                     let att = NSTextAttachment.init(image: image)
                     cell.detailTextLabel?.attributedText = .init(attachment: att);
                 } else {
-                    cell.detailTextLabel?.text = "未设置"
+                    cell.detailTextLabel?.text = "nil"
                 }
             default:
                 fatalError()
@@ -126,13 +131,13 @@ class ExampleSettingsViewController: UITableViewController {
         guard let segmentedControl = segmentedControl else { return }
         switch sender.selectedSegmentIndex {
         case 0:
-            segmentedControl.itemSpacing += 1;
-        case 1:
-            break
-        case 2:
             if segmentedControl.itemSpacing > 0 {
                 segmentedControl.itemSpacing -= 1
             }
+        case 1:
+            break
+        case 2:
+            segmentedControl.itemSpacing += 1;
         default:
             break
         }

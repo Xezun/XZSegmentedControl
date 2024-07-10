@@ -365,9 +365,9 @@
                                                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" translatesAutoresizingMaskIntoConstraints="NO" id="Fjm-3w-Qnd">
                                                     <rect key="frame" x="241" y="6.6666666666666679" width="132" height="32"/>
                                                     <segments>
-                                                        <segment title="" image="plus" catalog="system" width="40"/>
-                                                        <segment title="10" width="50"/>
                                                         <segment title="" image="minus" catalog="system" width="40"/>
+                                                        <segment title="10" width="50"/>
+                                                        <segment title="" image="plus" catalog="system" width="40"/>
                                                     </segments>
                                                     <connections>
                                                         <action selector="heightControlValueChanged:" destination="rSf-fT-aYg" eventType="valueChanged" id="6GB-Wk-zvK"/>
@@ -525,6 +525,27 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="gRp-eD-WuF" imageView="nO9-cx-6F9" style="IBUITableViewCellStyleDefault" id="gFx-sM-7fy">
+                                        <rect key="frame" x="0.0" y="106" width="393" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="gFx-sM-7fy" id="URr-xi-KMW">
+                                            <rect key="frame" x="0.0" y="0.0" width="362.66666666666669" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text=" " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="gRp-eD-WuF">
+                                                    <rect key="frame" x="43.666666666666657" y="0.0" width="311" height="44"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" image="icon-arrow-left-20" id="nO9-cx-6F9">
+                                                    <rect key="frame" x="20" y="12" width="8.6666666666666661" height="20"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                </imageView>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                         </sections>
@@ -656,9 +677,9 @@
                                                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" translatesAutoresizingMaskIntoConstraints="NO" id="5Lu-KL-KWB">
                                                     <rect key="frame" x="241" y="6.6666666666666679" width="132" height="32"/>
                                                     <segments>
-                                                        <segment title="" image="plus" catalog="system" width="40"/>
-                                                        <segment title="10" width="50"/>
                                                         <segment title="" image="minus" catalog="system" width="40"/>
+                                                        <segment title="10" width="50"/>
+                                                        <segment title="" image="plus" catalog="system" width="40"/>
                                                     </segments>
                                                     <connections>
                                                         <action selector="widthControlValueChanged:" destination="tD4-Le-Jq3" eventType="valueChanged" id="WUN-Gn-OwU"/>
@@ -692,9 +713,9 @@
                                                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" translatesAutoresizingMaskIntoConstraints="NO" id="40F-sy-o6V">
                                                     <rect key="frame" x="241" y="6.6666666666666679" width="132" height="32"/>
                                                     <segments>
-                                                        <segment title="" image="plus" catalog="system" width="40"/>
-                                                        <segment title="10" width="50"/>
                                                         <segment title="" image="minus" catalog="system" width="40"/>
+                                                        <segment title="10" width="50"/>
+                                                        <segment title="" image="plus" catalog="system" width="40"/>
                                                     </segments>
                                                     <connections>
                                                         <action selector="heightControlValueChanged:" destination="tD4-Le-Jq3" eventType="valueChanged" id="Xjp-Fc-EZL"/>
@@ -864,9 +885,9 @@
                                                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" translatesAutoresizingMaskIntoConstraints="NO" id="8pR-Rz-XWu">
                                                     <rect key="frame" x="241" y="6.6666666666666679" width="132" height="32"/>
                                                     <segments>
-                                                        <segment title="" image="plus" catalog="system" width="40"/>
-                                                        <segment title="10" width="50"/>
                                                         <segment title="" image="minus" catalog="system" width="40"/>
+                                                        <segment title="10" width="50"/>
+                                                        <segment title="" image="plus" catalog="system" width="40"/>
                                                     </segments>
                                                     <connections>
                                                         <action selector="widthControlValueChanged:" destination="rSf-fT-aYg" eventType="valueChanged" id="3Nl-85-MKK"/>
@@ -900,9 +921,9 @@
                                                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" translatesAutoresizingMaskIntoConstraints="NO" id="wDc-9U-Yl3">
                                                     <rect key="frame" x="241" y="6.6666666666666679" width="132" height="32"/>
                                                     <segments>
-                                                        <segment title="" image="plus" catalog="system" width="40"/>
-                                                        <segment title="10" width="50"/>
                                                         <segment title="" image="minus" catalog="system" width="40"/>
+                                                        <segment title="10" width="50"/>
+                                                        <segment title="" image="plus" catalog="system" width="40"/>
                                                     </segments>
                                                     <connections>
                                                         <action selector="heightControlValueChanged:" destination="rSf-fT-aYg" eventType="valueChanged" id="YwQ-8a-c8o"/>
@@ -951,6 +972,7 @@
     </inferredMetricsTieBreakers>
     <resources>
         <image name="gearshape" catalog="system" width="128" height="123"/>
+        <image name="icon-arrow-left-20" width="8.6666669845581055" height="20"/>
         <image name="icon-arrow-up-20" width="20" height="8.6666669845581055"/>
         <image name="minus" catalog="system" width="128" height="26"/>
         <image name="plus" catalog="system" width="128" height="113"/>

@@ -21,6 +21,10 @@
     return self;
 }
 
++ (BOOL)supportsAnimatedTransition {
+    return YES;
+}
+
 + (CGRect)segmentedControl:(XZSegmentedControl *)segmentedControl frameForIndicatorAtIndex:(NSInteger)selectedIndex {
     return CGRectZero;
 }

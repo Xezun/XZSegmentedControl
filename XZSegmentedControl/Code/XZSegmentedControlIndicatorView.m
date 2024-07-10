@@ -9,6 +9,10 @@
 
 @implementation XZSegmentedControlIndicatorView
 
++ (BOOL)supportsAnimatedTransition {
+    return NO;
+}
+
 + (void)segmentedControl:(id)segmentedControl prepareForLayoutAttributes:(id)indicatorLayoutAttributes {
     
 }

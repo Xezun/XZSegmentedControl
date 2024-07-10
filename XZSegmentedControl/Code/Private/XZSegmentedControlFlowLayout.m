@@ -13,6 +13,7 @@
 
 @implementation XZSegmentedControlFlowLayout {
     XZSegmentedControlIndicatorLayoutAttributes *_indicatorLayoutAttributes;
+    BOOL _needsUpdateIndicatorLayout;
 }
 
 - (instancetype)initWithSegmentedControl:(XZSegmentedControl *)segmentedControl {
@@ -51,34 +52,43 @@
         _indicatorStyle = indicatorStyle;
         
         switch (_indicatorStyle) {
-            case XZSegmentedControlIndicatorStyleCustom:
-                break;
             case XZSegmentedControlIndicatorStyleMarkLine:
                 self.indicatorClass = [XZSegmentedControlMarkLineIndicatorView class];
                 break;
             case XZSegmentedControlIndicatorStyleNoteLine:
                 self.indicatorClass = [XZSegmentedControlNoteLineIndicatorView class];
                 break;
+            case XZSegmentedControlIndicatorStyleCustom:
+                break;
             default:
                 break;
         }
-        
-        [self prepareIndicaotrLayout];
-        [self invalidateIndicaotrLayout];
     }
 }
 
 - (void)setIndicatorSize:(CGSize)indicatorSize {
     if (!CGSizeEqualToSize(_indicatorSize, indicatorSize)) {
         _indicatorSize = indicatorSize;
-        [self prepareIndicaotrLayout];
-        [self invalidateIndicaotrLayout];
+        [self setNeedsUpdateIndicatorLayout];
     }
 }
 
 - (void)setIndicatorClass:(Class)indicatorClass {
-    NSParameterAssert([indicatorClass isSubclassOfClass:UICollectionReusableView.class]);
-    indicatorClass = indicatorClass ?: [XZSegmentedControlIndicatorView class];
+    if (![indicatorClass isSubclassOfClass:UICollectionReusableView.class]) {
+        switch (_indicatorStyle) {
+            case XZSegmentedControlIndicatorStyleMarkLine:
+                indicatorClass = [XZSegmentedControlMarkLineIndicatorView class];
+                break;
+            case XZSegmentedControlIndicatorStyleNoteLine:
+                indicatorClass = [XZSegmentedControlNoteLineIndicatorView class];
+                break;
+            case XZSegmentedControlIndicatorStyleCustom:
+                indicatorClass = [XZSegmentedControlMarkLineIndicatorView class];
+                break;
+            default:
+                break;
+        }
+    }
     if (_indicatorClass != indicatorClass) {
         [self registerClass:nil forDecorationViewOfKind:NSStringFromClass(_indicatorClass)];
         _indicatorClass = indicatorClass;
@@ -93,8 +103,9 @@
     if (_indicatorLayoutAttributes.transiton != indicatorTransiton) {
         _indicatorLayoutAttributes.transiton = indicatorTransiton;
         
-        [self prepareIndicaotrLayout];
-        [self invalidateIndicaotrLayout];
+        if ([_indicatorClass supportsAnimatedTransition]) {
+            [self setNeedsUpdateIndicatorLayout];
+        }
     }
 }
 
@@ -111,17 +122,45 @@
         _selectedIndex = selectedIndex;
         
         // 更新布局
-        [self prepareIndicaotrLayout];
-        [self invalidateIndicaotrLayout];
+        [self setNeedsUpdateIndicatorLayout];
     }
 }
 
 - (void)prepareLayout {
     [super prepareLayout];
-    [self prepareIndicaotrLayout];
+    // 此处不需要单独推送更新。
+    _needsUpdateIndicatorLayout = YES;
+    [self updateIndicatorLayoutIfNeeded];
 }
 
-- (void)prepareIndicaotrLayout {
+- (void)setNeedsUpdateIndicatorLayout {
+    if (_needsUpdateIndicatorLayout) {
+        return;
+    }
+    _needsUpdateIndicatorLayout = YES;
+    [NSRunLoop.mainRunLoop performInModes:@[NSRunLoopCommonModes] block:^{
+        [self updateIndicatorLayoutIfNeeded];
+        [self invalidateIndicaotrLayout];
+    }];
+}
+
+/// 标记更新。请不要直接调用此方法。
+- (void)invalidateIndicaotrLayout {
+    UICollectionViewFlowLayoutInvalidationContext *context = [[UICollectionViewFlowLayoutInvalidationContext alloc] init];
+    context.invalidateFlowLayoutAttributes      = NO;
+    context.invalidateFlowLayoutDelegateMetrics = NO;
+    [context invalidateDecorationElementsOfKind:NSStringFromClass(_indicatorClass) atIndexPaths:@[
+        [NSIndexPath indexPathForItem:0 inSection:0]
+    ]];
+    [self invalidateLayoutWithContext:context];
+}
+
+- (void)updateIndicatorLayoutIfNeeded {
+    if (!_needsUpdateIndicatorLayout) {
+        return;
+    }
+    _needsUpdateIndicatorLayout = NO;
+    
     NSInteger const count = [self.collectionView numberOfItemsInSection:0];
     
     if (![_indicatorLayoutAttributes.representedElementKind isEqualToString:NSStringFromClass(_indicatorClass)]) {
@@ -132,8 +171,9 @@
         // 复制自定义属性
         if (oldValue) {
             _indicatorLayoutAttributes.indicatorView = oldValue.indicatorView;
-            _indicatorLayoutAttributes.image = oldValue.image;
-            _indicatorLayoutAttributes.color = oldValue.color;
+            _indicatorLayoutAttributes.image         = oldValue.image;
+            _indicatorLayoutAttributes.color         = oldValue.color;
+            _indicatorLayoutAttributes.transiton     = oldValue.transiton;
         }
     }
     
@@ -197,124 +237,6 @@
         default:
             break;
     }
-}
-
-- (CGRect)frameForIndicatorAtIndex:(NSInteger)_selectedIndex count:(NSInteger)count {
-    switch (_indicatorStyle) {
-        case XZSegmentedControlIndicatorStyleMarkLine: {
-            if (count > 0) {
-                NSIndexPath *indexPath = [NSIndexPath indexPathForItem:_selectedIndex inSection:0];
-                
-                CGRect const frame = [self layoutAttributesForItemAtIndexPath:indexPath].frame;
-                switch (self.scrollDirection) {
-                    case UICollectionViewScrollDirectionHorizontal: {
-                        CGFloat const h = _indicatorSize.height > 0 ? _indicatorSize.height : kIndicatorWidth;
-                        CGFloat const w = _indicatorSize.width > 0 ? _indicatorSize.width : (_indicatorSize.width + frame.size.width);
-                        CGFloat const x = frame.origin.x + (frame.size.width - w) * 0.5;
-                        CGFloat const y = CGRectGetMaxY(frame) - h;
-                        return CGRectMake(x, y, w, h);
-                        break;
-                    }
-                    case UICollectionViewScrollDirectionVertical: {
-                        CGFloat const w = _indicatorSize.width > 0 ? _indicatorSize.width : kIndicatorWidth;
-                        CGFloat const h = _indicatorSize.height > 0 ? _indicatorSize.height : (_indicatorSize.height + frame.size.height);
-                        CGFloat const y = frame.origin.y + (frame.size.height - h) * 0.5;
-                        CGFloat const x = CGRectGetMaxX(frame) - w;
-                        return CGRectMake(x, y, w, h);
-                        break;
-                    }
-                    default:
-                        break;
-                }
-            } else {
-                CGRect const bounds = self.collectionView.bounds;
-                switch (self.scrollDirection) {
-                    case UICollectionViewScrollDirectionHorizontal:
-                        return CGRectMake(CGRectGetMinX(bounds), CGRectGetMaxY(bounds) - kIndicatorWidth, 0, kIndicatorWidth);
-                        break;
-                    case UICollectionViewScrollDirectionVertical:
-                        return CGRectMake(CGRectGetMaxX(bounds) - kIndicatorWidth, CGRectGetMinY(bounds), kIndicatorWidth, 0);
-                        break;
-                    default:
-                        break;
-                }
-            }
-            break;
-        }
-        case XZSegmentedControlIndicatorStyleNoteLine: {
-            if (count > 0) {
-                NSIndexPath *indexPath = [NSIndexPath indexPathForItem:_selectedIndex inSection:0];
-                
-                CGRect const frame = [self layoutAttributesForItemAtIndexPath:indexPath].frame;
-                switch (self.scrollDirection) {
-                    case UICollectionViewScrollDirectionHorizontal: {
-                        CGFloat const h = _indicatorSize.height > 0 ? _indicatorSize.height : kIndicatorWidth;
-                        CGFloat const w = _indicatorSize.width > 0 ? _indicatorSize.width : (_indicatorSize.width + frame.size.width);
-                        CGFloat const x = frame.origin.x + (frame.size.width - w) * 0.5;
-                        CGFloat const y = CGRectGetMinY(frame);
-                        return CGRectMake(x, y, w, h);
-                        break;
-                    }
-                    case UICollectionViewScrollDirectionVertical: {
-                        CGFloat const w = _indicatorSize.width > 0 ? _indicatorSize.width : kIndicatorWidth;
-                        CGFloat const h = _indicatorSize.height > 0 ? _indicatorSize.height : (_indicatorSize.height + frame.size.height);
-                        CGFloat const y = frame.origin.y + (frame.size.height - h) * 0.5;
-                        CGFloat const x = CGRectGetMinX(frame);
-                        return CGRectMake(x, y, w, h);
-                        break;
-                    }
-                    default:
-                        break;
-                }
-            } else {
-                CGRect const bounds = self.collectionView.bounds;
-                switch (self.scrollDirection) {
-                    case UICollectionViewScrollDirectionHorizontal:
-                        return CGRectMake(CGRectGetMinX(bounds), CGRectGetMinY(bounds), 0, kIndicatorWidth);
-                        break;
-                    case UICollectionViewScrollDirectionVertical:
-                        return CGRectMake(CGRectGetMinX(bounds), CGRectGetMinY(bounds), kIndicatorWidth, 0);
-                        break;
-                    default:
-                        break;
-                }
-            }
-            break;
-        }
-        case XZSegmentedControlIndicatorStyleCustom: {
-            if (count > 0) {
-                NSIndexPath *indexPath = [NSIndexPath indexPathForItem:_selectedIndex inSection:0];
-                return [self layoutAttributesForItemAtIndexPath:indexPath].frame;
-            } else {
-                CGRect const bounds = self.collectionView.bounds;
-                switch (self.scrollDirection) {
-                    case UICollectionViewScrollDirectionHorizontal:
-                        return CGRectMake(CGRectGetMinX(bounds), CGRectGetMinY(bounds), 0, CGRectGetHeight(bounds));
-                        break;
-                    case UICollectionViewScrollDirectionVertical:
-                        return CGRectMake(CGRectGetMinX(bounds), CGRectGetMinY(bounds), CGRectGetWidth(bounds), 0);
-                        break;
-                    default:
-                        break;
-                }
-            }
-            break;
-        }
-        default:
-            return CGRectZero;
-            break;
-    }
-}
-
-- (void)invalidateIndicaotrLayout {
-    // 标记更新
-    UICollectionViewFlowLayoutInvalidationContext *context = [[UICollectionViewFlowLayoutInvalidationContext alloc] init];
-    context.invalidateFlowLayoutAttributes      = NO;
-    context.invalidateFlowLayoutDelegateMetrics = NO;
-    [context invalidateDecorationElementsOfKind:NSStringFromClass(_indicatorClass) atIndexPaths:@[
-        [NSIndexPath indexPathForItem:0 inSection:0]
-    ]];
-    [self invalidateLayoutWithContext:context];
 }
 
 - (NSArray<__kindof UICollectionViewLayoutAttributes *> *)layoutAttributesForElementsInRect:(CGRect)rect {

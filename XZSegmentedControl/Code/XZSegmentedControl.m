@@ -9,7 +9,7 @@
 #import "XZSegmentedControl.h"
 #import "XZSegmentedControlContentView.h"
 #import "XZSegmentedControlFlowLayout.h"
-#import "XZSegmentedControlItemView.h"
+#import "XZSegmentedControlSegmentView.h"
 #import "XZSegmentedControlTextItem.h"
 #import "XZSegmentedControlTextView.h"
 
@@ -113,13 +113,13 @@
     if (selectedIndex == oldValue) return;
     
     NSIndexPath *oldIndexPath = [NSIndexPath indexPathForItem:oldValue inSection:0];
-    XZSegmentedControlItemView *oldView = (id)[_collectionView cellForItemAtIndexPath:oldIndexPath];
+    XZSegmentedControlSegmentView *oldView = (id)[_collectionView cellForItemAtIndexPath:oldIndexPath];
     oldView.itemView.isSelected = NO;
     
     [_flowLayout setSelectedIndex:selectedIndex animated:animated];
     
     NSIndexPath *newIndexPath = [NSIndexPath indexPathForItem:selectedIndex inSection:0];
-    XZSegmentedControlItemView *newView = (id)[_collectionView cellForItemAtIndexPath:newIndexPath];
+    XZSegmentedControlSegmentView *newView = (id)[_collectionView cellForItemAtIndexPath:newIndexPath];
     newView.itemView.isSelected = YES;
     
     if (focuses) {
@@ -173,7 +173,7 @@
 
 - (UIView *)viewForSegmentAtIndex:(NSInteger)index {
     NSIndexPath *indexPath = [NSIndexPath indexPathForItem:index inSection:0];
-    XZSegmentedControlItemView *cell = (id)[_collectionView cellForItemAtIndexPath:indexPath];
+    XZSegmentedControlSegmentView *cell = (id)[_collectionView cellForItemAtIndexPath:indexPath];
     return [cell itemView];
 }
 
@@ -196,12 +196,12 @@
 }
 
 - (__kindof UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    XZSegmentedControlItemView *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kReuseIdentifier forIndexPath:indexPath];
+    XZSegmentedControlSegmentView *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kReuseIdentifier forIndexPath:indexPath];
 
     NSInteger const index = indexPath.item;
     NSInteger const _selectedIndex = self.selectedIndex;
     if (_dataSource) {
-        UIView<XZSegmentedControlItemView> *itemView = [_dataSource segmentedControl:self viewForSegmentAtIndex:index reusingView:cell.itemView];
+        UIView<XZSegmentedControlSegmentView> *itemView = [_dataSource segmentedControl:self viewForSegmentAtIndex:index reusingView:cell.itemView];
         itemView.isSelected = (index == _selectedIndex);
         cell.itemView = itemView;
     } else if (_titles != nil) {
@@ -513,7 +513,7 @@
     _collectionView.alwaysBounceHorizontal         = YES;
     [self addSubview:_collectionView];
     
-    [_collectionView registerClass:[XZSegmentedControlItemView class] forCellWithReuseIdentifier:kReuseIdentifier];
+    [_collectionView registerClass:[XZSegmentedControlSegmentView class] forCellWithReuseIdentifier:kReuseIdentifier];
     _collectionView.delegate   = self;
     _collectionView.dataSource = self;
 }

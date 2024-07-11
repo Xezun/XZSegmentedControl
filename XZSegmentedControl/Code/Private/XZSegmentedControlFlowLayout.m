@@ -69,7 +69,7 @@
 - (void)setIndicatorSize:(CGSize)indicatorSize {
     if (!CGSizeEqualToSize(_indicatorSize, indicatorSize)) {
         _indicatorSize = indicatorSize;
-        [self setNeedsUpdateIndicatorLayout];
+        [self setNeedsUpdateIndicatorLayout:NO];
     }
 }
 
@@ -103,8 +103,8 @@
     if (_indicatorLayoutAttributes.transiton != indicatorTransiton) {
         _indicatorLayoutAttributes.transiton = indicatorTransiton;
         
-        if ([_indicatorClass supportsAnimatedTransition]) {
-            [self setNeedsUpdateIndicatorLayout];
+        if ([_indicatorClass supportsInteractiveTransition]) {
+            [self setNeedsUpdateIndicatorLayout:NO];
         }
     }
 }
@@ -120,48 +120,55 @@
 - (void)setSelectedIndex:(NSInteger)selectedIndex animated:(BOOL)animated {
     if (_selectedIndex != selectedIndex) {
         _selectedIndex = selectedIndex;
-        
         // 更新布局
-        [self setNeedsUpdateIndicatorLayout];
+        [self setNeedsUpdateIndicatorLayout:animated];
     }
 }
 
 - (void)prepareLayout {
     [super prepareLayout];
-    // 此处不需要单独推送更新。
-    _needsUpdateIndicatorLayout = YES;
-    [self updateIndicatorLayoutIfNeeded];
+    [self prepareIndicatorLayout];
 }
 
-- (void)setNeedsUpdateIndicatorLayout {
+- (void)setNeedsUpdateIndicatorLayout:(CGFloat)animated {
     if (_needsUpdateIndicatorLayout) {
         return;
     }
     _needsUpdateIndicatorLayout = YES;
     [NSRunLoop.mainRunLoop performInModes:@[NSRunLoopCommonModes] block:^{
-        [self updateIndicatorLayoutIfNeeded];
-        [self invalidateIndicaotrLayout];
+        [self updateIndicaotrLayoutIfNeeded:animated];
+        [self prepareIndicatorLayout];
     }];
 }
 
-/// 标记更新。请不要直接调用此方法。
-- (void)invalidateIndicaotrLayout {
+- (void)updateIndicaotrLayoutIfNeeded:(BOOL)animated {
+    if (!_needsUpdateIndicatorLayout) {
+        return;
+    }
+    _needsUpdateIndicatorLayout = NO;
+    
     UICollectionViewFlowLayoutInvalidationContext *context = [[UICollectionViewFlowLayoutInvalidationContext alloc] init];
     context.invalidateFlowLayoutAttributes      = NO;
     context.invalidateFlowLayoutDelegateMetrics = NO;
     [context invalidateDecorationElementsOfKind:NSStringFromClass(_indicatorClass) atIndexPaths:@[
         [NSIndexPath indexPathForItem:0 inSection:0]
     ]];
-    // 将下面的语句放在 UIView.animate 中，只会有一个淡入淡出的效果。
+   
+    [self prepareIndicatorLayout];
     [self invalidateLayoutWithContext:context];
+
+    if (!animated) return;
+    UIView * const indicatorView = _indicatorLayoutAttributes.indicatorView;
+    if (!indicatorView) return;
+    
+    CGRect const frame = _indicatorLayoutAttributes.frame;
+    [UIView animateWithDuration:0.35 animations:^{
+        indicatorView.frame = frame;
+    }];
 }
 
-- (void)updateIndicatorLayoutIfNeeded {
-    if (!_needsUpdateIndicatorLayout) {
-        return;
-    }
-    _needsUpdateIndicatorLayout = NO;
-    
+/// 更新 indicator 的布局。请不要直接调用此方法。
+- (void)prepareIndicatorLayout {
     NSInteger const count = [self.collectionView numberOfItemsInSection:0];
     
     if (![_indicatorLayoutAttributes.representedElementKind isEqualToString:NSStringFromClass(_indicatorClass)]) {

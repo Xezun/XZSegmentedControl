@@ -1,15 +1,15 @@
 //
-//  XZSegmentedControlItemView.m
+//  XZSegmentedControlSegmentView.m
 //  XZSegmentedControl
 //
 //  Created by 徐臻 on 2024/6/25.
 //
 
-#import "XZSegmentedControlItemView.h"
+#import "XZSegmentedControlSegmentView.h"
 
-@implementation XZSegmentedControlItemView
+@implementation XZSegmentedControlSegmentView
 
-- (void)setItemView:(UIView<XZSegmentedControlItemView> *)itemView {
+- (void)setItemView:(UIView<XZSegmentedControlSegmentView> *)itemView {
     [_itemView removeFromSuperview];
     _itemView = itemView;
     if (_itemView != nil) {

@@ -65,12 +65,16 @@ class ExampleViewController: UIViewController, UIScrollViewDelegate {
 
     @objc func segmentedControlValueChanged(_ sender: XZSegmentedControl) {
         let newIndex = sender.selectedIndex;
-        print("valueChanged: \(newIndex)")
-        if segmentedControl.direction == .horizontal {
-            scrollView.setContentOffset(.init(x: scrollView.frame.width * CGFloat(newIndex), y: 0), animated: false)
-        } else {
-            scrollView.setContentOffset(.init(x: 0, y: scrollView.frame.height * CGFloat(newIndex)), animated: false)
-        }
+        print("XZSegmentedControl.valueChanged: \(newIndex)")
+        UIView.animate(withDuration: 0.3, animations: {
+            var bounds = self.scrollView.bounds;
+            if self.segmentedControl.direction == .horizontal {
+                bounds.origin.x = bounds.width * CGFloat(newIndex)
+            } else {
+                bounds.origin.y = bounds.height * CGFloat(newIndex)
+            }
+            self.scrollView.bounds = bounds
+        });
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -114,40 +118,5 @@ class ExampleViewController: UIViewController, UIScrollViewDelegate {
         }
     }
     
-    lazy var viewControllers: [UIViewController] = titles.map { title in
-        let vc = ExampleTestViewController.init()
-        vc.title = title
-        return vc
-    }
-    
 }
 
-extension ExampleViewController: UIPageViewControllerDataSource {
-    
-    func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
-        guard let index = viewControllers.firstIndex(of: viewController) else { return nil }
-        if index == 0 {
-            return nil
-        }
-        return viewControllers[index - 1]
-    }
-    
-    func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
-        guard let index = viewControllers.firstIndex(of: viewController) else { return nil }
-        if index == viewControllers.count - 1 {
-            return nil
-        }
-        return viewControllers[index + 1]
-    }
-}
-
-extension ExampleViewController: UIPageViewControllerDelegate {
-    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
-        guard completed else {
-            return
-        }
-        guard let viewController = pageViewController.viewControllers?.first else { return }
-        guard let index = viewControllers.firstIndex(of: viewController) else { return }
-        self.segmentedControl.setSelectedIndex(index, animated: true)
-    }
-}

@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface XZSegmentedControlTextView : UILabel <XZSegmentedControlItemView>
+@interface XZSegmentedControlTextView : UILabel <XZSegmentedControlSegmentView>
 @property (nonatomic, unsafe_unretained, readonly) XZSegmentedControl *segmentedControl;
 - (instancetype)initWithSegmentedControl:(XZSegmentedControl *)segmentedControl;
 @end

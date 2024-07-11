@@ -37,7 +37,7 @@ typedef NS_ENUM(NSUInteger, XZSegmentedControlIndicatorStyle) {
 };
 
 /// 使用自定义视图作为 item 时，应遵循的协议。
-@protocol XZSegmentedControlItemView <NSObject>
+@protocol XZSegmentedControlSegmentView <NSObject>
 @property (nonatomic, setter=setSelected:) BOOL isSelected;
 @optional
 @property (nonatomic, setter=setHighlighted:) BOOL isHighlighted;
@@ -141,7 +141,7 @@ typedef NS_ENUM(NSUInteger, XZSegmentedControlIndicatorStyle) {
 ///   - segmentedControl: 调用此方法的对象
 ///   - index: item 的位置索引
 ///   - reusingView: 可供重用的视图
-- (__kindof UIView<XZSegmentedControlItemView> *)segmentedControl:(XZSegmentedControl *)segmentedControl viewForSegmentAtIndex:(NSInteger)index reusingView:(nullable __kindof UIView<XZSegmentedControlItemView> *)reusingView;
+- (__kindof UIView<XZSegmentedControlSegmentView> *)segmentedControl:(XZSegmentedControl *)segmentedControl viewForSegmentAtIndex:(NSInteger)index reusingView:(nullable __kindof UIView<XZSegmentedControlSegmentView> *)reusingView;
 /// 返回 item 的大小。
 /// - Parameters:
 ///   - segmentedControl: 调用此方法的对象

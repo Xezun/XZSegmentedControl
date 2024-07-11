@@ -21,7 +21,7 @@
     return self;
 }
 
-+ (BOOL)supportsAnimatedTransition {
++ (BOOL)supportsInteractiveTransition {
     return YES;
 }
 

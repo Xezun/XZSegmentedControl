@@ -9,12 +9,16 @@
 
 @implementation XZSegmentedControlIndicatorView
 
-+ (BOOL)supportsAnimatedTransition {
++ (BOOL)supportsInteractiveTransition {
     return NO;
 }
 
 + (void)segmentedControl:(id)segmentedControl prepareForLayoutAttributes:(id)indicatorLayoutAttributes {
     
+}
+
+- (void)applyLayoutAttributes:(XZSegmentedControlIndicatorLayoutAttributes *)indicatorLayoutAttributes {
+    [super applyLayoutAttributes:indicatorLayoutAttributes];
 }
 
 @end

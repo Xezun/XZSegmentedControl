@@ -21,8 +21,6 @@ class ExampleSegmentedControlIndicatorView: XZSegmentedControlIndicatorView {
         }
     }
     
-    
-
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -35,10 +33,9 @@ class ExampleSegmentedControlIndicatorView: XZSegmentedControlIndicatorView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func apply(_ layoutAttributes: UICollectionViewLayoutAttributes) {
+    override func apply(_ layoutAttributes: XZSegmentedControlIndicatorLayoutAttributes) {
         super.apply(layoutAttributes)
-        
-        self.superview?.sendSubviewToBack(self)
+        layoutAttributes.indicatorView = self;
     }
     
 }

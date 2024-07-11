@@ -16,7 +16,6 @@
 		294DF8982C19CFDF0023E41F /* ExampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294DF8972C19CFDF0023E41F /* ExampleTests.swift */; };
 		294DF8A22C19CFE00023E41F /* ExampleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294DF8A12C19CFE00023E41F /* ExampleUITests.swift */; };
 		294DF8A42C19CFE00023E41F /* ExampleUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294DF8A32C19CFE00023E41F /* ExampleUITestsLaunchTests.swift */; };
-		29CD635D2C2D787800BDAB64 /* ExampleTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29CD635C2C2D787800BDAB64 /* ExampleTestViewController.swift */; };
 		29CD635F2C2E7BF800BDAB64 /* ExampleSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29CD635E2C2E7BF800BDAB64 /* ExampleSettingsViewController.swift */; };
 		29CD63612C2E7C2800BDAB64 /* ExampleSizeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29CD63602C2E7C2800BDAB64 /* ExampleSizeViewController.swift */; };
 		29CD63632C2E852A00BDAB64 /* ExampleSelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29CD63622C2E852A00BDAB64 /* ExampleSelectViewController.swift */; };
@@ -59,7 +58,6 @@
 		294DF89D2C19CFE00023E41F /* ExampleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ExampleUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		294DF8A12C19CFE00023E41F /* ExampleUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleUITests.swift; sourceTree = "<group>"; };
 		294DF8A32C19CFE00023E41F /* ExampleUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		29CD635C2C2D787800BDAB64 /* ExampleTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleTestViewController.swift; sourceTree = "<group>"; };
 		29CD635E2C2E7BF800BDAB64 /* ExampleSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleSettingsViewController.swift; sourceTree = "<group>"; };
 		29CD63602C2E7C2800BDAB64 /* ExampleSizeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleSizeViewController.swift; sourceTree = "<group>"; };
 		29CD63622C2E852A00BDAB64 /* ExampleSelectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleSelectViewController.swift; sourceTree = "<group>"; };
@@ -147,7 +145,6 @@
 				294DF8802C19CFDE0023E41F /* AppDelegate.swift */,
 				294DF8822C19CFDE0023E41F /* SceneDelegate.swift */,
 				294DF8842C19CFDE0023E41F /* ExampleViewController.swift */,
-				29CD635C2C2D787800BDAB64 /* ExampleTestViewController.swift */,
 				29CD635E2C2E7BF800BDAB64 /* ExampleSettingsViewController.swift */,
 				29CD63602C2E7C2800BDAB64 /* ExampleSizeViewController.swift */,
 				29CD63622C2E852A00BDAB64 /* ExampleSelectViewController.swift */,
@@ -415,7 +412,6 @@
 				294DF8852C19CFDE0023E41F /* ExampleViewController.swift in Sources */,
 				29CD63652C2E872A00BDAB64 /* ExampleColorSelectViewController.swift in Sources */,
 				294DF8812C19CFDE0023E41F /* AppDelegate.swift in Sources */,
-				29CD635D2C2D787800BDAB64 /* ExampleTestViewController.swift in Sources */,
 				29CD63692C2E955E00BDAB64 /* ExampleSegmentedControlIndicatorView.swift in Sources */,
 				29CD63672C2E924A00BDAB64 /* ExampleImageSelectViewController.swift in Sources */,
 				29CD63632C2E852A00BDAB64 /* ExampleSelectViewController.swift in Sources */,

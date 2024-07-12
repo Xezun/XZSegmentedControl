@@ -140,7 +140,7 @@
 
 - (void)reloadData {
     NSInteger const oldIndex = self.selectedIndex;
-    NSInteger const count = [_dataSource numberOfItemsInSegmentedControl:self];
+    NSInteger const count = [_dataSource numberOfSegmentsInSegmentedControl:self];
     
     NSInteger const newIndex = MAX(0, MIN(oldIndex, count - 1));
     [_collectionView reloadData];
@@ -153,7 +153,7 @@
     }
 }
 
-- (void)insertItemAtIndex:(NSInteger)index {
+- (void)insertSegmentAtIndex:(NSInteger)index {
     [_collectionView insertItemsAtIndexPaths:@[[NSIndexPath indexPathForItem:index inSection:0]]];
     
     NSInteger const _selectedIndex = self.selectedIndex;
@@ -163,7 +163,7 @@
     }
 }
 
-- (void)removeItemAtIndex:(NSInteger)index {
+- (void)removeSegmentAtIndex:(NSInteger)index {
     [_collectionView deleteItemsAtIndexPaths:@[[NSIndexPath indexPathForItem:index inSection:0]]];
     NSInteger const _selectedIndex = self.selectedIndex;
     if (_selectedIndex >= index) {
@@ -190,7 +190,7 @@
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     if (_dataSource) {
-        return [_dataSource numberOfItemsInSegmentedControl:self];
+        return [_dataSource numberOfSegmentsInSegmentedControl:self];
     }
     return _titles.count;
 }
@@ -234,7 +234,7 @@
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
     if (_dataSource) {
-        return [_dataSource segmentedControl:self sizeForItemAtIndex:indexPath.item];
+        return [_dataSource segmentedControl:self sizeForSegmentAtIndex:indexPath.item];
     }
     if (_titles) {
         return _titles[indexPath.item].size;
@@ -315,30 +315,30 @@
     [self setSelectedIndex:selectedIndex animated:NO];
 }
 
-- (CGSize)itemSize {
+- (CGSize)segmentSize {
     return _flowLayout.itemSize;
 }
 
-- (void)setItemSize:(CGSize)itemSize {
-    _flowLayout.itemSize = itemSize;
+- (void)setSegmentSize:(CGSize)segmentSize {
+    _flowLayout.itemSize = segmentSize;
     
     [self __xz_setNeedsUpdateTitles];
 }
 
 
-- (CGFloat)itemSpacing {
+- (CGFloat)segmentSpacing {
     return _flowLayout.minimumInteritemSpacing;
 }
 
-- (void)setItemSpacing:(CGFloat)itemSpacing {
+- (void)setSegmentSpacing:(CGFloat)segmentSpacing {
     switch (_flowLayout.scrollDirection) {
         case UICollectionViewScrollDirectionHorizontal:
-            _flowLayout.minimumLineSpacing = itemSpacing;
-            _flowLayout.minimumInteritemSpacing = itemSpacing;
+            _flowLayout.minimumLineSpacing = segmentSpacing;
+            _flowLayout.minimumInteritemSpacing = segmentSpacing;
             break;
         case UICollectionViewScrollDirectionVertical:
-            _flowLayout.minimumLineSpacing = itemSpacing;
-            _flowLayout.minimumInteritemSpacing = itemSpacing;
+            _flowLayout.minimumLineSpacing = segmentSpacing;
+            _flowLayout.minimumInteritemSpacing = segmentSpacing;
             break;
         default:
             @throw [NSException exceptionWithName:NSGenericException reason:nil userInfo:nil];
@@ -550,7 +550,7 @@
                 CGFloat const width2 = [item.text boundingRectWithSize:size options:options attributes:@{
                     NSFontAttributeName: self.selectedTitleFont
                 } context:nil].size.width;
-                item.size = CGSizeMake(MAX(ceil(MAX(width1, width2)) + 10.0, self.itemSize.width), bounds.size.height);
+                item.size = CGSizeMake(MAX(ceil(MAX(width1, width2)) + 10.0, self.segmentSize.width), bounds.size.height);
             }
             break;
         case XZSegmentedControlDirectionVertical:
@@ -564,7 +564,7 @@
                 CGFloat const height2 = [item.text boundingRectWithSize:size options:options attributes:@{
                     NSFontAttributeName: self.selectedTitleFont
                 } context:nil].size.height;
-                item.size = CGSizeMake(bounds.size.width, MAX(ceil(MAX(height1, height2)) + 10.0, self.itemSize.height));
+                item.size = CGSizeMake(bounds.size.width, MAX(ceil(MAX(height1, height2)) + 10.0, self.segmentSize.height));
             }
             break;
         default:

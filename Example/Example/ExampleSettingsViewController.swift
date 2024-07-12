@@ -12,7 +12,7 @@ class ExampleSettingsViewController: UITableViewController {
     
     var segmentedControl: XZSegmentedControl?
     
-    @IBOutlet weak var itemSpacingControl: UISegmentedControl!
+    @IBOutlet weak var segmentSpacingControl: UISegmentedControl!
     @IBOutlet weak var headerSwitch: UISwitch!
     @IBOutlet weak var footerSwitch: UISwitch!
     
@@ -20,7 +20,7 @@ class ExampleSettingsViewController: UITableViewController {
         super.viewDidLoad()
  
         if let segmentedControl = segmentedControl {
-            itemSpacingControl.setTitle("\(Int(segmentedControl.itemSpacing ))", forSegmentAt: 1)
+            segmentSpacingControl.setTitle("\(Int(segmentedControl.segmentSpacing ))", forSegmentAt: 1)
             headerSwitch.isOn = segmentedControl.headerView != nil
             footerSwitch.isOn = segmentedControl.footerView != nil
         }
@@ -65,9 +65,9 @@ class ExampleSettingsViewController: UITableViewController {
         case 1:
             switch indexPath.row {
             case 0:
-                cell.detailTextLabel?.text = "\(segmentedControl?.itemSize ?? .zero)"
+                cell.detailTextLabel?.text = "\(segmentedControl?.segmentSize ?? .zero)"
             case 1:
-                cell.detailTextLabel?.text = "\(segmentedControl?.itemSpacing ?? 0)"
+                cell.detailTextLabel?.text = "\(segmentedControl?.segmentSpacing ?? 0)"
             default:
                 fatalError()
             }
@@ -123,27 +123,27 @@ class ExampleSettingsViewController: UITableViewController {
     
     @IBAction func unwindToSubmitItemSize(_ unwindSegue: UIStoryboardSegue) {
         guard let sourceViewController = unwindSegue.source as? ExampleSizeViewController else { return }
-        segmentedControl?.itemSize = sourceViewController.value
+        segmentedControl?.segmentSize = sourceViewController.value
         _ = tableView(tableView, cellForRowAt: .init(row: 0, section: 1))
     }
     
-    @IBAction func itemSpacingControlValueChanged(_ sender: UISegmentedControl) {
+    @IBAction func segmentSpacingControlValueChanged(_ sender: UISegmentedControl) {
         guard let segmentedControl = segmentedControl else { return }
         switch sender.selectedSegmentIndex {
         case 0:
-            if segmentedControl.itemSpacing > 0 {
-                segmentedControl.itemSpacing -= 1
+            if segmentedControl.segmentSpacing > 0 {
+                segmentedControl.segmentSpacing -= 1
             }
         case 1:
             break
         case 2:
-            segmentedControl.itemSpacing += 1;
+            segmentedControl.segmentSpacing += 1;
         default:
             break
         }
         sender.selectedSegmentIndex = UISegmentedControl.noSegment
         
-        sender.setTitle("\(Int(segmentedControl.itemSpacing))", forSegmentAt: 1)
+        sender.setTitle("\(Int(segmentedControl.segmentSpacing))", forSegmentAt: 1)
     }
     
     @IBAction func headerSwitchValueChanged(_ sender: UISwitch) {
@@ -192,8 +192,8 @@ class ExampleSettingsViewController: UITableViewController {
             (segue.destination as? ExampleImageSelectViewController)?.value = segmentedControl.indicatorImage
         case "indicatorColor":
             (segue.destination as? ExampleColorSelectViewController)?.value = segmentedControl.indicatorColor
-        case "itemSize":
-            (segue.destination as? ExampleSizeViewController)?.value = segmentedControl.itemSize
+        case "segmentSize":
+            (segue.destination as? ExampleSizeViewController)?.value = segmentedControl.segmentSize
         default:
             break
         }

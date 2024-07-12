@@ -335,7 +335,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="362.66666666666669" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="itemSize" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="gnW-qJ-6DG">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="segmentSize" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="gnW-qJ-6DG">
                                                     <rect key="frame" x="20" y="11.999999999999998" width="65" height="20.333333333333332"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -352,7 +352,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="rSf-fT-aYg" kind="show" identifier="itemSize" id="e7a-C1-OH9"/>
+                                            <segue destination="rSf-fT-aYg" kind="show" identifier="segmentSize" id="e7a-C1-OH9"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" id="jUG-kT-Ge3">
@@ -371,11 +371,11 @@
                                                     </segments>
                                                     <connections>
                                                         <action selector="heightControlValueChanged:" destination="rSf-fT-aYg" eventType="valueChanged" id="6GB-Wk-zvK"/>
-                                                        <action selector="itemSpacingControlValueChanged:" destination="eBQ-yS-pu7" eventType="valueChanged" id="oci-Xm-ewn"/>
+                                                        <action selector="segmentSpacingControlValueChanged:" destination="eBQ-yS-pu7" eventType="valueChanged" id="oci-Xm-ewn"/>
                                                     </connections>
                                                 </segmentedControl>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="itemSpacing" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NRU-3o-Iel">
-                                                    <rect key="frame" x="20.000000000000007" y="11" width="94.666666666666686" height="22"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="segmentSpacing" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NRU-3o-Iel">
+                                                    <rect key="frame" x="20" y="11" width="128.33333333333334" height="22"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -469,7 +469,7 @@
                     <connections>
                         <outlet property="footerSwitch" destination="19E-s2-qfN" id="eIN-Ho-VTj"/>
                         <outlet property="headerSwitch" destination="P0G-bx-jcu" id="PLt-WO-DtS"/>
-                        <outlet property="itemSpacingControl" destination="Fjm-3w-Qnd" id="egt-rJ-1D5"/>
+                        <outlet property="segmentSpacingControl" destination="Fjm-3w-Qnd" id="egt-rJ-1D5"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wG0-NJ-qfv" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -900,7 +900,7 @@
             </objects>
             <point key="canvasLocation" x="7036" y="-1075"/>
         </scene>
-        <!--itemSize-->
+        <!--segmentSize-->
         <scene sceneID="g2L-vA-mRG">
             <objects>
                 <tableViewController id="rSf-fT-aYg" customClass="ExampleSizeViewController" customModule="Example" customModuleProvider="target" sceneMemberID="viewController">
@@ -991,7 +991,7 @@
                             <outlet property="delegate" destination="rSf-fT-aYg" id="EAF-FK-9p6"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="itemSize" id="vnE-6z-zff">
+                    <navigationItem key="navigationItem" title="segmentSize" id="vnE-6z-zff">
                         <barButtonItem key="rightBarButtonItem" title="确定" id="knp-lM-DwC">
                             <connections>
                                 <segue destination="WcT-t5-3az" kind="unwind" unwindAction="unwindToSubmitItemSize:" id="7J6-Hg-9nf"/>

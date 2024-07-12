@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// 指示器视图基类
 @interface XZSegmentedControlIndicatorView : UICollectionReusableView
-@property (nonatomic) id<UINavigationControllerDelegate> del;
+
 /// 是否支持动态转场，默认否。
 @property (class, nonatomic, readonly) BOOL supportsInteractiveTransition;
 

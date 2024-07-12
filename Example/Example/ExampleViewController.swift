@@ -37,7 +37,7 @@ class ExampleViewController: UIViewController, UIScrollViewDelegate {
         }
         segmentedControl.indicatorColor = .systemRed
         segmentedControl.titles         = self.titles
-        segmentedControl.itemSpacing    = 10;
+        segmentedControl.segmentSpacing = 10;
         segmentedControl.titleFont      = .systemFont(ofSize: 17.0)
         segmentedControl.selectedTitleFont = .boldSystemFont(ofSize: 18.0)
         segmentedControl.addTarget(self, action: #selector(segmentedControlValueChanged(_:)), for: .valueChanged)

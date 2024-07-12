@@ -44,6 +44,7 @@ typedef NS_ENUM(NSUInteger, XZSegmentedControlIndicatorStyle) {
 @end
 
 @protocol XZSegmentedControlDataSource;
+@class UISegmentedControl;
 
 @interface XZSegmentedControl : UIControl
 
@@ -64,9 +65,9 @@ typedef NS_ENUM(NSUInteger, XZSegmentedControlIndicatorStyle) {
 
 /// item 的大小。优先使用代理方法返回的大小。
 /// @discussion 使用 titles 时 item 的大小会根据字体自动计算，此属性将作为最小值使用。
-@property (nonatomic) CGSize itemSize;
+@property (nonatomic) CGSize segmentSize;
 /// item 间距。
-@property (nonatomic) CGFloat itemSpacing;
+@property (nonatomic) CGFloat segmentSpacing;
 
 /// 指定长宽，若为零，则使用默认值。
 /// @li 横向滚动时，宽度默认为 item 的宽度，高度为 3.0 点。
@@ -108,15 +109,15 @@ typedef NS_ENUM(NSUInteger, XZSegmentedControlIndicatorStyle) {
 
 /// 当使用数据源时，必须使用此方法更新视图。
 - (void)reloadData;
-- (void)insertItemAtIndex:(NSInteger)index;
-- (void)removeItemAtIndex:(NSInteger)index;
+- (void)insertSegmentAtIndex:(NSInteger)index;
+- (void)removeSegmentAtIndex:(NSInteger)index;
 
 - (__kindof UIView *)viewForSegmentAtIndex:(NSInteger)index;
 - (CGRect)frameForSegmentAtIndex:(NSInteger)index;
 
 /// 使用 item 标题文本作为数据源。
 /// @note 设置此属性，将取消 dataSource 的设置。
-/// @note 每个 item 的宽度，将根据字体自动计算，同时受 itemSize 属性约束。
+/// @note 每个 item 的宽度，将根据字体自动计算，同时受 segmentSize 属性约束。
 @property (nonatomic, copy, nullable) NSArray<NSString *> *titles;
 
 /// 普通 item 文本颜色。该属性仅在使用 titles 时生效。
@@ -135,7 +136,7 @@ typedef NS_ENUM(NSUInteger, XZSegmentedControlIndicatorStyle) {
 @protocol XZSegmentedControlDataSource <NSObject>
 /// 获取 item 的数量。
 /// - Parameter segmentedControl: 调用此方法的对象
-- (NSInteger)numberOfItemsInSegmentedControl:(XZSegmentedControl *)segmentedControl;
+- (NSInteger)numberOfSegmentsInSegmentedControl:(XZSegmentedControl *)segmentedControl;
 /// 数据源应在此方法中返回 item 的自定义视图。
 /// - Parameters:
 ///   - segmentedControl: 调用此方法的对象
@@ -146,7 +147,7 @@ typedef NS_ENUM(NSUInteger, XZSegmentedControlIndicatorStyle) {
 /// - Parameters:
 ///   - segmentedControl: 调用此方法的对象
 ///   - index: item 的位置索引
-- (CGSize)segmentedControl:(XZSegmentedControl *)segmentedControl sizeForItemAtIndex:(NSInteger)index;
+- (CGSize)segmentedControl:(XZSegmentedControl *)segmentedControl sizeForSegmentAtIndex:(NSInteger)index;
 @end
 
 

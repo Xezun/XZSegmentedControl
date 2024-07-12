@@ -9,7 +9,7 @@
 #import "XZSegmentedControl.h"
 #import "XZSegmentedControlContentView.h"
 #import "XZSegmentedControlFlowLayout.h"
-#import "XZSegmentedControlItemView.h"
+#import "XZSegmentedControlSegmentView.h"
 #import "XZSegmentedControlTextItem.h"
 #import "XZSegmentedControlTextView.h"
 
@@ -108,16 +108,18 @@
     [self setSelectedIndex:selectedIndex animated:animated focuses:YES];
 }
 
-- (void)setSelectedIndex:(NSInteger)selectedIndex animated:(BOOL)animated focuses:(BOOL)focuses {
+- (void)setSelectedIndex:(NSInteger const)selectedIndex animated:(BOOL)animated focuses:(BOOL)focuses {
     NSInteger const oldValue = _flowLayout.selectedIndex;
+    if (selectedIndex == oldValue) return;
+    
     NSIndexPath *oldIndexPath = [NSIndexPath indexPathForItem:oldValue inSection:0];
-    XZSegmentedControlItemView *oldView = (id)[_collectionView cellForItemAtIndexPath:oldIndexPath];
+    XZSegmentedControlSegmentView *oldView = (id)[_collectionView cellForItemAtIndexPath:oldIndexPath];
     oldView.itemView.isSelected = NO;
     
     [_flowLayout setSelectedIndex:selectedIndex animated:animated];
     
     NSIndexPath *newIndexPath = [NSIndexPath indexPathForItem:selectedIndex inSection:0];
-    XZSegmentedControlItemView *newView = (id)[_collectionView cellForItemAtIndexPath:newIndexPath];
+    XZSegmentedControlSegmentView *newView = (id)[_collectionView cellForItemAtIndexPath:newIndexPath];
     newView.itemView.isSelected = YES;
     
     if (focuses) {
@@ -138,7 +140,7 @@
 
 - (void)reloadData {
     NSInteger const oldIndex = self.selectedIndex;
-    NSInteger const count = [_dataSource numberOfItemsInSegmentedControl:self];
+    NSInteger const count = [_dataSource numberOfSegmentsInSegmentedControl:self];
     
     NSInteger const newIndex = MAX(0, MIN(oldIndex, count - 1));
     [_collectionView reloadData];
@@ -151,7 +153,7 @@
     }
 }
 
-- (void)insertItemAtIndex:(NSInteger)index {
+- (void)insertSegmentAtIndex:(NSInteger)index {
     [_collectionView insertItemsAtIndexPaths:@[[NSIndexPath indexPathForItem:index inSection:0]]];
     
     NSInteger const _selectedIndex = self.selectedIndex;
@@ -161,7 +163,7 @@
     }
 }
 
-- (void)removeItemAtIndex:(NSInteger)index {
+- (void)removeSegmentAtIndex:(NSInteger)index {
     [_collectionView deleteItemsAtIndexPaths:@[[NSIndexPath indexPathForItem:index inSection:0]]];
     NSInteger const _selectedIndex = self.selectedIndex;
     if (_selectedIndex >= index) {
@@ -169,10 +171,15 @@
     }
 }
 
-- (UIView *)viewForItemAtIndex:(NSInteger)index {
+- (UIView *)viewForSegmentAtIndex:(NSInteger)index {
     NSIndexPath *indexPath = [NSIndexPath indexPathForItem:index inSection:0];
-    XZSegmentedControlItemView *cell = (id)[_collectionView cellForItemAtIndexPath:indexPath];
+    XZSegmentedControlSegmentView *cell = (id)[_collectionView cellForItemAtIndexPath:indexPath];
     return [cell itemView];
+}
+
+- (CGRect)frameForSegmentAtIndex:(NSInteger)index {
+    NSIndexPath *indexPath = [NSIndexPath indexPathForItem:index inSection:0];
+    return [_flowLayout layoutAttributesForItemAtIndexPath:indexPath].frame;
 }
 
 #pragma mark - <UICollectionViewDataSource>
@@ -183,18 +190,18 @@
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     if (_dataSource) {
-        return [_dataSource numberOfItemsInSegmentedControl:self];
+        return [_dataSource numberOfSegmentsInSegmentedControl:self];
     }
     return _titles.count;
 }
 
 - (__kindof UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    XZSegmentedControlItemView *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kReuseIdentifier forIndexPath:indexPath];
+    XZSegmentedControlSegmentView *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kReuseIdentifier forIndexPath:indexPath];
 
     NSInteger const index = indexPath.item;
     NSInteger const _selectedIndex = self.selectedIndex;
     if (_dataSource) {
-        UIView<XZSegmentedControlItemView> *itemView = [_dataSource segmentedControl:self viewForItemAtIndex:index reusingView:cell.itemView];
+        UIView<XZSegmentedControlSegmentView> *itemView = [_dataSource segmentedControl:self viewForSegmentAtIndex:index reusingView:cell.itemView];
         itemView.isSelected = (index == _selectedIndex);
         cell.itemView = itemView;
     } else if (_titles != nil) {
@@ -227,7 +234,7 @@
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
     if (_dataSource) {
-        return [_dataSource segmentedControl:self sizeForItemAtIndex:indexPath.item];
+        return [_dataSource segmentedControl:self sizeForSegmentAtIndex:indexPath.item];
     }
     if (_titles) {
         return _titles[indexPath.item].size;
@@ -308,35 +315,43 @@
     [self setSelectedIndex:selectedIndex animated:NO];
 }
 
-- (CGSize)itemSize {
+- (CGSize)segmentSize {
     return _flowLayout.itemSize;
 }
 
-- (void)setItemSize:(CGSize)itemSize {
-    _flowLayout.itemSize = itemSize;
+- (void)setSegmentSize:(CGSize)segmentSize {
+    _flowLayout.itemSize = segmentSize;
     
     [self __xz_setNeedsUpdateTitles];
 }
 
 
-- (CGFloat)itemSpacing {
+- (CGFloat)segmentSpacing {
     return _flowLayout.minimumInteritemSpacing;
 }
 
-- (void)setItemSpacing:(CGFloat)itemSpacing {
+- (void)setSegmentSpacing:(CGFloat)segmentSpacing {
     switch (_flowLayout.scrollDirection) {
         case UICollectionViewScrollDirectionHorizontal:
-            _flowLayout.minimumLineSpacing = itemSpacing;
-            _flowLayout.minimumInteritemSpacing = itemSpacing;
+            _flowLayout.minimumLineSpacing = segmentSpacing;
+            _flowLayout.minimumInteritemSpacing = segmentSpacing;
             break;
         case UICollectionViewScrollDirectionVertical:
-            _flowLayout.minimumLineSpacing = itemSpacing;
-            _flowLayout.minimumInteritemSpacing = itemSpacing;
+            _flowLayout.minimumLineSpacing = segmentSpacing;
+            _flowLayout.minimumInteritemSpacing = segmentSpacing;
             break;
         default:
             @throw [NSException exceptionWithName:NSGenericException reason:nil userInfo:nil];
             break;
     }
+}
+
+- (CGFloat)indicatorTransition {
+    return _flowLayout.indicatorTransition;
+}
+
+- (void)setIndicatorTransition:(CGFloat)indicatorTransition {
+    _flowLayout.indicatorTransition = indicatorTransition;
 }
 
 - (UIColor *)indicatorColor {
@@ -468,7 +483,7 @@
         _selectedTitleColor = UIColor.blueColor;
     }
     
-    _flowLayout = [[XZSegmentedControlFlowLayout alloc] init];
+    _flowLayout = [[XZSegmentedControlFlowLayout alloc] initWithSegmentedControl:self];
     _flowLayout.minimumLineSpacing      = 0;
     _flowLayout.minimumInteritemSpacing = 0;
     _flowLayout.sectionHeadersPinToVisibleBounds = NO;
@@ -498,7 +513,7 @@
     _collectionView.alwaysBounceHorizontal         = YES;
     [self addSubview:_collectionView];
     
-    [_collectionView registerClass:[XZSegmentedControlItemView class] forCellWithReuseIdentifier:kReuseIdentifier];
+    [_collectionView registerClass:[XZSegmentedControlSegmentView class] forCellWithReuseIdentifier:kReuseIdentifier];
     _collectionView.delegate   = self;
     _collectionView.dataSource = self;
 }
@@ -535,7 +550,7 @@
                 CGFloat const width2 = [item.text boundingRectWithSize:size options:options attributes:@{
                     NSFontAttributeName: self.selectedTitleFont
                 } context:nil].size.width;
-                item.size = CGSizeMake(MAX(ceil(MAX(width1, width2)) + 10.0, self.itemSize.width), bounds.size.height);
+                item.size = CGSizeMake(MAX(ceil(MAX(width1, width2)) + 10.0, self.segmentSize.width), bounds.size.height);
             }
             break;
         case XZSegmentedControlDirectionVertical:
@@ -549,7 +564,7 @@
                 CGFloat const height2 = [item.text boundingRectWithSize:size options:options attributes:@{
                     NSFontAttributeName: self.selectedTitleFont
                 } context:nil].size.height;
-                item.size = CGSizeMake(bounds.size.width, MAX(ceil(MAX(height1, height2)) + 10.0, self.itemSize.height));
+                item.size = CGSizeMake(bounds.size.width, MAX(ceil(MAX(height1, height2)) + 10.0, self.segmentSize.height));
             }
             break;
         default:

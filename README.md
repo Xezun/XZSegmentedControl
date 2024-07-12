@@ -36,6 +36,51 @@ pod 'XZSegmentedControl'
 
 ## 功能特性
 
+### 1、支持横向和纵向滚动
+
+```swift
+segmentedControl.direction = .horizontal
+segmentedControl.direction = .vertical
+```
+
+### 2、支持在头尾添加自定义视图
+
+```swift
+let headerView = UIButton.init(type: .system)
+segmentedControl?.headerView = headerView
+
+let footerView = UIButton.init(type: .system)
+segmentedControl.footerView = footerView
+```
+
+### 3、多种指示器样式，以及自定义指示器
+
+- 内置两种基础样式，且支持设置颜色、大小、图片
+
+```swift
+segmentedControl.indicatorStyle = .markLine
+segmentedControl.indicatorStyle = .noteLine
+
+segmentedControl.indicatorColor = .red
+segmentedControl.indicatorSize  = CGSize(width: 20, height: 20)
+segmentedControl.indicatorImage = UIImage(named: "arrow")
+```
+
+- 自定义指示器
+
+```swift
+segmentedControl.indicatorStyle = .custom
+segmentedControl.indicatorClass = ExampleSegmentedControlIndicatorView.self
+```
+
+### 4、指示器支持交互性转场
+
+```swift
+segmentedControl.indicatorTransition = transition
+```
+
+### 5、支持自定义菜单视图
+
 ## Author
 
 Xezun, developer@xezun.com

@@ -8,16 +8,16 @@
 import UIKit
 import XZSegmentedControl
 
-class ExampleSegmentedControlIndicatorView: UICollectionReusableView, XZSegmentedControlIndicatorView {
+class ExampleSegmentedControlIndicatorView: XZSegmentedControlIndicatorView {
     
-    static func collectionViewLayout(_ flowLayout: UICollectionViewFlowLayout, prepareLayoutFor layoutAttributes: UICollectionViewLayoutAttributes) {
-        layoutAttributes.zIndex = .min
-        if !layoutAttributes.frame.isEmpty {
-            if flowLayout.scrollDirection == .horizontal {
-                layoutAttributes.frame = layoutAttributes.frame.insetBy(dx: 0, dy: 5)
-            } else {
-                layoutAttributes.frame = layoutAttributes.frame.insetBy(dx: 5, dy: 0)
-            }
+    override class func segmentedControl(_ segmentedControl: XZSegmentedControl, prepareForLayoutAttributes indicatorLayoutAttributes: XZSegmentedControlIndicatorLayoutAttributes) {
+        indicatorLayoutAttributes.zIndex = -111
+        
+        let frame = segmentedControl.frameForSegment(at: segmentedControl.selectedIndex)
+        if segmentedControl.direction == .horizontal {
+            indicatorLayoutAttributes.frame = frame.insetBy(dx: 0, dy: 5)
+        } else {
+            indicatorLayoutAttributes.frame = frame.insetBy(dx: 5, dy: 0)
         }
     }
     
@@ -31,12 +31,6 @@ class ExampleSegmentedControlIndicatorView: UICollectionReusableView, XZSegmente
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func apply(_ layoutAttributes: UICollectionViewLayoutAttributes) {
-        super.apply(layoutAttributes)
-        
-        self.superview?.sendSubviewToBack(self)
     }
     
 }

@@ -20,17 +20,13 @@ typedef NS_ENUM(NSUInteger, XZSegmentedControlDirection) {
 
 /// 指示器样式。
 typedef NS_ENUM(NSUInteger, XZSegmentedControlIndicatorStyle) {
-    /// 矩形色块指示器：
-    ///
-    /// 横向滚动时，指示器在 segment 底部；
-    ///
-    /// 纵向滚动时，指示器在 segment 右侧。
+    /// 矩形色块指示器。
+    /// 1. 横向滚动时，指示器在 segment 底部；
+    /// 2. 纵向滚动时，指示器在 segment 右侧。
     XZSegmentedControlIndicatorStyleMarkLine,
-    /// 矩形色块指示器：
-    ///
-    /// 横向滚动时，指示器在 segment 顶部；
-    ///
-    /// 纵向滚动时，指示器在 segment 左侧。
+    /// 矩形色块指示器。
+    /// 1. 横向滚动时，指示器在 segment 顶部；
+    /// 2. 纵向滚动时，指示器在 segment 左侧。
     XZSegmentedControlIndicatorStyleNoteLine,
     /// 使用自定义指示器。
     XZSegmentedControlIndicatorStyleCustom,

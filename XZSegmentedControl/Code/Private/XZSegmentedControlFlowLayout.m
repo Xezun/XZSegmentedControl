@@ -99,9 +99,9 @@
     }
 }
 
-- (void)setIndicatorTransiton:(CGFloat)indicatorTransiton {
-    if (_indicatorLayoutAttributes.transiton != indicatorTransiton) {
-        _indicatorLayoutAttributes.transiton = indicatorTransiton;
+- (void)setIndicatorTransition:(CGFloat)indicatorTransition {
+    if (_indicatorLayoutAttributes.transition != indicatorTransition) {
+        _indicatorLayoutAttributes.transition = indicatorTransition;
         
         if ([_indicatorClass supportsInteractiveTransition]) {
             [self setNeedsUpdateIndicatorLayout:NO];
@@ -109,8 +109,8 @@
     }
 }
 
-- (CGFloat)indicatorTransiton {
-    return _indicatorLayoutAttributes.transiton;
+- (CGFloat)indicatorTransition {
+    return _indicatorLayoutAttributes.transition;
 }
 
 - (void)setSelectedIndex:(NSInteger)selectedIndex {
@@ -137,7 +137,6 @@
     _needsUpdateIndicatorLayout = YES;
     [NSRunLoop.mainRunLoop performInModes:@[NSRunLoopCommonModes] block:^{
         [self updateIndicaotrLayoutIfNeeded:animated];
-        [self prepareIndicatorLayout];
     }];
 }
 
@@ -153,18 +152,13 @@
     [context invalidateDecorationElementsOfKind:NSStringFromClass(_indicatorClass) atIndexPaths:@[
         [NSIndexPath indexPathForItem:0 inSection:0]
     ]];
-   
-    [self prepareIndicatorLayout];
-    [self invalidateLayoutWithContext:context];
-
-    if (!animated) return;
-    UIView * const indicatorView = _indicatorLayoutAttributes.indicatorView;
-    if (!indicatorView) return;
     
-    CGRect const frame = _indicatorLayoutAttributes.frame;
-    [UIView animateWithDuration:0.35 animations:^{
-        indicatorView.frame = frame;
-    }];
+    [self invalidateLayoutWithContext:context];
+    [self prepareIndicatorLayout];
+
+    if (animated) {
+        [_indicatorLayoutAttributes.indicatorView animateTransition:_indicatorLayoutAttributes];
+    }
 }
 
 /// 更新 indicator 的布局。请不要直接调用此方法。
@@ -181,7 +175,7 @@
             _indicatorLayoutAttributes.indicatorView = oldValue.indicatorView;
             _indicatorLayoutAttributes.image         = oldValue.image;
             _indicatorLayoutAttributes.color         = oldValue.color;
-            _indicatorLayoutAttributes.transiton     = oldValue.transiton;
+            _indicatorLayoutAttributes.transition     = oldValue.transition;
         }
     }
     

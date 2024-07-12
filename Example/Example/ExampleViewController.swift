@@ -79,18 +79,25 @@ class ExampleViewController: UIViewController, UIScrollViewDelegate {
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let contentOffset = scrollView.contentOffset;
+        var width : CGFloat = 0
+        var newX  : CGFloat = 0
+        
         if segmentedControl.direction == .horizontal {
-            let width = scrollView.frame.width;
-            segmentedControl.setSelectedIndex(Int(contentOffset.x / width), animated: true)
-            let delta = contentOffset.x - CGFloat(segmentedControl.selectedIndex) * width
-            segmentedControl.indicatorTransiton = delta / width;
+            width = scrollView.frame.width;
+            newX = contentOffset.x;
         } else {
-            let height = scrollView.frame.height;
-            segmentedControl.setSelectedIndex(Int(contentOffset.y / height), animated: true)
-            let delta = contentOffset.y - CGFloat(segmentedControl.selectedIndex) * height
-            segmentedControl.indicatorTransiton = delta / height;
+            width = scrollView.frame.height;
+            newX = contentOffset.y;
         }
-        print("\(#function) selectedIndex: \(segmentedControl.selectedIndex), indicatorTransiton: \(segmentedControl.indicatorTransiton)")
+        
+        let oldX = width * CGFloat(segmentedControl.selectedIndex)
+        let newIndex = newX > oldX ? Int(floor(newX / width)) : Int(ceil(newX / width))
+        let transition = (newX - CGFloat(newIndex) * width) / width;
+        
+        segmentedControl.setSelectedIndex(newIndex, animated: true)
+        segmentedControl.indicatorTransition = transition
+        
+        print("\(#function) selectedIndex: \(newIndex), indicatorTransition: \(transition)")
     }
     
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {

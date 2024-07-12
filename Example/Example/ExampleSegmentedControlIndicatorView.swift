@@ -33,9 +33,4 @@ class ExampleSegmentedControlIndicatorView: XZSegmentedControlIndicatorView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func apply(_ layoutAttributes: XZSegmentedControlIndicatorLayoutAttributes) {
-        super.apply(layoutAttributes)
-        layoutAttributes.indicatorView = self;
-    }
-    
 }

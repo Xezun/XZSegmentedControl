@@ -96,7 +96,7 @@ typedef NS_ENUM(NSUInteger, XZSegmentedControlIndicatorStyle) {
 /// @endcode
 @property (nonatomic, null_resettable) Class indicatorClass;
 /// 值 selectedIndex 的变化进度。
-@property (nonatomic) CGFloat indicatorTransiton;
+@property (nonatomic) CGFloat indicatorTransition;
 
 
 @property (nonatomic, readonly) NSInteger numberOfSegments;

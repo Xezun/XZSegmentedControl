@@ -21,7 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, nullable) UIColor *indicatorColor;
 @property (nonatomic, strong, nullable) UIImage *indicatorImage;
 @property (nonatomic) CGSize indicatorSize;
-@property (nonatomic) CGFloat indicatorTransiton;
+@property (nonatomic) CGFloat indicatorTransition;
 @property (nonatomic) XZSegmentedControlIndicatorStyle indicatorStyle;
 @property (nonatomic, nullable) Class indicatorClass;
 @end

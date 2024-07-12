@@ -346,12 +346,12 @@
     }
 }
 
-- (CGFloat)indicatorTransiton {
-    return _flowLayout.indicatorTransiton;
+- (CGFloat)indicatorTransition {
+    return _flowLayout.indicatorTransition;
 }
 
-- (void)setIndicatorTransiton:(CGFloat)indicatorTransiton {
-    _flowLayout.indicatorTransiton = indicatorTransiton;
+- (void)setIndicatorTransition:(CGFloat)indicatorTransition {
+    _flowLayout.indicatorTransition = indicatorTransition;
 }
 
 - (UIColor *)indicatorColor {

@@ -30,7 +30,7 @@
 }
 
 + (void)segmentedControl:(XZSegmentedControl *)segmentedControl prepareForLayoutAttributes:(XZSegmentedControlIndicatorLayoutAttributes *)indicatorLayoutAttributes {
-    CGFloat   const transition    = indicatorLayoutAttributes.transiton;
+    CGFloat   const transition    = indicatorLayoutAttributes.transition;
     NSInteger const count         = segmentedControl.numberOfSegments;
     NSInteger const selectedIndex = segmentedControl.selectedIndex;
     
@@ -47,9 +47,8 @@
         return;
     }
     
-    CGRect from = indicatorLayoutAttributes.frame;
-    
-    CGFloat percent = ABS(transition) / ceil(ABS(transition));
+    CGRect  const from    = indicatorLayoutAttributes.frame;
+    CGFloat const percent = ABS(transition) / ceil(ABS(transition));
     
     // NSLog(@"from: %@, to: %@, transition: %f, percent: %f", NSStringFromCGRect(from), NSStringFromCGRect(to), transition, percent);
     
@@ -61,9 +60,7 @@
 }
 
 - (void)applyLayoutAttributes:(XZSegmentedControlIndicatorLayoutAttributes *)layoutAttributes {
-    // 在 -preferredLayoutAttributesFittingAttributes: 方法设置代理无效。
-    // 可能的原因是这个方法参数是复制份，而不是原份。
-    layoutAttributes.indicatorView = self;
+    [super applyLayoutAttributes:layoutAttributes];
     
     if (layoutAttributes.image) {
         if (_imageView == nil) {

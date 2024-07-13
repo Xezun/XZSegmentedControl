@@ -114,13 +114,13 @@
     
     NSIndexPath *oldIndexPath = [NSIndexPath indexPathForItem:oldValue inSection:0];
     XZSegmentedControlSegmentCell *oldView = (id)[_collectionView cellForItemAtIndexPath:oldIndexPath];
-    oldView.itemView.isSelected = NO;
+    oldView.segmentView.isSelected = NO;
     
     [_flowLayout setSelectedIndex:selectedIndex animated:animated];
     
     NSIndexPath *newIndexPath = [NSIndexPath indexPathForItem:selectedIndex inSection:0];
     XZSegmentedControlSegmentCell *newView = (id)[_collectionView cellForItemAtIndexPath:newIndexPath];
-    newView.itemView.isSelected = YES;
+    newView.segmentView.isSelected = YES;
     
     if (focuses) {
         UICollectionViewScrollPosition scrollPosition = UICollectionViewScrollPositionNone;
@@ -174,7 +174,7 @@
 - (UIView *)viewForSegmentAtIndex:(NSInteger)index {
     NSIndexPath *indexPath = [NSIndexPath indexPathForItem:index inSection:0];
     XZSegmentedControlSegmentCell *cell = (id)[_collectionView cellForItemAtIndexPath:indexPath];
-    return [cell itemView];
+    return [cell segmentView];
 }
 
 - (CGRect)frameForSegmentAtIndex:(NSInteger)index {
@@ -201,14 +201,14 @@
     NSInteger const index = indexPath.item;
     NSInteger const _selectedIndex = self.selectedIndex;
     if (_dataSource) {
-        UIView<XZSegmentedControlSegmentView> *itemView = [_dataSource segmentedControl:self viewForSegmentAtIndex:index reusingView:cell.itemView];
+        UIView<XZSegmentedControlSegmentView> *itemView = [_dataSource segmentedControl:self viewForSegmentAtIndex:index reusingView:cell.segmentView];
         itemView.isSelected = (index == _selectedIndex);
-        cell.itemView = itemView;
+        cell.segmentView = itemView;
     } else if (_titles != nil) {
-        XZSegmentedControlTextView *itemView = (id)cell.itemView;
+        XZSegmentedControlTextView *itemView = (id)cell.segmentView;
         if (itemView == nil) {
             itemView = [[XZSegmentedControlTextView alloc] initWithSegmentedControl:self];
-            cell.itemView = itemView;
+            cell.segmentView = itemView;
         }
         itemView.isSelected = (index == _selectedIndex);
         itemView.text = _titles[index].text;

@@ -11,7 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface XZSegmentedControlSegmentCell : UICollectionViewCell
-@property (nonatomic, strong) UIView<XZSegmentedControlSegmentView> *itemView;
+@property (nonatomic, strong) UIView<XZSegmentedControlSegmentView> *segmentView;
 @end
 
 NS_ASSUME_NONNULL_END

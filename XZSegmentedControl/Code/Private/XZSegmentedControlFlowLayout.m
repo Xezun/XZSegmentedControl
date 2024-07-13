@@ -12,16 +12,18 @@
 #define kIndicatorWidth  3.0
 
 @implementation XZSegmentedControlFlowLayout {
-    XZSegmentedControlIndicatorLayoutAttributes *_indicatorLayoutAttributes;
+    XZSegmentedControlIndicatorLayoutAttributes * _Nonnull _indicatorLayoutAttributes;
     BOOL _needsUpdateIndicatorLayout;
 }
 
 - (instancetype)initWithSegmentedControl:(XZSegmentedControl *)segmentedControl {
     self = [super init];
     if (self != nil) {
+        _needsUpdateIndicatorLayout = NO;
         _segmentedControl = segmentedControl;
         _indicatorClass = [XZSegmentedControlMarkLineIndicatorView class];
         [self registerClass:_indicatorClass forDecorationViewOfKind:NSStringFromClass(_indicatorClass)];
+        [self prepareIndicatorLayoutAttributes];
     }
     return self;
 }
@@ -165,25 +167,13 @@
 - (void)prepareIndicatorLayout {
     NSInteger const count = [self.collectionView numberOfItemsInSection:0];
     
-    if (![_indicatorLayoutAttributes.representedElementKind isEqualToString:NSStringFromClass(_indicatorClass)]) {
-        XZSegmentedControlIndicatorLayoutAttributes * const oldValue = _indicatorLayoutAttributes;
-        
-        NSIndexPath *indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
-        _indicatorLayoutAttributes = [XZSegmentedControlIndicatorLayoutAttributes layoutAttributesForDecorationViewOfKind:NSStringFromClass(_indicatorClass) withIndexPath:indexPath];
-        // 复制自定义属性
-        if (oldValue) {
-            _indicatorLayoutAttributes.indicatorView = oldValue.indicatorView;
-            _indicatorLayoutAttributes.image         = oldValue.image;
-            _indicatorLayoutAttributes.color         = oldValue.color;
-            _indicatorLayoutAttributes.transition     = oldValue.transition;
-        }
-    }
+    [self prepareIndicatorLayoutAttributes];
     
     switch (_indicatorStyle) {
         case XZSegmentedControlIndicatorStyleMarkLine: {
             _indicatorLayoutAttributes.zIndex = NSIntegerMax;
             if (count > 0) {
-                [_indicatorClass segmentedControl:self.segmentedControl prepareForLayoutAttributes:_indicatorLayoutAttributes];
+                [_indicatorClass segmentedControl:_segmentedControl prepareForLayoutAttributes:_indicatorLayoutAttributes];
             } else {
                 CGRect const bounds = self.collectionView.bounds;
                 switch (self.scrollDirection) {
@@ -202,7 +192,7 @@
         case XZSegmentedControlIndicatorStyleNoteLine: {
             _indicatorLayoutAttributes.zIndex = NSIntegerMax;
             if (count > 0) {
-                [_indicatorClass segmentedControl:self.segmentedControl prepareForLayoutAttributes:_indicatorLayoutAttributes];
+                [_indicatorClass segmentedControl:_segmentedControl prepareForLayoutAttributes:_indicatorLayoutAttributes];
             } else {
                 CGRect const bounds = self.collectionView.bounds;
                 switch (self.scrollDirection) {
@@ -220,7 +210,7 @@
         }
         case XZSegmentedControlIndicatorStyleCustom: {
             if (count > 0) {
-                [_indicatorClass segmentedControl:self.segmentedControl prepareForLayoutAttributes:_indicatorLayoutAttributes];
+                [_indicatorClass segmentedControl:_segmentedControl prepareForLayoutAttributes:_indicatorLayoutAttributes];
             } else {
                 CGRect const bounds = self.collectionView.bounds;
                 switch (self.scrollDirection) {
@@ -238,6 +228,27 @@
         }
         default:
             break;
+    }
+}
+
+/// 加载指示器属性。
+- (void)prepareIndicatorLayoutAttributes {
+    NSString * const kind = NSStringFromClass(_indicatorClass);
+    if ([_indicatorLayoutAttributes.representedElementKind isEqualToString:kind]) {
+        return;
+    }
+    
+    XZSegmentedControlIndicatorLayoutAttributes * const oldValue = _indicatorLayoutAttributes;
+    
+    NSIndexPath * const indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+    _indicatorLayoutAttributes = [XZSegmentedControlIndicatorLayoutAttributes layoutAttributesForDecorationViewOfKind:kind withIndexPath:indexPath];
+    
+    // 复制自定义属性
+    if (oldValue) {
+        _indicatorLayoutAttributes.indicatorView = oldValue.indicatorView;
+        _indicatorLayoutAttributes.image         = oldValue.image;
+        _indicatorLayoutAttributes.color         = oldValue.color;
+        _indicatorLayoutAttributes.transition    = oldValue.transition;
     }
 }
 

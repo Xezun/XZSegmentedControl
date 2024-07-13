@@ -17,21 +17,25 @@ NS_ASSUME_NONNULL_BEGIN
 /// 是否支持动态转场，默认否。
 @property (class, nonatomic, readonly) BOOL supportsInteractiveTransition;
 
-/// 由于在 `UICollectionReusableView` 的 `-preferredLayoutAttributesFittingAttributes:` 方法中，修改 `zIndex` 无效，所以定义了此方法。
+/// 子类应该在此方法中，根据 `selectedIndex` 计算指示器的布局。
+/// @discussion
+/// 如果指示器支持交互式转场，子类还可以通过 `selectedIndex + transition` 获得目标位置，并根据 `transition` 设置指示器的转场中间态布局。
+/// @discussion
+/// 子类还可以通过此方法修改 `zIndex` 改变指示器视图的层级位置。在 `-preferredLayoutAttributesFittingAttributes:` 方法中，修改 `zindex` 无效，必须在此方法中才可以。
 + (void)segmentedControl:(XZSegmentedControl *)segmentedControl prepareForLayoutAttributes:(XZSegmentedControlIndicatorLayoutAttributes *)layoutAttributes NS_SWIFT_NAME(segmentedControl(_:prepareForLayoutAttributes:));
 
-/// 当 layoutAttributes 变化时，原生不一定会为 DecorationView 添加上我们期望的动画效果，
-/// 所以我们需要自行处理，方法 -setSelectedIndex:animated: 被调用时的动画效果。
-///
+/// 非交互式的转场时，原生为指示器布局变化只有一个淡出淡入的过渡效果，所以组件提供此方法，为指示器应用新布局前，提供了一个自定义转场动画的机会。
+/// @discussion
+/// 此动画效果应用于，用户点击 segment 或方法 `-setSelectedIndex:animated:` 被调用时。
+/// @discussion
 /// 默认情况下，该方法默认仅执行了一个平移动画，代码如下。
 /// @code
 /// [UIView animateWithDuration:0.35 animations:^{
 ///     self.frame = layoutAttributes.frame;
 /// }];
 /// @endcode
-///
-/// 子类重写此方法，一般情况下，不需要调用父类实现。
-///
+/// @discussion
+/// 一般情况下，子类重写此方法，不需要调用父类实现。
 /// @param layoutAttributes 指示器布局信息。
 - (void)animateTransition:(XZSegmentedControlIndicatorLayoutAttributes *)layoutAttributes;
 

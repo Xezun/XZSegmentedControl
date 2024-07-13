@@ -1,5 +1,5 @@
 //
-//  XZSegmentedControlSegmentView.h
+//  XZSegmentedControlSegmentCell.h
 //  XZSegmentedControl
 //
 //  Created by 徐臻 on 2024/6/25.
@@ -10,8 +10,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface XZSegmentedControlSegmentView : UICollectionViewCell
-@property (nonatomic, strong) UIView<XZSegmentedControlSegmentView> *itemView;
+@interface XZSegmentedControlSegmentCell : UICollectionViewCell
+@property (nonatomic, strong) UIView<XZSegmentedControlSegmentView> *segmentView;
 @end
 
 NS_ASSUME_NONNULL_END

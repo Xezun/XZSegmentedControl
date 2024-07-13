@@ -14,8 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 @class UITableView, UISegmentedControl;
 
 typedef NS_ENUM(NSUInteger, XZSegmentedControlDirection) {
-    XZSegmentedControlDirectionVertical = 0,
-    XZSegmentedControlDirectionHorizontal = 1
+    XZSegmentedControlDirectionHorizontal = 0,
+    XZSegmentedControlDirectionVertical = 1
 };
 
 /// 指示器样式。
@@ -44,7 +44,7 @@ typedef NS_ENUM(NSUInteger, XZSegmentedControlIndicatorStyle) {
 
 @interface XZSegmentedControl : UIControl
 
-/// 指示器方向。支持在 IB 中设置，使用 0 表示纵向，使用 1 表示横向。
+/// 指示器方向。支持在 IB 中设置，使用 0 表示横向，使用 0 表示纵向。
 #if TARGET_INTERFACE_BUILDER
 @property (nonatomic) IBInspectable NSInteger direction;
 #else

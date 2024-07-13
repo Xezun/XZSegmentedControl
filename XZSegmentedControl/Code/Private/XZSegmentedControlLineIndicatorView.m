@@ -92,7 +92,6 @@
             CGFloat const x = frame.origin.x + (frame.size.width - w) * 0.5;
             CGFloat const y = CGRectGetMaxY(frame) - h;
             return CGRectMake(x, y, w, h);
-            break;
         }
         case XZSegmentedControlDirectionVertical: {
             CGFloat const w = indicatorSize.width > 0 ? indicatorSize.width : kIndicatorWidth;
@@ -100,11 +99,10 @@
             CGFloat const y = frame.origin.y + (frame.size.height - h) * 0.5;
             CGFloat const x = CGRectGetMaxX(frame) - w;
             return CGRectMake(x, y, w, h);
-            break;
         }
-        default:
+        default: {
             return CGRectZero;
-            break;
+        }
     }
 }
 
@@ -116,25 +114,23 @@
     CGRect const frame = [segmentedControl frameForSegmentAtIndex:selectedIndex];
     CGSize const indicatorSize = segmentedControl.indicatorSize;
     switch (segmentedControl.direction) {
-        case UICollectionViewScrollDirectionHorizontal: {
+        case XZSegmentedControlDirectionHorizontal: {
             CGFloat const h = indicatorSize.height > 0 ? indicatorSize.height : kIndicatorWidth;
             CGFloat const w = indicatorSize.width > 0 ? indicatorSize.width : (indicatorSize.width + frame.size.width);
             CGFloat const x = frame.origin.x + (frame.size.width - w) * 0.5;
             CGFloat const y = CGRectGetMinY(frame);
             return CGRectMake(x, y, w, h);
-            break;
         }
-        case UICollectionViewScrollDirectionVertical: {
+        case XZSegmentedControlDirectionVertical: {
             CGFloat const w = indicatorSize.width > 0 ? indicatorSize.width : kIndicatorWidth;
             CGFloat const h = indicatorSize.height > 0 ? indicatorSize.height : (indicatorSize.height + frame.size.height);
             CGFloat const y = frame.origin.y + (frame.size.height - h) * 0.5;
             CGFloat const x = CGRectGetMinX(frame);
             return CGRectMake(x, y, w, h);
-            break;
         }
-        default:
+        default: {
             return CGRectZero;
-            break;
+        }
     }
 }
 

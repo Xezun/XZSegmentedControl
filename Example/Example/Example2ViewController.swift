@@ -1,14 +1,14 @@
 //
-//  ExampleViewController.swift
+//  Example2ViewController.swift
 //  Example
 //
-//  Created by 徐臻 on 2024/6/12.
+//  Created by 徐臻 on 2024/7/14.
 //
 
 import UIKit
 import XZSegmentedControl
 
-class ExampleViewController: UIViewController, UIScrollViewDelegate {
+class Example2ViewController: UIViewController, UIScrollViewDelegate {
 
     @IBOutlet weak var segmentedControl: XZSegmentedControl!
     @IBOutlet weak var scrollView: UIScrollView!
@@ -30,11 +30,7 @@ class ExampleViewController: UIViewController, UIScrollViewDelegate {
             scrollView.addSubview(view)
         }
         
-        if segmentedControl.direction == .horizontal {
-            segmentedControl.indicatorSize  = CGSize.init(width: 20.0, height: 3.0)
-        } else {
-            segmentedControl.indicatorSize  = CGSize.init(width: 3.0, height: 20.0)
-        }
+        segmentedControl.indicatorSize  = CGSize.init(width: 3.0, height: 20.0)
         segmentedControl.indicatorColor = .systemRed
         segmentedControl.titles         = self.titles
         segmentedControl.segmentSpacing = 10;
@@ -48,19 +44,11 @@ class ExampleViewController: UIViewController, UIScrollViewDelegate {
         
         var frame = scrollView.frame;
         frame.origin = .zero
-        if segmentedControl.direction == .horizontal {
-            for view in views {
-                view.frame = frame
-                frame.origin.x += frame.width
-            }
-            scrollView.contentSize = .init(width: frame.origin.x, height: 0)
-        } else {
-            for view in views {
-                view.frame = frame
-                frame.origin.y += frame.height
-            }
-            scrollView.contentSize = .init(width: 0, height: frame.origin.y)
+        for view in views {
+            view.frame = frame
+            frame.origin.y += frame.height
         }
+        scrollView.contentSize = .init(width: 0, height: frame.origin.y)
     }
 
     @objc func segmentedControlValueChanged(_ sender: XZSegmentedControl) {
@@ -68,31 +56,18 @@ class ExampleViewController: UIViewController, UIScrollViewDelegate {
         print("XZSegmentedControl.valueChanged: \(newIndex)")
         UIView.animate(withDuration: 0.3, animations: {
             var bounds = self.scrollView.bounds;
-            if self.segmentedControl.direction == .horizontal {
-                bounds.origin.x = bounds.width * CGFloat(newIndex)
-            } else {
-                bounds.origin.y = bounds.height * CGFloat(newIndex)
-            }
+            bounds.origin.y = bounds.height * CGFloat(newIndex)
             self.scrollView.bounds = bounds
         });
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let contentOffset = scrollView.contentOffset;
-        var width : CGFloat = 0
-        var newX  : CGFloat = 0
-        
-        if segmentedControl.direction == .horizontal {
-            width = scrollView.frame.width;
-            newX = contentOffset.x;
-        } else {
-            width = scrollView.frame.height;
-            newX = contentOffset.y;
-        }
-        
-        let oldX = width * CGFloat(segmentedControl.selectedIndex)
-        let newIndex = newX > oldX ? Int(floor(newX / width)) : Int(ceil(newX / width))
-        let transition = (newX - CGFloat(newIndex) * width) / width;
+        let height      = scrollView.frame.height
+        let newY        = contentOffset.y
+        let oldY        = height * CGFloat(segmentedControl.selectedIndex)
+        let newIndex    = newY > oldY ? Int(floor(newY / height)) : Int(ceil(newY / height))
+        let transition  = (newY - CGFloat(newIndex) * height) / height;
         
         segmentedControl.setSelectedIndex(newIndex, animated: true)
         segmentedControl.indicatorTransition = transition
@@ -110,12 +85,8 @@ class ExampleViewController: UIViewController, UIScrollViewDelegate {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let identifier = segue.identifier else { return }
-        if identifier == "page" {
-            
-        }
+
         switch identifier {
-        case "page":
-            break
         case "settings":
             if let vc = segue.destination as? ExampleSettingsViewController {
                 vc.segmentedControl = self.segmentedControl
@@ -124,6 +95,4 @@ class ExampleViewController: UIViewController, UIScrollViewDelegate {
             fatalError()
         }
     }
-    
 }
-

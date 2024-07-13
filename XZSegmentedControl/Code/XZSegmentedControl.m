@@ -7,7 +7,7 @@
 //
 
 #import "XZSegmentedControl.h"
-#import "XZSegmentedControlContentView.h"
+#import "XZSegmentedControlCollectionView.h"
 #import "XZSegmentedControlFlowLayout.h"
 #import "XZSegmentedControlSegmentCell.h"
 #import "XZSegmentedControlTextItem.h"
@@ -500,7 +500,7 @@
             break;
     }
 
-    _collectionView = [[XZSegmentedControlContentView alloc] initWithFrame:bounds collectionViewLayout:_flowLayout];
+    _collectionView = [[XZSegmentedControlCollectionView alloc] initWithFrame:bounds collectionViewLayout:_flowLayout];
     _collectionView.autoresizingMask               = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     _collectionView.backgroundColor                = [UIColor clearColor];
     _collectionView.prefetchingEnabled             = NO;

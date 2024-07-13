@@ -9,13 +9,14 @@
 /* Begin PBXBuildFile section */
 		294DF8812C19CFDE0023E41F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294DF8802C19CFDE0023E41F /* AppDelegate.swift */; };
 		294DF8832C19CFDE0023E41F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294DF8822C19CFDE0023E41F /* SceneDelegate.swift */; };
-		294DF8852C19CFDE0023E41F /* ExampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294DF8842C19CFDE0023E41F /* ExampleViewController.swift */; };
+		294DF8852C19CFDE0023E41F /* Example1ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294DF8842C19CFDE0023E41F /* Example1ViewController.swift */; };
 		294DF8882C19CFDE0023E41F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 294DF8862C19CFDE0023E41F /* Main.storyboard */; };
 		294DF88A2C19CFDF0023E41F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 294DF8892C19CFDF0023E41F /* Assets.xcassets */; };
 		294DF88D2C19CFDF0023E41F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 294DF88B2C19CFDF0023E41F /* LaunchScreen.storyboard */; };
 		294DF8982C19CFDF0023E41F /* ExampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294DF8972C19CFDF0023E41F /* ExampleTests.swift */; };
 		294DF8A22C19CFE00023E41F /* ExampleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294DF8A12C19CFE00023E41F /* ExampleUITests.swift */; };
 		294DF8A42C19CFE00023E41F /* ExampleUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294DF8A32C19CFE00023E41F /* ExampleUITestsLaunchTests.swift */; };
+		295A90672C42F9B5009FC05B /* Example2ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 295A90662C42F9B5009FC05B /* Example2ViewController.swift */; };
 		29CD635F2C2E7BF800BDAB64 /* ExampleSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29CD635E2C2E7BF800BDAB64 /* ExampleSettingsViewController.swift */; };
 		29CD63612C2E7C2800BDAB64 /* ExampleSizeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29CD63602C2E7C2800BDAB64 /* ExampleSizeViewController.swift */; };
 		29CD63632C2E852A00BDAB64 /* ExampleSelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29CD63622C2E852A00BDAB64 /* ExampleSelectViewController.swift */; };
@@ -48,7 +49,7 @@
 		294DF87D2C19CFDE0023E41F /* Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		294DF8802C19CFDE0023E41F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		294DF8822C19CFDE0023E41F /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		294DF8842C19CFDE0023E41F /* ExampleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleViewController.swift; sourceTree = "<group>"; };
+		294DF8842C19CFDE0023E41F /* Example1ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Example1ViewController.swift; sourceTree = "<group>"; };
 		294DF8872C19CFDE0023E41F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		294DF8892C19CFDF0023E41F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		294DF88C2C19CFDF0023E41F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -58,6 +59,7 @@
 		294DF89D2C19CFE00023E41F /* ExampleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ExampleUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		294DF8A12C19CFE00023E41F /* ExampleUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleUITests.swift; sourceTree = "<group>"; };
 		294DF8A32C19CFE00023E41F /* ExampleUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		295A90662C42F9B5009FC05B /* Example2ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Example2ViewController.swift; sourceTree = "<group>"; };
 		29CD635E2C2E7BF800BDAB64 /* ExampleSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleSettingsViewController.swift; sourceTree = "<group>"; };
 		29CD63602C2E7C2800BDAB64 /* ExampleSizeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleSizeViewController.swift; sourceTree = "<group>"; };
 		29CD63622C2E852A00BDAB64 /* ExampleSelectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleSelectViewController.swift; sourceTree = "<group>"; };
@@ -144,7 +146,8 @@
 			children = (
 				294DF8802C19CFDE0023E41F /* AppDelegate.swift */,
 				294DF8822C19CFDE0023E41F /* SceneDelegate.swift */,
-				294DF8842C19CFDE0023E41F /* ExampleViewController.swift */,
+				294DF8842C19CFDE0023E41F /* Example1ViewController.swift */,
+				295A90662C42F9B5009FC05B /* Example2ViewController.swift */,
 				29CD635E2C2E7BF800BDAB64 /* ExampleSettingsViewController.swift */,
 				29CD63602C2E7C2800BDAB64 /* ExampleSizeViewController.swift */,
 				29CD63622C2E852A00BDAB64 /* ExampleSelectViewController.swift */,
@@ -409,7 +412,8 @@
 			files = (
 				29CD63612C2E7C2800BDAB64 /* ExampleSizeViewController.swift in Sources */,
 				29CD635F2C2E7BF800BDAB64 /* ExampleSettingsViewController.swift in Sources */,
-				294DF8852C19CFDE0023E41F /* ExampleViewController.swift in Sources */,
+				295A90672C42F9B5009FC05B /* Example2ViewController.swift in Sources */,
+				294DF8852C19CFDE0023E41F /* Example1ViewController.swift in Sources */,
 				29CD63652C2E872A00BDAB64 /* ExampleColorSelectViewController.swift in Sources */,
 				294DF8812C19CFDE0023E41F /* AppDelegate.swift in Sources */,
 				29CD63692C2E955E00BDAB64 /* ExampleSegmentedControlIndicatorView.swift in Sources */,

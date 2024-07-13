@@ -26,7 +26,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="362.66666666666669" height="43.666667938232422"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="水平" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="NhX-hb-hg7">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="示例一：水平" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="NhX-hb-hg7">
                                                     <rect key="frame" x="20" y="0.0" width="334.66666666666669" height="43.666667938232422"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -46,7 +46,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="362.66666666666669" height="43.666667938232422"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="垂直" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="q5H-hT-3CJ">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="示例二：垂直" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="q5H-hT-3CJ">
                                                     <rect key="frame" x="20" y="0.0" width="334.66666666666669" height="43.666667938232422"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -78,7 +78,7 @@
         <!--垂直-->
         <scene sceneID="Ope-dq-7Sk">
             <objects>
-                <viewController id="ZgU-MW-go9" customClass="ExampleViewController" customModule="Example" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="ZgU-MW-go9" customClass="Example2ViewController" customModule="Example" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="mBx-YB-Baz">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -95,22 +95,22 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </view>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qLz-m8-OEz">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pde-fA-iCv">
                                 <rect key="frame" x="80" y="103" width="313" height="715"/>
                                 <connections>
-                                    <outlet property="delegate" destination="ZgU-MW-go9" id="6me-SU-Q0U"/>
+                                    <outlet property="delegate" destination="ZgU-MW-go9" id="w7E-tA-cGR"/>
                                 </connections>
                             </scrollView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="KEd-VV-ihy"/>
                         <color key="backgroundColor" systemColor="systemGray6Color"/>
                         <constraints>
-                            <constraint firstItem="KEd-VV-ihy" firstAttribute="bottom" secondItem="qLz-m8-OEz" secondAttribute="bottom" id="1gf-fc-ll2"/>
+                            <constraint firstItem="KEd-VV-ihy" firstAttribute="trailing" secondItem="Pde-fA-iCv" secondAttribute="trailing" id="GNT-uO-sHy"/>
                             <constraint firstItem="KEd-VV-ihy" firstAttribute="bottom" secondItem="RVr-7Y-OtU" secondAttribute="bottom" id="Tub-gw-2O3"/>
-                            <constraint firstItem="KEd-VV-ihy" firstAttribute="trailing" secondItem="qLz-m8-OEz" secondAttribute="trailing" id="aIp-ab-vxo"/>
-                            <constraint firstItem="qLz-m8-OEz" firstAttribute="leading" secondItem="RVr-7Y-OtU" secondAttribute="trailing" id="cmS-EX-52j"/>
+                            <constraint firstItem="Pde-fA-iCv" firstAttribute="top" secondItem="KEd-VV-ihy" secondAttribute="top" id="hwc-Mo-E4n"/>
                             <constraint firstItem="RVr-7Y-OtU" firstAttribute="leading" secondItem="KEd-VV-ihy" secondAttribute="leading" id="pKc-tF-GK5"/>
-                            <constraint firstItem="qLz-m8-OEz" firstAttribute="top" secondItem="KEd-VV-ihy" secondAttribute="top" id="sVZ-Tp-Ya7"/>
+                            <constraint firstItem="KEd-VV-ihy" firstAttribute="bottom" secondItem="Pde-fA-iCv" secondAttribute="bottom" id="qpp-lQ-IIe"/>
+                            <constraint firstItem="Pde-fA-iCv" firstAttribute="leading" secondItem="RVr-7Y-OtU" secondAttribute="trailing" id="uJr-kT-iIR"/>
                             <constraint firstItem="RVr-7Y-OtU" firstAttribute="top" secondItem="KEd-VV-ihy" secondAttribute="top" id="uhK-Bc-GSb"/>
                         </constraints>
                     </view>
@@ -123,7 +123,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="scrollView" destination="qLz-m8-OEz" id="hVl-50-t0E"/>
+                        <outlet property="scrollView" destination="Pde-fA-iCv" id="9HA-kS-4PU"/>
                         <outlet property="segmentedControl" destination="RVr-7Y-OtU" id="mCk-dA-Ior"/>
                     </connections>
                 </viewController>
@@ -134,7 +134,7 @@
         <!--水平-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ExampleViewController" customModule="Example" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="Example1ViewController" customModule="Example" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -151,23 +151,21 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </view>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4Jk-S9-PfT">
-                                <rect key="frame" x="0.0" y="153" width="393" height="665"/>
-                                <connections>
-                                    <outlet property="delegate" destination="BYZ-38-t0r" id="ffX-oe-HjC"/>
-                                </connections>
-                            </scrollView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="m3y-0I-Xp8" customClass="XZPageView">
+                                <rect key="frame" x="0.0" y="153" width="393" height="699"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemGray6Color"/>
                         <constraints>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="4Jk-S9-PfT" secondAttribute="trailing" id="6iI-oE-jV5"/>
-                            <constraint firstItem="4Jk-S9-PfT" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="7sX-HA-bjp"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="4Jk-S9-PfT" secondAttribute="bottom" id="Myv-QK-ePS"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="m3y-0I-Xp8" secondAttribute="trailing" id="3rx-08-JwJ"/>
+                            <constraint firstItem="m3y-0I-Xp8" firstAttribute="top" secondItem="hVH-tS-Jnf" secondAttribute="bottom" id="4HC-OM-yiQ"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="hVH-tS-Jnf" secondAttribute="trailing" id="R4b-jW-nfa"/>
                             <constraint firstItem="hVH-tS-Jnf" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="XOc-o0-NWq"/>
+                            <constraint firstAttribute="bottom" secondItem="m3y-0I-Xp8" secondAttribute="bottom" id="g7P-we-MPN"/>
                             <constraint firstItem="hVH-tS-Jnf" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="hfU-ey-gbK"/>
-                            <constraint firstItem="4Jk-S9-PfT" firstAttribute="top" secondItem="hVH-tS-Jnf" secondAttribute="bottom" id="pOr-Yr-rCe"/>
+                            <constraint firstItem="m3y-0I-Xp8" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="pBp-n6-ySr"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="水平" id="S90-XX-edg">
@@ -179,7 +177,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="scrollView" destination="4Jk-S9-PfT" id="Rj5-Rq-I5d"/>
+                        <outlet property="pageView" destination="m3y-0I-Xp8" id="zaK-MU-dmE"/>
                         <outlet property="segmentedControl" destination="hVH-tS-Jnf" id="WlI-gX-jrx"/>
                     </connections>
                 </viewController>

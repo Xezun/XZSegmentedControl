@@ -1,13 +1,13 @@
 //
-//  XZSegmentedControlIndicatorView.m
+//  XZSegmentedControlIndicator.m
 //  XZSegmentedControl
 //
 //  Created by 徐臻 on 2024/7/9.
 //
 
-#import "XZSegmentedControlIndicatorView.h"
+#import "XZSegmentedControlIndicator.h"
 
-@implementation XZSegmentedControlIndicatorView
+@implementation XZSegmentedControlIndicator
 
 + (BOOL)supportsInteractiveTransition {
     return NO;

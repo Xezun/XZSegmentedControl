@@ -6,11 +6,11 @@
 //
 
 #import <XZSegmentedControl/XZSegmentedControl.h>
-#import <XZSegmentedControl/XZSegmentedControlIndicatorView.h>
+#import <XZSegmentedControl/XZSegmentedControlIndicator.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface XZSegmentedControlLineIndicatorView : XZSegmentedControlIndicatorView
+@interface XZSegmentedControlLineIndicatorView : XZSegmentedControlIndicator
 @end
 
 @interface XZSegmentedControlMarkLineIndicatorView : XZSegmentedControlLineIndicatorView

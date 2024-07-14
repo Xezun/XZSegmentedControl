@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <XZSegmentedControl/XZSegmentedControlSegment.h>
 #import <XZSegmentedControl/XZSegmentedControlIndicatorView.h>
 
 NS_ASSUME_NONNULL_BEGIN
@@ -108,7 +109,7 @@ typedef NS_ENUM(NSUInteger, XZSegmentedControlIndicatorStyle) {
 - (void)insertSegmentAtIndex:(NSInteger)index;
 - (void)removeSegmentAtIndex:(NSInteger)index;
 
-- (__kindof UIView *)viewForSegmentAtIndex:(NSInteger)index;
+- (__kindof XZSegmentedControlSegment *)viewForSegmentAtIndex:(NSInteger)index;
 - (CGRect)frameForSegmentAtIndex:(NSInteger)index;
 
 /// 使用 item 标题文本作为数据源。
@@ -125,6 +126,10 @@ typedef NS_ENUM(NSUInteger, XZSegmentedControlIndicatorStyle) {
 /// 被选中的 item 文本字体。该属性仅在使用 titles 时生效。
 @property (nonatomic, strong, null_resettable) UIFont  *selectedTitleFont;
 
+- (void)registerClass:(nullable Class)segmentClass forSegmentWithReuseIdentifier:(NSString *)identifier;
+- (void)registerNib:(nullable UINib *)segmentNib forSegmentWithReuseIdentifier:(NSString *)identifier;
+- (__kindof UICollectionViewCell *)dequeueReusableSegmentWithReuseIdentifier:(NSString *)identifier forIndex:(NSInteger)index;
+
 @end
 
 
@@ -138,7 +143,7 @@ typedef NS_ENUM(NSUInteger, XZSegmentedControlIndicatorStyle) {
 ///   - segmentedControl: 调用此方法的对象
 ///   - index: item 的位置索引
 ///   - reusingView: 可供重用的视图
-- (__kindof UIView<XZSegmentedControlSegmentView> *)segmentedControl:(XZSegmentedControl *)segmentedControl viewForSegmentAtIndex:(NSInteger)index reusingView:(nullable __kindof UIView<XZSegmentedControlSegmentView> *)reusingView;
+- (__kindof UICollectionViewCell *)segmentedControl:(XZSegmentedControl *)segmentedControl viewForSegmentAtIndex:(NSInteger)index;
 /// 返回 item 的大小。
 /// - Parameters:
 ///   - segmentedControl: 调用此方法的对象

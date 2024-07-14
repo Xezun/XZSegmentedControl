@@ -172,9 +172,7 @@
     switch (_indicatorStyle) {
         case XZSegmentedControlIndicatorStyleMarkLine: {
             _indicatorLayoutAttributes.zIndex = NSIntegerMax;
-            if (count > 0) {
-                [_indicatorClass segmentedControl:_segmentedControl prepareForLayoutAttributes:_indicatorLayoutAttributes];
-            } else {
+            if (_selectedIndex == NSNotFound || count == 0) {
                 CGRect const bounds = self.collectionView.bounds;
                 switch (self.scrollDirection) {
                     case UICollectionViewScrollDirectionHorizontal:
@@ -186,14 +184,14 @@
                     default:
                         break;
                 }
+            } else {
+                [_indicatorClass segmentedControl:_segmentedControl prepareForLayoutAttributes:_indicatorLayoutAttributes];
             }
             break;
         }
         case XZSegmentedControlIndicatorStyleNoteLine: {
             _indicatorLayoutAttributes.zIndex = NSIntegerMax;
-            if (count > 0) {
-                [_indicatorClass segmentedControl:_segmentedControl prepareForLayoutAttributes:_indicatorLayoutAttributes];
-            } else {
+            if (_selectedIndex == NSNotFound || count == 0) {
                 CGRect const bounds = self.collectionView.bounds;
                 switch (self.scrollDirection) {
                     case UICollectionViewScrollDirectionHorizontal:
@@ -205,13 +203,13 @@
                     default:
                         break;
                 }
+            } else {
+                [_indicatorClass segmentedControl:_segmentedControl prepareForLayoutAttributes:_indicatorLayoutAttributes];
             }
             break;
         }
         case XZSegmentedControlIndicatorStyleCustom: {
-            if (count > 0) {
-                [_indicatorClass segmentedControl:_segmentedControl prepareForLayoutAttributes:_indicatorLayoutAttributes];
-            } else {
+            if (_selectedIndex == NSNotFound || count == 0) {
                 CGRect const bounds = self.collectionView.bounds;
                 switch (self.scrollDirection) {
                     case UICollectionViewScrollDirectionHorizontal:
@@ -223,6 +221,8 @@
                     default:
                         break;
                 }
+            } else {
+                [_indicatorClass segmentedControl:_segmentedControl prepareForLayoutAttributes:_indicatorLayoutAttributes];
             }
             break;
         }

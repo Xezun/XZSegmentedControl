@@ -401,11 +401,15 @@
             _transitionSegment = nil;
         }
     } else {
+        selectedSegment.transition = 1.0;
+        
         if (oldTransitionSegment != nil) {
-            oldTransitionSegment.transition = 0;
+            // oldTransitionSegment 变为了 selectedSegment
+            if (oldTransitionSegment != selectedSegment) {
+                oldTransitionSegment.transition = 0;
+            }
             _transitionSegment = nil;
         }
-        selectedSegment.transition = 1.0;
     }
 }
 

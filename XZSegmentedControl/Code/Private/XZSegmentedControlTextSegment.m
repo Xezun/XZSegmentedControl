@@ -25,17 +25,16 @@
 
 - (void)setSelected:(BOOL)selected {
     [super setSelected:selected];
+    XZLog(@"segment(%@).setSelected: %@", self.text, selected ? @"true" : @"false");
     
-//    XZSegmentedControl *_segmentedControl = self.segmentedControl;
-//    if (selected) {
-//        _textLabel.textColor = _segmentedControl.selectedTitleColor;
-//        _textLabel.font      = _segmentedControl.selectedTitleFont;
-//    } else {
-//        _textLabel.textColor = _segmentedControl.titleColor;
-//        _textLabel.font      = _segmentedControl.titleFont;
-//    }
-    
-    NSLog(@"segment(%@).setSelected: %@", self.text, selected ? @"true" : @"false");
+    XZSegmentedControl *_segmentedControl = self.segmentedControl;
+    if (selected) {
+        _textLabel.textColor = _segmentedControl.selectedTitleColor;
+        _textLabel.font      = _segmentedControl.selectedTitleFont;
+    } else {
+        _textLabel.textColor = _segmentedControl.titleColor;
+        _textLabel.font      = _segmentedControl.titleFont;
+    }
 }
 
 - (void)setText:(NSString *)text {
@@ -48,15 +47,9 @@
 
 - (void)setTransition:(CGFloat)transition {
     [super setTransition:transition];
-    NSLog(@"segment(%@).setTransition: %f", self.text, transition);
     
     XZSegmentedControl *_segmentedControl = self.segmentedControl;
-    
-    if (transition >= 1.0) {
-        _textLabel.textColor = _segmentedControl.selectedTitleColor;
-        _textLabel.font      = _segmentedControl.selectedTitleFont;
-        return;
-    }
+    XZLog(@"segment(%@, %ld).setTransition: %f", self.text, _segmentedControl.selectedIndex, transition);
     
     UIColor *titleColor = _segmentedControl.titleColor;
     UIColor *selectedTitleColor = _segmentedControl.selectedTitleColor;

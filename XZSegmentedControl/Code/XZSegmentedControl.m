@@ -125,24 +125,26 @@
         }
     }
     NSIndexPath *newIndexPath = [NSIndexPath indexPathForItem:selectedIndex inSection:0];
-    [_collectionView scrollToItemAtIndexPath:newIndexPath atScrollPosition:scrollPosition animated:YES];
+    [_collectionView selectItemAtIndexPath:newIndexPath animated:YES scrollPosition:scrollPosition];
 }
 
 - (void)reloadData {
-    [_collectionView reloadData];
-    
-    // TODO: 测试 reloadData 之后，selectedIndex 的值是否立即改变了。
-    NSIndexPath *indexPath = [NSIndexPath indexPathForItem:self.selectedIndex inSection:0];
-    switch (self.direction) {
-        case XZSegmentedControlDirectionVertical:
-            [_collectionView selectItemAtIndexPath:indexPath animated:YES scrollPosition:(UICollectionViewScrollPositionCenteredVertically)];
-            break;
-        case XZSegmentedControlDirectionHorizontal:
-            [_collectionView selectItemAtIndexPath:indexPath animated:YES scrollPosition:(UICollectionViewScrollPositionCenteredHorizontally)];
-            break;
-        default:
-            break;
-    }
+    // 直接在 reloadData 后面 selectItem 操作无效
+    [_collectionView performBatchUpdates:^{
+        [_collectionView reloadData];
+    } completion:^(BOOL finished) {
+        NSIndexPath *indexPath = [NSIndexPath indexPathForItem:self.selectedIndex inSection:0];
+        switch (self.direction) {
+            case XZSegmentedControlDirectionVertical:
+                [self->_collectionView selectItemAtIndexPath:indexPath animated:YES scrollPosition:(UICollectionViewScrollPositionCenteredVertically)];
+                break;
+            case XZSegmentedControlDirectionHorizontal:
+                [self->_collectionView selectItemAtIndexPath:indexPath animated:YES scrollPosition:(UICollectionViewScrollPositionCenteredHorizontally)];
+                break;
+            default:
+                break;
+        }
+    }];
 }
 
 - (void)insertSegmentAtIndex:(NSInteger)index {

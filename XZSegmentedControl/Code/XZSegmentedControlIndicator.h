@@ -6,6 +6,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <XZSegmentedControl/XZSegmentedControlDefines.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -45,11 +46,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-#if XZ_FRAMEWORK
-#define XZ_SEGMENTEDCONTROL_READONLY
-#else
-#define XZ_SEGMENTEDCONTROL_READONLY readonly
-#endif
+
 
 @interface XZSegmentedControlIndicatorLayoutAttributes : UICollectionViewLayoutAttributes
 @property (nonatomic, strong, nullable, XZ_SEGMENTEDCONTROL_READONLY) UIColor *color;

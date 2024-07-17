@@ -6,7 +6,7 @@
 //
 
 #import "XZSegmentedControlFlowLayout.h"
-#import "XZSegmentedControlLineIndicatorView.h"
+#import "XZSegmentedControlLineIndicator.h"
 
 #define kIndicatorKind   @"Indicator"
 #define kIndicatorWidth  3.0
@@ -21,7 +21,7 @@
     if (self != nil) {
         _needsUpdateIndicatorLayout = NO;
         _segmentedControl = segmentedControl;
-        _indicatorClass = [XZSegmentedControlMarkLineIndicatorView class];
+        _indicatorClass = [XZSegmentedControlMarkLineIndicator class];
         [self registerClass:_indicatorClass forDecorationViewOfKind:NSStringFromClass(_indicatorClass)];
         [self prepareIndicatorLayoutAttributes];
     }
@@ -55,10 +55,10 @@
         
         switch (_indicatorStyle) {
             case XZSegmentedControlIndicatorStyleMarkLine:
-                self.indicatorClass = [XZSegmentedControlMarkLineIndicatorView class];
+                self.indicatorClass = [XZSegmentedControlMarkLineIndicator class];
                 break;
             case XZSegmentedControlIndicatorStyleNoteLine:
-                self.indicatorClass = [XZSegmentedControlNoteLineIndicatorView class];
+                self.indicatorClass = [XZSegmentedControlNoteLineIndicator class];
                 break;
             case XZSegmentedControlIndicatorStyleCustom:
                 break;
@@ -79,13 +79,13 @@
     if (![indicatorClass isSubclassOfClass:UICollectionReusableView.class]) {
         switch (_indicatorStyle) {
             case XZSegmentedControlIndicatorStyleMarkLine:
-                indicatorClass = [XZSegmentedControlMarkLineIndicatorView class];
+                indicatorClass = [XZSegmentedControlMarkLineIndicator class];
                 break;
             case XZSegmentedControlIndicatorStyleNoteLine:
-                indicatorClass = [XZSegmentedControlNoteLineIndicatorView class];
+                indicatorClass = [XZSegmentedControlNoteLineIndicator class];
                 break;
             case XZSegmentedControlIndicatorStyleCustom:
-                indicatorClass = [XZSegmentedControlMarkLineIndicatorView class];
+                indicatorClass = [XZSegmentedControlMarkLineIndicator class];
                 break;
             default:
                 break;
@@ -115,10 +115,6 @@
     return _indicatorLayoutAttributes.transition;
 }
 
-- (void)setSelectedIndex:(NSInteger)selectedIndex {
-    [self setSelectedIndex:selectedIndex animated:NO];
-}
-
 - (void)setSelectedIndex:(NSInteger)selectedIndex animated:(BOOL)animated {
     if (_selectedIndex != selectedIndex) {
         _selectedIndex = selectedIndex;
@@ -129,6 +125,17 @@
 
 - (void)prepareLayout {
     [super prepareLayout];
+    
+    // 自动调整 selectedIndex 到合理的范围
+    NSInteger const count = [self.collectionView numberOfItemsInSection:0];
+    if (count == 0) {
+        _selectedIndex = NSNotFound;
+    } else if (_selectedIndex == NSNotFound) {
+        _selectedIndex = 0;
+    } else {
+        _selectedIndex = MIN(count - 1, _selectedIndex);
+    }
+    
     [self prepareIndicatorLayout];
 }
 
@@ -172,7 +179,7 @@
     switch (_indicatorStyle) {
         case XZSegmentedControlIndicatorStyleMarkLine: {
             _indicatorLayoutAttributes.zIndex = NSIntegerMax;
-            if (_selectedIndex == NSNotFound || count == 0) {
+            if (count == 0) {
                 CGRect const bounds = self.collectionView.bounds;
                 switch (self.scrollDirection) {
                     case UICollectionViewScrollDirectionHorizontal:
@@ -191,7 +198,7 @@
         }
         case XZSegmentedControlIndicatorStyleNoteLine: {
             _indicatorLayoutAttributes.zIndex = NSIntegerMax;
-            if (_selectedIndex == NSNotFound || count == 0) {
+            if (count == 0) {
                 CGRect const bounds = self.collectionView.bounds;
                 switch (self.scrollDirection) {
                     case UICollectionViewScrollDirectionHorizontal:
@@ -209,7 +216,7 @@
             break;
         }
         case XZSegmentedControlIndicatorStyleCustom: {
-            if (_selectedIndex == NSNotFound || count == 0) {
+            if (count == 0) {
                 CGRect const bounds = self.collectionView.bounds;
                 switch (self.scrollDirection) {
                     case UICollectionViewScrollDirectionHorizontal:

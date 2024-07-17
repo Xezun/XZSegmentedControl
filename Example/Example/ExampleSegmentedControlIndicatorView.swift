@@ -8,12 +8,12 @@
 import UIKit
 import XZSegmentedControl
 
-class ExampleSegmentedControlIndicatorView: XZSegmentedControlIndicatorView {
+class ExampleSegmentedControlIndicatorView: XZSegmentedControlIndicator {
     
     override class func segmentedControl(_ segmentedControl: XZSegmentedControl, prepareForLayoutAttributes indicatorLayoutAttributes: XZSegmentedControlIndicatorLayoutAttributes) {
         indicatorLayoutAttributes.zIndex = -111
         
-        let frame = segmentedControl.frameForSegment(at: segmentedControl.selectedIndex)
+        let frame = segmentedControl.layoutAttributesForItem(at: segmentedControl.selectedIndex).frame;
         if segmentedControl.direction == .horizontal {
             indicatorLayoutAttributes.frame = frame.insetBy(dx: 0, dy: 5)
         } else {

@@ -6,6 +6,7 @@
 //
 
 #import "XZSegmentedControlSegment.h"
+#import "XZSegmentedControl.h"
 
 @implementation XZSegmentedControlSegment
 

@@ -9,7 +9,7 @@
 #import "XZSegmentedControl.h"
 #import "XZSegmentedControlContentView.h"
 #import "XZSegmentedControlFlowLayout.h"
-#import "XZSegmentedControlTextSegmentView.h"
+#import "XZSegmentedControlTextSegment.h"
 
 #define kReuseIdentifier @"XZSegmentedControlReuseIdentifier"
 
@@ -18,6 +18,7 @@
     UICollectionView             *_collectionView;
     NSMutableArray<XZSegmentedControlTextModel *> *_titleModels;
     BOOL _needsUpdateTitleModels;
+    XZSegmentedControlSegment * __weak _transitionSegment;
 }
 
 @end
@@ -27,7 +28,7 @@
 - (instancetype)initWithFrame:(CGRect)frame direction:(XZSegmentedControlDirection)direction {
     self = [super initWithFrame:frame];
     if (self != nil) {
-        [self __xz_segmentedControl_didInitialize:direction];
+        [self XZ_didInitialize:direction];
     }
     return self;
 }
@@ -39,7 +40,7 @@
 - (instancetype)initWithCoder:(NSCoder *)coder {
     self = [super initWithCoder:coder];
     if (self != nil) {
-        [self __xz_segmentedControl_didInitialize:XZSegmentedControlDirectionHorizontal];
+        [self XZ_didInitialize:XZSegmentedControlDirectionHorizontal];
     }
     return self;
 }
@@ -89,28 +90,29 @@
         }
     }
     
-    [self __xz_segmentedControl_setNeedsUpdateTitleModels];
+    [self XZ_setNeedsUpdateTitleModels];
 }
 
 - (void)setSelectedIndex:(NSInteger)selectedIndex animated:(BOOL)animated {
-    [self setSelectedIndex:selectedIndex animated:animated focuses:YES];
+    [self setSelectedIndex:selectedIndex animated:animated centered:YES];
 }
 
-- (void)setSelectedIndex:(NSInteger const)selectedIndex animated:(BOOL)animated focuses:(BOOL)focuses {
+- (void)setSelectedIndex:(NSInteger const)selectedIndex animated:(BOOL)animated centered:(BOOL)centered {
     NSInteger const oldValue = _flowLayout.selectedIndex;
     if (selectedIndex == oldValue) return;
-    _flowLayout.selectedIndex = selectedIndex;
     
     // 取消已选
     if (oldValue != NSNotFound) {
         NSIndexPath *oldIndexPath = [NSIndexPath indexPathForItem:oldValue inSection:0];
         [_collectionView deselectItemAtIndexPath:oldIndexPath animated:animated];
     }
-    // 选中新的
+    
+    // 移动指示器位置
     [_flowLayout setSelectedIndex:selectedIndex animated:animated];
-    NSIndexPath *newIndexPath = [NSIndexPath indexPathForItem:selectedIndex inSection:0];
-    if (focuses) {
-        UICollectionViewScrollPosition scrollPosition = UICollectionViewScrollPositionNone;
+    
+    // 选中新的
+    UICollectionViewScrollPosition scrollPosition = UICollectionViewScrollPositionNone;
+    if (centered) {
         switch (_flowLayout.scrollDirection) {
             case UICollectionViewScrollDirectionHorizontal:
                 scrollPosition = UICollectionViewScrollPositionCenteredHorizontally;
@@ -121,23 +123,25 @@
             default:
                 break;
         }
-        [_collectionView selectItemAtIndexPath:newIndexPath animated:animated scrollPosition:scrollPosition];
-    } else {
-        [_collectionView selectItemAtIndexPath:newIndexPath animated:animated scrollPosition:UICollectionViewScrollPositionNone];
     }
+    NSIndexPath *newIndexPath = [NSIndexPath indexPathForItem:selectedIndex inSection:0];
+    [_collectionView scrollToItemAtIndexPath:newIndexPath atScrollPosition:scrollPosition animated:YES];
 }
 
 - (void)reloadData {
-    NSInteger const oldIndex = self.selectedIndex;
-    NSInteger const count    = [_dataSource numberOfSegmentsInSegmentedControl:self];
-    NSInteger const newIndex = MAX(0, MIN(oldIndex, count - 1));
-    
     [_collectionView reloadData];
     
-    if (count == 0) {
-        _flowLayout.selectedIndex = NSNotFound;
-    } else if (newIndex != oldIndex) {
-        [self setSelectedIndex:newIndex animated:YES focuses:YES];
+    // TODO: 测试 reloadData 之后，selectedIndex 的值是否立即改变了。
+    NSIndexPath *indexPath = [NSIndexPath indexPathForItem:self.selectedIndex inSection:0];
+    switch (self.direction) {
+        case XZSegmentedControlDirectionVertical:
+            [_collectionView selectItemAtIndexPath:indexPath animated:YES scrollPosition:(UICollectionViewScrollPositionCenteredVertically)];
+            break;
+        case XZSegmentedControlDirectionHorizontal:
+            [_collectionView selectItemAtIndexPath:indexPath animated:YES scrollPosition:(UICollectionViewScrollPositionCenteredHorizontally)];
+            break;
+        default:
+            break;
     }
 }
 
@@ -146,7 +150,7 @@
     
     NSInteger const selectedIndex = self.selectedIndex;
     if (selectedIndex >= index) {
-        _flowLayout.selectedIndex = selectedIndex + 1;
+        [_flowLayout setSelectedIndex:selectedIndex + 1 animated:YES];
     }
 }
 
@@ -154,18 +158,34 @@
     [_collectionView deleteItemsAtIndexPaths:@[[NSIndexPath indexPathForItem:index inSection:0]]];
     NSInteger const selectedIndex = self.selectedIndex;
     if (selectedIndex >= index) {
-        _flowLayout.selectedIndex = selectedIndex - 1;
+        [_flowLayout setSelectedIndex:selectedIndex - 1 animated:YES];
     }
 }
 
-- (UIView *)viewForSegmentAtIndex:(NSInteger)index {
+- (__kindof XZSegmentedControlSegment *)segmentForItemAtIndex:(NSInteger)index {
     NSIndexPath *indexPath = [NSIndexPath indexPathForItem:index inSection:0];
-    return (id)[_collectionView cellForItemAtIndexPath:indexPath];
+    return (XZSegmentedControlSegment *)[_collectionView cellForItemAtIndexPath:indexPath];
 }
 
-- (CGRect)frameForSegmentAtIndex:(NSInteger)index {
+- (XZSegmentedControlIndicatorLayoutAttributes *)layoutAttributesForItemAtIndex:(NSInteger)index {
     NSIndexPath *indexPath = [NSIndexPath indexPathForItem:index inSection:0];
-    return [_flowLayout layoutAttributesForItemAtIndexPath:indexPath].frame;
+    return (id)[_collectionView layoutAttributesForItemAtIndexPath:indexPath];
+}
+
+- (void)registerClass:(Class)segmentClass forSegmentWithReuseIdentifier:(NSString *)identifier {
+    NSParameterAssert([segmentClass isSubclassOfClass:[XZSegmentedControlSegment class]]);
+    NSParameterAssert(![identifier isEqualToString:kReuseIdentifier]);
+    [_collectionView registerClass:segmentClass forCellWithReuseIdentifier:identifier];
+}
+
+- (void)registerNib:(UINib *)segmentNib forSegmentWithReuseIdentifier:(NSString *)identifier {
+    NSParameterAssert(![identifier isEqualToString:kReuseIdentifier]);
+    [_collectionView registerNib:segmentNib forCellWithReuseIdentifier:identifier];
+}
+
+- (__kindof UICollectionViewCell *)dequeueReusableSegmentWithReuseIdentifier:(NSString *)identifier forIndex:(NSInteger)index {
+    NSIndexPath *indexPath = [NSIndexPath indexPathForItem:index inSection:0];
+    return [_collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
 }
 
 #pragma mark - <UICollectionViewDataSource>
@@ -185,35 +205,24 @@
     NSInteger const index = indexPath.item;
     
     if (_dataSource) {
-        return [_dataSource segmentedControl:self viewForSegmentAtIndex:index];
+        XZSegmentedControlSegment *segment = [_dataSource segmentedControl:self segmentForItemAtIndex:index];
+        segment.segmentedControl = self;
+        return segment;
     }
     
+    XZSegmentedControlTextSegment *segment = [collectionView dequeueReusableCellWithReuseIdentifier:kReuseIdentifier forIndexPath:indexPath];
+    segment.segmentedControl = self;
+    
     NSInteger const selectedIndex = self.selectedIndex;
-    XZSegmentedControlTextSegmentView *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kReuseIdentifier forIndexPath:indexPath];
     XZSegmentedControlTextModel *model = _titleModels[index];
-    cell.text     = model.text;
-    cell.selected = (index == selectedIndex);
-    return cell;
+    segment.text       = model.text;
+    segment.transition = (index == selectedIndex ? 1.0 : 0);
+    
+    return segment;
 }
 
 - (BOOL)beginTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event {
     return NO;
-}
-
-- (void)registerClass:(Class)segmentClass forSegmentWithReuseIdentifier:(NSString *)identifier {
-    NSParameterAssert([segmentClass isSubclassOfClass:[XZSegmentedControlSegment class]]);
-    NSParameterAssert(![identifier isEqualToString:kReuseIdentifier]);
-    [_collectionView registerClass:segmentClass forCellWithReuseIdentifier:identifier];
-}
-
-- (void)registerNib:(UINib *)segmentNib forSegmentWithReuseIdentifier:(NSString *)identifier {
-    NSParameterAssert(![identifier isEqualToString:kReuseIdentifier]);
-    [_collectionView registerNib:segmentNib forCellWithReuseIdentifier:identifier];
-}
-
-- (__kindof UICollectionViewCell *)dequeueReusableSegmentWithReuseIdentifier:(NSString *)identifier forIndex:(NSInteger)index {
-    NSIndexPath *indexPath = [NSIndexPath indexPathForItem:index inSection:0];
-    return [_collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
 }
 
 #pragma mark - <UICollectionViewDelegate>
@@ -223,7 +232,7 @@
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    _flowLayout.selectedIndex = indexPath.item;
+    [_flowLayout setSelectedIndex:indexPath.item animated:YES];
     [self sendActionsForControlEvents:(UIControlEventValueChanged)];
 }
 
@@ -310,30 +319,30 @@
     [self setSelectedIndex:selectedIndex animated:NO];
 }
 
-- (CGSize)segmentSize {
+- (CGSize)itemSize {
     return _flowLayout.itemSize;
 }
 
-- (void)setSegmentSize:(CGSize)segmentSize {
-    _flowLayout.itemSize = segmentSize;
+- (void)setItemSize:(CGSize)itemSize {
+    _flowLayout.itemSize = itemSize;
     
-    [self __xz_segmentedControl_setNeedsUpdateTitleModels];
+    [self XZ_setNeedsUpdateTitleModels];
 }
 
 
-- (CGFloat)segmentSpacing {
+- (CGFloat)interitemSpacing {
     return _flowLayout.minimumInteritemSpacing;
 }
 
-- (void)setSegmentSpacing:(CGFloat)segmentSpacing {
+- (void)setInteritemSpacing:(CGFloat)interitemSpacing {
     switch (_flowLayout.scrollDirection) {
         case UICollectionViewScrollDirectionHorizontal:
-            _flowLayout.minimumLineSpacing = segmentSpacing;
-            _flowLayout.minimumInteritemSpacing = segmentSpacing;
+            _flowLayout.minimumLineSpacing = interitemSpacing;
+            _flowLayout.minimumInteritemSpacing = interitemSpacing;
             break;
         case UICollectionViewScrollDirectionVertical:
-            _flowLayout.minimumLineSpacing = segmentSpacing;
-            _flowLayout.minimumInteritemSpacing = segmentSpacing;
+            _flowLayout.minimumLineSpacing = interitemSpacing;
+            _flowLayout.minimumInteritemSpacing = interitemSpacing;
             break;
         default:
             @throw [NSException exceptionWithName:NSGenericException reason:nil userInfo:nil];
@@ -341,12 +350,61 @@
     }
 }
 
-- (CGFloat)indicatorTransition {
+- (CGFloat)transition {
     return _flowLayout.indicatorTransition;
 }
 
-- (void)setIndicatorTransition:(CGFloat)indicatorTransition {
+- (void)setTransition:(CGFloat)indicatorTransition {
     _flowLayout.indicatorTransition = indicatorTransition;
+    
+    NSInteger                   const selectedIndex        = _flowLayout.selectedIndex;
+    XZSegmentedControlSegment * const selectedSegment      = [self segmentForItemAtIndex:selectedIndex];
+    XZSegmentedControlSegment * const oldTransitionSegment = _transitionSegment;
+    
+    if (indicatorTransition > 0) {
+        CGFloat const intPart = floor(indicatorTransition);
+        CGFloat const decPart = indicatorTransition - intPart;
+        
+        selectedSegment.transition = 1.0 - decPart;
+        
+        NSInteger const count = [_collectionView numberOfItemsInSection:0];
+        NSInteger const transitionIndex = selectedIndex + intPart + 1;
+        if (transitionIndex <= count - 1) {
+            XZSegmentedControlSegment * const newTransitionSegment = [self segmentForItemAtIndex:transitionIndex];
+            if (oldTransitionSegment !=  newTransitionSegment) {
+                oldTransitionSegment.transition = 0;
+                _transitionSegment =  newTransitionSegment;
+            }
+            _transitionSegment.transition = decPart;
+        } else if (oldTransitionSegment != nil) {
+            oldTransitionSegment.transition = 0;
+            _transitionSegment = nil;
+        }
+    } else if (indicatorTransition < 0) {
+        CGFloat const intPart = ceil(indicatorTransition);
+        CGFloat const decPart = indicatorTransition - intPart;
+        
+        selectedSegment.transition = 1.0 + decPart;
+        
+        NSInteger const transitionIndex = selectedIndex + intPart - 1;
+        if (transitionIndex >= 0) {
+            XZSegmentedControlSegment * const newTransitionSegment = [self segmentForItemAtIndex:transitionIndex];
+            if (oldTransitionSegment != newTransitionSegment) {
+                oldTransitionSegment.transition = 0;
+                _transitionSegment = newTransitionSegment;
+            }
+            _transitionSegment.transition = -decPart;
+        } else if (oldTransitionSegment != nil) {
+            oldTransitionSegment.transition = 0;
+            _transitionSegment = nil;
+        }
+    } else {
+        if (oldTransitionSegment != nil) {
+            oldTransitionSegment.transition = 0;
+            _transitionSegment = nil;
+        }
+        selectedSegment.transition = 1.0;
+    }
 }
 
 - (UIColor *)indicatorColor {
@@ -420,8 +478,8 @@
     for (NSInteger i = 0; i < _titleModels.count; i++) {
         _titleModels[i].text = titles[i];
     }
-    [self __xz_segmentedControl_setNeedsUpdateTitleModels];
-    [self __xz_segmentedControl_updateTitleModelsIfNeeded];
+    [self XZ_setNeedsUpdateTitleModels];
+    [self XZ_updateTitleModelsIfNeeded];
     [self reloadData];
 }
 
@@ -437,7 +495,7 @@
 - (void)setTitleFont:(UIFont *)titleFont {
     if (_titleFont != titleFont) {
         _titleFont = titleFont;
-        [self __xz_segmentedControl_setNeedsUpdateTitleModels];
+        [self XZ_setNeedsUpdateTitleModels];
     }
 }
 
@@ -456,7 +514,7 @@
 - (void)setSelectedTitleFont:(UIFont *)selectedTitleFont {
     if (_selectedTitleFont != selectedTitleFont) {
         _selectedTitleFont = selectedTitleFont;
-        [self __xz_segmentedControl_setNeedsUpdateTitleModels];
+        [self XZ_setNeedsUpdateTitleModels];
     }
 }
 
@@ -476,7 +534,7 @@
 
 #pragma mark - Private Methods
 
-- (void)__xz_segmentedControl_didInitialize:(XZSegmentedControlDirection)direction {
+- (void)XZ_didInitialize:(XZSegmentedControlDirection)direction {
     self.clipsToBounds = YES;
     
     CGRect const bounds = self.bounds;
@@ -523,23 +581,23 @@
             break;
     }
     
-    [_collectionView registerClass:[XZSegmentedControlTextSegmentView class] forCellWithReuseIdentifier:kReuseIdentifier];
+    [_collectionView registerClass:[XZSegmentedControlTextSegment class] forCellWithReuseIdentifier:kReuseIdentifier];
     _collectionView.delegate   = self;
     _collectionView.dataSource = self;
 }
 
-- (void)__xz_segmentedControl_setNeedsUpdateTitleModels {
+- (void)XZ_setNeedsUpdateTitleModels {
     if (_needsUpdateTitleModels || _titleModels.count == 0) {
         return;
     }
     _needsUpdateTitleModels = YES;
     [NSRunLoop.mainRunLoop performInModes:@[NSRunLoopCommonModes] block:^{
-        [self __xz_segmentedControl_updateTitleModelsIfNeeded];
+        [self XZ_updateTitleModelsIfNeeded];
         [self->_collectionView reloadData];
     }];
 }
 
-- (void)__xz_segmentedControl_updateTitleModelsIfNeeded {
+- (void)XZ_updateTitleModelsIfNeeded {
     if (!_needsUpdateTitleModels) return;
     _needsUpdateTitleModels = NO;
     
@@ -560,7 +618,7 @@
                 CGFloat const width2 = [item.text boundingRectWithSize:size options:options attributes:@{
                     NSFontAttributeName: self.selectedTitleFont
                 } context:nil].size.width;
-                item.size = CGSizeMake(MAX(ceil(MAX(width1, width2)) + 10.0, self.segmentSize.width), bounds.size.height);
+                item.size = CGSizeMake(MAX(ceil(MAX(width1, width2)) + 10.0, self.itemSize.width), bounds.size.height);
             }
             break;
         case XZSegmentedControlDirectionVertical:
@@ -574,7 +632,7 @@
                 CGFloat const height2 = [item.text boundingRectWithSize:size options:options attributes:@{
                     NSFontAttributeName: self.selectedTitleFont
                 } context:nil].size.height;
-                item.size = CGSizeMake(bounds.size.width, MAX(ceil(MAX(height1, height2)) + 10.0, self.segmentSize.height));
+                item.size = CGSizeMake(bounds.size.width, MAX(ceil(MAX(height1, height2)) + 10.0, self.itemSize.height));
             }
             break;
         default:

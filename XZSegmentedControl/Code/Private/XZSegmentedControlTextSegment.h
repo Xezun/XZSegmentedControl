@@ -11,7 +11,8 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface XZSegmentedControlTextSegment : XZSegmentedControlSegment
-@property (nonatomic, copy) NSString *text;
+@property (nonatomic, weak) XZSegmentedControl *segmentedControl;
+@property (nonatomic, copy, nullable) NSString *text;
 @end
 
 @interface XZSegmentedControlTextLabel : UILabel

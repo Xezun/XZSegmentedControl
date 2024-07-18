@@ -208,17 +208,17 @@
     
     if (_dataSource) {
         XZSegmentedControlSegment *segment = [_dataSource segmentedControl:self segmentForItemAtIndex:index];
-        segment.segmentedControl = self;
         return segment;
     }
     
+    XZSegmentedControlTextModel *model = _titleModels[index];
+
     XZSegmentedControlTextSegment *segment = [collectionView dequeueReusableCellWithReuseIdentifier:kReuseIdentifier forIndexPath:indexPath];
     segment.segmentedControl = self;
-    
-    NSInteger const selectedIndex = self.selectedIndex;
-    XZSegmentedControlTextModel *model = _titleModels[index];
-    segment.text       = model.text;
-    segment.transition = (index == selectedIndex ? 1.0 : 0);
+    segment.text = model.text;
+    // 重置 transition 。
+    // 因为此处仅负责装载数据，且 cell 的 select 状态是由 collectionView 管理的，也最终会被重新赋值。
+    segment.transition = 0;
     
     return segment;
 }

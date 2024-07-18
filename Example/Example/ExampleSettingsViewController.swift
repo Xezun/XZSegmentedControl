@@ -102,7 +102,7 @@ class ExampleSettingsViewController: UITableViewController {
             segmentedControl?.indicatorStyle = .markLine
         case "custom":
             segmentedControl?.indicatorStyle = .custom
-            segmentedControl?.indicatorClass = ExampleSegmentedControlIndicatorView.self
+            segmentedControl?.indicatorClass = ExampleSegmentedControlIndicator.self
         default:
             break
         }

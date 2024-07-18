@@ -38,10 +38,10 @@ class Example1ViewController: UIViewController, UIScrollViewDelegate {
             segmentedControl.indicatorSize  = CGSize.init(width: 3.0, height: 20.0)
         }
         segmentedControl.indicatorColor    = .systemRed
-        segmentedControl.titles            = self.titles
         segmentedControl.interitemSpacing  = 10;
         segmentedControl.titleFont         = .systemFont(ofSize: 17.0)
-        segmentedControl.selectedTitleFont = .boldSystemFont(ofSize: 17.0)
+        segmentedControl.selectedTitleFont = .boldSystemFont(ofSize: 18.0)
+        segmentedControl.titles            = self.titles
         segmentedControl.addTarget(self, action: #selector(segmentedControlValueChanged(_:)), for: .valueChanged)
     }
 

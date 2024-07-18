@@ -80,7 +80,7 @@
             
             // 以最大字体为基准做缩放动画。
             if (_textLabel.font.pointSize != pointSize1) {
-                _textLabel.font = selectedTitleFont; // [_textLabel.font fontWithSize:pointSize1];
+                _textLabel.font = [_textLabel.font fontWithSize:pointSize1];
             }
             
             if ([titleFont.familyName isEqualToString:selectedTitleFont.familyName]) {

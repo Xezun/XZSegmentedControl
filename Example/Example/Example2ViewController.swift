@@ -30,11 +30,11 @@ class Example2ViewController: UIViewController, UIScrollViewDelegate {
             scrollView.addSubview(view)
         }
         
-        segmentedControl.indicatorSize  = CGSize.init(width: 3.0, height: 20.0)
-        segmentedControl.indicatorColor = .systemRed
-        segmentedControl.titles         = self.titles
-        segmentedControl.segmentSpacing = 10;
-        segmentedControl.titleFont      = .systemFont(ofSize: 17.0)
+        segmentedControl.indicatorSize     = CGSize.init(width: 3.0, height: 20.0)
+        segmentedControl.indicatorColor    = .systemRed
+        segmentedControl.titles            = self.titles
+        segmentedControl.interitemSpacing  = 10;
+        segmentedControl.titleFont         = .systemFont(ofSize: 17.0)
         segmentedControl.selectedTitleFont = .boldSystemFont(ofSize: 18.0)
         segmentedControl.addTarget(self, action: #selector(segmentedControlValueChanged(_:)), for: .valueChanged)
     }
@@ -69,10 +69,12 @@ class Example2ViewController: UIViewController, UIScrollViewDelegate {
         let newIndex    = newY > oldY ? Int(floor(newY / height)) : Int(ceil(newY / height))
         let transition  = (newY - CGFloat(newIndex) * height) / height;
         
-        segmentedControl.setSelectedIndex(newIndex, animated: true)
-        segmentedControl.indicatorTransition = transition
+        print("\(#function) setSelectedIndex: \(newIndex), indicatorTransition: \(transition)")
+        segmentedControl.setSelectedIndex(newIndex, animated: false)
+        print("\(#function) setTransition: \(transition)")
+        segmentedControl.transition = transition
         
-        print("\(#function) selectedIndex: \(newIndex), indicatorTransition: \(transition)")
+        
     }
     
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {

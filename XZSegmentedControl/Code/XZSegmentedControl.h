@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <XZSegmentedControl/XZSegmentedControlIndicatorView.h>
+#import <XZSegmentedControl/XZSegmentedControlSegment.h>
+#import <XZSegmentedControl/XZSegmentedControlIndicator.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -32,16 +33,10 @@ typedef NS_ENUM(NSUInteger, XZSegmentedControlIndicatorStyle) {
     XZSegmentedControlIndicatorStyleCustom,
 };
 
-/// 使用自定义视图作为 item 时，应遵循的协议。
-@protocol XZSegmentedControlSegmentView <NSObject>
-@property (nonatomic, setter=setSelected:) BOOL isSelected;
-@optional
-@property (nonatomic, setter=setHighlighted:) BOOL isHighlighted;
-@end
-
 @protocol XZSegmentedControlDataSource;
 @class UISegmentedControl;
 
+/// 一种分段的控件，一般用于菜单。
 @interface XZSegmentedControl : UIControl
 
 /// 指示器方向。支持在 IB 中设置，使用 0 表示横向，使用 0 表示纵向。
@@ -61,9 +56,9 @@ typedef NS_ENUM(NSUInteger, XZSegmentedControlIndicatorStyle) {
 
 /// item 的大小。优先使用代理方法返回的大小。
 /// @discussion 使用 titles 时 item 的大小会根据字体自动计算，此属性将作为最小值使用。
-@property (nonatomic) CGSize segmentSize;
+@property (nonatomic) CGSize itemSize;
 /// item 间距。
-@property (nonatomic) CGFloat segmentSpacing;
+@property (nonatomic) CGFloat interitemSpacing;
 
 /// 指定长宽，若为零，则使用默认值。
 /// @li 横向滚动时，宽度默认为 item 的宽度，高度为 3.0 点。
@@ -92,8 +87,9 @@ typedef NS_ENUM(NSUInteger, XZSegmentedControlIndicatorStyle) {
 /// }
 /// @endcode
 @property (nonatomic, null_resettable) Class indicatorClass;
+
 /// 值 selectedIndex 的变化进度。
-@property (nonatomic) CGFloat indicatorTransition;
+@property (nonatomic) CGFloat transition;
 
 
 @property (nonatomic, readonly) NSInteger numberOfSegments;
@@ -108,12 +104,12 @@ typedef NS_ENUM(NSUInteger, XZSegmentedControlIndicatorStyle) {
 - (void)insertSegmentAtIndex:(NSInteger)index;
 - (void)removeSegmentAtIndex:(NSInteger)index;
 
-- (__kindof UIView *)viewForSegmentAtIndex:(NSInteger)index;
-- (CGRect)frameForSegmentAtIndex:(NSInteger)index;
+- (__kindof XZSegmentedControlSegment *)segmentForItemAtIndex:(NSInteger)index;
+- (XZSegmentedControlIndicatorLayoutAttributes *)layoutAttributesForItemAtIndex:(NSInteger)index;
 
 /// 使用 item 标题文本作为数据源。
 /// @note 设置此属性，将取消 dataSource 的设置。
-/// @note 每个 item 的宽度，将根据字体自动计算，同时受 segmentSize 属性约束。
+/// @note 每个 item 的宽度，将根据字体自动计算，同时受 itemSize 属性约束。
 @property (nonatomic, copy, nullable) NSArray<NSString *> *titles;
 
 /// 普通 item 文本颜色。该属性仅在使用 titles 时生效。
@@ -124,6 +120,10 @@ typedef NS_ENUM(NSUInteger, XZSegmentedControlIndicatorStyle) {
 @property (nonatomic, strong, null_resettable) UIFont  *titleFont;
 /// 被选中的 item 文本字体。该属性仅在使用 titles 时生效。
 @property (nonatomic, strong, null_resettable) UIFont  *selectedTitleFont;
+
+- (void)registerClass:(nullable Class)segmentClass forSegmentWithReuseIdentifier:(NSString *)identifier;
+- (void)registerNib:(nullable UINib *)segmentNib forSegmentWithReuseIdentifier:(NSString *)identifier;
+- (__kindof UICollectionViewCell *)dequeueReusableSegmentWithReuseIdentifier:(NSString *)identifier forIndex:(NSInteger)index;
 
 @end
 
@@ -138,7 +138,7 @@ typedef NS_ENUM(NSUInteger, XZSegmentedControlIndicatorStyle) {
 ///   - segmentedControl: 调用此方法的对象
 ///   - index: item 的位置索引
 ///   - reusingView: 可供重用的视图
-- (__kindof UIView<XZSegmentedControlSegmentView> *)segmentedControl:(XZSegmentedControl *)segmentedControl viewForSegmentAtIndex:(NSInteger)index reusingView:(nullable __kindof UIView<XZSegmentedControlSegmentView> *)reusingView;
+- (__kindof UICollectionViewCell *)segmentedControl:(XZSegmentedControl *)segmentedControl segmentForItemAtIndex:(NSInteger)index;
 /// 返回 item 的大小。
 /// - Parameters:
 ///   - segmentedControl: 调用此方法的对象

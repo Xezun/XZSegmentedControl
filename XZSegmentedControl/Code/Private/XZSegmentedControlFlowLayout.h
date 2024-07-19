@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)init NS_UNAVAILABLE;
 - (nullable instancetype)initWithCoder:(NSCoder *)coder NS_UNAVAILABLE;
 
-@property (nonatomic) NSInteger selectedIndex;
+@property (nonatomic, readonly) NSInteger selectedIndex;
 - (void)setSelectedIndex:(NSInteger)selectedIndex animated:(BOOL)animated;
 @property (nonatomic, strong, nullable) UIColor *indicatorColor;
 @property (nonatomic, strong, nullable) UIImage *indicatorImage;

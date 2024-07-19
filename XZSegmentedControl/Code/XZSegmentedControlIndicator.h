@@ -1,18 +1,19 @@
 //
-//  XZSegmentedControlIndicatorView.h
+//  XZSegmentedControlIndicator.h
 //  XZSegmentedControl
 //
 //  Created by 徐臻 on 2024/7/9.
 //
 
 #import <UIKit/UIKit.h>
+#import <XZSegmentedControl/XZSegmentedControlDefines.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
 @class XZSegmentedControl, XZSegmentedControlIndicatorLayoutAttributes;
 
 /// 指示器视图基类
-@interface XZSegmentedControlIndicatorView : UICollectionReusableView
+@interface XZSegmentedControlIndicator : UICollectionReusableView
 
 /// 是否支持动态转场，默认否。
 @property (class, nonatomic, readonly) BOOL supportsInteractiveTransition;
@@ -45,11 +46,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-#if XZ_FRAMEWORK
-#define XZ_SEGMENTEDCONTROL_READONLY
-#else
-#define XZ_SEGMENTEDCONTROL_READONLY readonly
-#endif
+
 
 @interface XZSegmentedControlIndicatorLayoutAttributes : UICollectionViewLayoutAttributes
 @property (nonatomic, strong, nullable, XZ_SEGMENTEDCONTROL_READONLY) UIColor *color;
@@ -60,7 +57,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// color 或 image 等样式，无法更新指示器，因此需要指示器视图在 `-applyLayoutAttributes:` 方法中填充此属性。
 ///
 /// 在 -setSelectedIndex:animated: 方法中，无法直接添加动画，也需要此属性执行动画。
-@property (nonatomic, weak, XZ_SEGMENTEDCONTROL_READONLY) XZSegmentedControlIndicatorView *indicatorView;
+@property (nonatomic, weak, XZ_SEGMENTEDCONTROL_READONLY) XZSegmentedControlIndicator *indicatorView;
 @end
 
 NS_ASSUME_NONNULL_END

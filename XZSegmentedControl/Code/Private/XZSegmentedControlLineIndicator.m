@@ -1,15 +1,15 @@
 //
-//  XZSegmentedControlLineIndicatorView.m
+//  XZSegmentedControlLineIndicator.m
 //  XZSegmentedControl
 //
 //  Created by 徐臻 on 2024/6/25.
 //
 
-#import "XZSegmentedControlLineIndicatorView.h"
+#import "XZSegmentedControlLineIndicator.h"
 
 #define kIndicatorWidth 3.0
 
-@implementation XZSegmentedControlLineIndicatorView {
+@implementation XZSegmentedControlLineIndicator {
     UIImageView *_imageView;
 }
 
@@ -80,10 +80,10 @@
 
 @end
 
-@implementation XZSegmentedControlMarkLineIndicatorView
+@implementation XZSegmentedControlMarkLineIndicator
 
 + (CGRect)segmentedControl:(XZSegmentedControl *)segmentedControl frameForIndicatorAtIndex:(NSInteger)selectedIndex {
-    CGRect const frame = [segmentedControl frameForSegmentAtIndex:selectedIndex];
+    CGRect const frame = [segmentedControl layoutAttributesForItemAtIndex:selectedIndex].frame;
     CGSize const indicatorSize = segmentedControl.indicatorSize;
     switch (segmentedControl.direction) {
         case XZSegmentedControlDirectionHorizontal: {
@@ -108,10 +108,10 @@
 
 @end
 
-@implementation XZSegmentedControlNoteLineIndicatorView
+@implementation XZSegmentedControlNoteLineIndicator
 
 + (CGRect)segmentedControl:(XZSegmentedControl *)segmentedControl frameForIndicatorAtIndex:(NSInteger)selectedIndex {
-    CGRect const frame = [segmentedControl frameForSegmentAtIndex:selectedIndex];
+    CGRect const frame = [segmentedControl layoutAttributesForItemAtIndex:selectedIndex].frame;
     CGSize const indicatorSize = segmentedControl.indicatorSize;
     switch (segmentedControl.direction) {
         case XZSegmentedControlDirectionHorizontal: {

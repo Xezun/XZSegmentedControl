@@ -10,7 +10,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'XZSegmentedControl'
-  s.version          = '1.1.2'
+  s.version          = '2.0.0'
   s.summary          = 'A customizable segmented control for iOS'
 
 # This description is used to generate tags and improve search results.
@@ -40,7 +40,11 @@ Pod::Spec.new do |s|
     ss.project_header_files = 'XZSegmentedControl/Code/**/Private/*.h'
   end
   
- 
+  s.subspec 'DEBUG' do |ss|
+    ss.dependency 'XZSegmentedControl/Code'
+    ss.pod_target_xcconfig = { 'GCC_PREPROCESSOR_DEFINITIONS' => 'XZ_DEBUG=1' }
+  end
+  
   # s.resource_bundles = {
   #   'XZSegmentedControl' => ['XZSegmentedControl/Assets/*.png']
   # }

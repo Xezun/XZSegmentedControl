@@ -125,7 +125,7 @@
         }
     }
     NSIndexPath *newIndexPath = [NSIndexPath indexPathForItem:selectedIndex inSection:0];
-    [_collectionView selectItemAtIndexPath:newIndexPath animated:YES scrollPosition:scrollPosition];
+    [_collectionView selectItemAtIndexPath:newIndexPath animated:animated scrollPosition:scrollPosition];
 }
 
 - (void)reloadData {

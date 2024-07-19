@@ -373,8 +373,10 @@
         NSInteger const transitionIndex = selectedIndex + intPart + 1;
         if (transitionIndex <= count - 1) {
             XZSegmentedControlSegment * const newTransitionSegment = [self segmentForItemAtIndex:transitionIndex];
-            if (oldTransitionSegment !=  newTransitionSegment) {
-                oldTransitionSegment.transition = 0;
+            if (oldTransitionSegment != newTransitionSegment) {
+                if (oldTransitionSegment != selectedSegment) {
+                    oldTransitionSegment.transition = 0;
+                }
                 _transitionSegment =  newTransitionSegment;
             }
             _transitionSegment.transition = decPart;
@@ -392,7 +394,9 @@
         if (transitionIndex >= 0) {
             XZSegmentedControlSegment * const newTransitionSegment = [self segmentForItemAtIndex:transitionIndex];
             if (oldTransitionSegment != newTransitionSegment) {
-                oldTransitionSegment.transition = 0;
+                if (oldTransitionSegment != selectedSegment) {
+                    oldTransitionSegment.transition = 0;
+                }
                 _transitionSegment = newTransitionSegment;
             }
             _transitionSegment.transition = -decPart;

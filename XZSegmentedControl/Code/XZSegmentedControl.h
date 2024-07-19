@@ -33,16 +33,10 @@ typedef NS_ENUM(NSUInteger, XZSegmentedControlIndicatorStyle) {
     XZSegmentedControlIndicatorStyleCustom,
 };
 
-/// 使用自定义视图作为 item 时，应遵循的协议。
-@protocol XZSegmentedControlSegmentView <NSObject>
-@property (nonatomic, setter=setSelected:) BOOL isSelected;
-@optional
-@property (nonatomic, setter=setHighlighted:) BOOL isHighlighted;
-@end
-
 @protocol XZSegmentedControlDataSource;
 @class UISegmentedControl;
 
+/// 一种分段的控件，一般用于菜单。
 @interface XZSegmentedControl : UIControl
 
 /// 指示器方向。支持在 IB 中设置，使用 0 表示横向，使用 0 表示纵向。

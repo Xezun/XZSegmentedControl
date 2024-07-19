@@ -69,10 +69,12 @@ class Example2ViewController: UIViewController, UIScrollViewDelegate {
         let newIndex    = newY > oldY ? Int(floor(newY / height)) : Int(ceil(newY / height))
         let transition  = (newY - CGFloat(newIndex) * height) / height;
         
-        segmentedControl.setSelectedIndex(newIndex, animated: true)
+        print("\(#function) setSelectedIndex: \(newIndex), indicatorTransition: \(transition)")
+        segmentedControl.setSelectedIndex(newIndex, animated: false)
+        print("\(#function) setTransition: \(transition)")
         segmentedControl.transition = transition
         
-        print("\(#function) selectedIndex: \(newIndex), indicatorTransition: \(transition)")
+        
     }
     
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {

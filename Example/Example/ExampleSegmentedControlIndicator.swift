@@ -13,37 +13,37 @@ class ExampleSegmentedControlIndicator: XZSegmentedControlIndicator {
     override class var supportsInteractiveTransition: Bool {
         return true
     }
-    
-    override class func segmentedControl(_ segmentedControl: XZSegmentedControl, prepareForLayoutAttributes indicatorLayoutAttributes: XZSegmentedControlIndicatorLayoutAttributes) {
-        indicatorLayoutAttributes.zIndex = -111
+
+    override class func segmentedControl(_ segmentedControl: XZSegmentedControl, layout: XZSegmentedControlLayout, prepareForLayoutAttributes layoutAttributes: XZSegmentedControlIndicatorLayoutAttributes) {
+        layoutAttributes.zIndex = -111
         
         let selectedIndex = segmentedControl.selectedIndex;
-        guard let frame = segmentedControl.layoutAttributesForItem(at: selectedIndex)?.frame else {
+        guard let frame = layout.layoutAttributesForItem(at: selectedIndex)?.frame else {
             return
         }
         
         if segmentedControl.direction == .horizontal {
-            indicatorLayoutAttributes.frame = frame.insetBy(dx: 0, dy: 5)
+            layoutAttributes.frame = frame.insetBy(dx: 0, dy: 5)
         } else {
-            indicatorLayoutAttributes.frame = frame.insetBy(dx: 5, dy: 0)
+            layoutAttributes.frame = frame.insetBy(dx: 5, dy: 0)
         }
         
-        let transition = indicatorLayoutAttributes.transition;
-        if transition == 0 {
+        let interactiveTransition = layoutAttributes.interactiveTransition;
+        if interactiveTransition == 0 {
             return
         }
         
         let count = segmentedControl.numberOfSegments;
         
         var newIndex = 0;
-        if transition > 0 {
-            newIndex = Int(min(CGFloat(count - 1), ceil(CGFloat(selectedIndex) + transition)));
+        if interactiveTransition > 0 {
+            newIndex = Int(min(CGFloat(count - 1), ceil(CGFloat(selectedIndex) + interactiveTransition)));
         } else {
-            newIndex = Int(max(0.0, floor(CGFloat(selectedIndex) + transition)))
+            newIndex = Int(max(0.0, floor(CGFloat(selectedIndex) + interactiveTransition)))
         }
         
-        let from = indicatorLayoutAttributes.frame;
-        guard var to = segmentedControl.layoutAttributesForItem(at: newIndex)?.frame else {
+        let from = layoutAttributes.frame;
+        guard var to = layout.layoutAttributesForItem(at: newIndex)?.frame else {
             return
         }
         
@@ -53,13 +53,13 @@ class ExampleSegmentedControlIndicator: XZSegmentedControlIndicator {
             to = to.insetBy(dx: 5, dy: 0)
         }
         
-        let percent = abs(transition) / ceil(abs(transition));
+        let percent = abs(interactiveTransition) / ceil(abs(interactiveTransition));
         
         let x = from.minX + (to.minX - from.minX) * percent;
         let y = from.minY + (to.minY - from.minY) * percent;
         let w = from.width + (to.width - from.width) * percent;
         let h = from.height + (to.height - from.height) * percent;
-        indicatorLayoutAttributes.frame = CGRect(x: x, y: y, width: w, height: h)
+        layoutAttributes.frame = CGRect(x: x, y: y, width: w, height: h)
     }
     
     override init(frame: CGRect) {

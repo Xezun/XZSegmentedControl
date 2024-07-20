@@ -72,7 +72,7 @@ class Example2ViewController: UIViewController, UIScrollViewDelegate {
         print("\(#function) setSelectedIndex: \(newIndex), indicatorTransition: \(transition)")
         segmentedControl.setSelectedIndex(newIndex, animated: false)
         print("\(#function) setTransition: \(transition)")
-        segmentedControl.transition = transition
+        segmentedControl.updateInteractiveTransition(transition)
         
         
     }

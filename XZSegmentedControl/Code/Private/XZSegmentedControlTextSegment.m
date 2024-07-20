@@ -78,15 +78,17 @@
             CGFloat const pointSize0 = titleFont.pointSize;
             CGFloat const pointSize1 = selectedTitleFont.pointSize;
             
-            // 以最大字体为基准做缩放动画。
-            if (_textLabel.font.pointSize != pointSize1) {
-                _textLabel.font = [_textLabel.font fontWithSize:pointSize1];
-            }
-            
-            if ([titleFont.familyName isEqualToString:selectedTitleFont.familyName]) {
-                CGFloat const pointSize = (pointSize0 + (pointSize1 - pointSize0) * transition);
-                CGFloat const scale = pointSize / pointSize1;
-                _textLabel.transform = CGAffineTransformMakeScale(scale, scale);
+            if (pointSize0 != pointSize1) {
+                // 以最大字体为基准做缩放动画。
+                if (_textLabel.font.pointSize != pointSize1) {
+                    _textLabel.font = [_textLabel.font fontWithSize:pointSize1];
+                }
+                
+                if ([titleFont.familyName isEqualToString:selectedTitleFont.familyName]) {
+                    CGFloat const pointSize = (pointSize0 + (pointSize1 - pointSize0) * transition);
+                    CGFloat const scale = pointSize / pointSize1;
+                    _textLabel.transform = CGAffineTransformMakeScale(scale, scale);
+                }
             }
         }
     }];

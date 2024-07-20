@@ -14,18 +14,21 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class UITableView, UISegmentedControl;
 
+/// 控件中 Segment 的布局方向。
 typedef NS_ENUM(NSUInteger, XZSegmentedControlDirection) {
+    /// 控件中 segment 在水平方向上布局。
     XZSegmentedControlDirectionHorizontal = 0,
+    /// 控件中 segment 在垂直方向上布局。
     XZSegmentedControlDirectionVertical = 1
 };
 
 /// 指示器样式。
 typedef NS_ENUM(NSUInteger, XZSegmentedControlIndicatorStyle) {
-    /// 矩形色块指示器。
+    /// 线形色块指示器。
     /// 1. 横向滚动时，指示器在 segment 底部；
     /// 2. 纵向滚动时，指示器在 segment 右侧。
     XZSegmentedControlIndicatorStyleMarkLine,
-    /// 矩形色块指示器。
+    /// 线形色块指示器。
     /// 1. 横向滚动时，指示器在 segment 顶部；
     /// 2. 纵向滚动时，指示器在 segment 左侧。
     XZSegmentedControlIndicatorStyleNoteLine,
@@ -100,6 +103,7 @@ typedef NS_ENUM(NSUInteger, XZSegmentedControlIndicatorStyle) {
 @property (nonatomic, weak) id<XZSegmentedControlDataSource> dataSource;
 
 /// 当使用数据源时，必须使用此方法更新视图。
+/// @note 刷新操作是异步的，如需在视图更新后执行操作，可使用 `reloadData:completion:` 方法。
 - (void)reloadData;
 - (void)reloadData:(BOOL)animated completion:(void (^_Nullable)(BOOL finished))completion;
 - (void)insertSegmentAtIndex:(NSInteger)index;

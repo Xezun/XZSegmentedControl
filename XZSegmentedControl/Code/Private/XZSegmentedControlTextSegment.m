@@ -37,21 +37,21 @@
     [super setSelected:selected];
     XZLog(@"segment(%@).setSelected: %@", self.text, selected ? @"true" : @"false");
 
-    [self setTransition:selected ? 1.0 : 0];
+    [self updateInteractiveTransition:selected ? 1.0 : 0];
 }
 
-- (void)setTransition:(CGFloat)transition {
-    [super setTransition:transition];
+- (void)updateInteractiveTransition:(CGFloat)interactiveTransition {
+    [super updateInteractiveTransition:interactiveTransition];
     
     XZSegmentedControl * const segmentedControl = _segmentedControl;
-    XZLog(@"segment(%@, %ld).setTransition: %f", self.text, segmentedControl.selectedIndex, transition);
+    XZLog(@"segment(%@, %ld).setTransition: %f", self.text, segmentedControl.selectedIndex, interactiveTransition);
 
     [UIView performWithoutAnimation:^{
-        if (transition == 0) {
+        if (interactiveTransition == 0) {
             _textLabel.transform = CGAffineTransformIdentity;
             _textLabel.textColor = segmentedControl.titleColor;
             _textLabel.font = segmentedControl.titleFont;
-        } else if (transition == 1.0) {
+        } else if (interactiveTransition == 1.0) {
             _textLabel.transform = CGAffineTransformIdentity;
             _textLabel.textColor = segmentedControl.selectedTitleColor;
             _textLabel.font = segmentedControl.selectedTitleFont;
@@ -65,10 +65,10 @@
             [titleColor getRed:&red0 green:&green0 blue:&blue0 alpha:&alpha0];
             [selectedTitleColor getRed:&red1 green:&green1 blue:&blue1 alpha:&alpha1];
             
-            CGFloat red   = red0 + (red1 - red0) * transition;
-            CGFloat green = green0 + (green1 - green0) * transition;
-            CGFloat blue  = blue0 + (blue1 - blue0) * transition;
-            CGFloat alpha = alpha0 + (alpha1 - alpha0) * transition;
+            CGFloat red   = red0 + (red1 - red0) * interactiveTransition;
+            CGFloat green = green0 + (green1 - green0) * interactiveTransition;
+            CGFloat blue  = blue0 + (blue1 - blue0) * interactiveTransition;
+            CGFloat alpha = alpha0 + (alpha1 - alpha0) * interactiveTransition;
             _textLabel.textColor = [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
             
             // 文本大小动画
@@ -85,7 +85,7 @@
                 }
                 
                 if ([titleFont.familyName isEqualToString:selectedTitleFont.familyName]) {
-                    CGFloat const pointSize = (pointSize0 + (pointSize1 - pointSize0) * transition);
+                    CGFloat const pointSize = (pointSize0 + (pointSize1 - pointSize0) * interactiveTransition);
                     CGFloat const scale = pointSize / pointSize1;
                     _textLabel.transform = CGAffineTransformMakeScale(scale, scale);
                 }

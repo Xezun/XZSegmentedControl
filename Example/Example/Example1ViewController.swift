@@ -40,7 +40,7 @@ class Example1ViewController: UIViewController, UIScrollViewDelegate {
         segmentedControl.indicatorColor    = .systemRed
         segmentedControl.interitemSpacing  = 10;
         segmentedControl.titleFont         = .systemFont(ofSize: 17.0)
-        segmentedControl.selectedTitleFont = .boldSystemFont(ofSize: 20.0)
+        segmentedControl.selectedTitleFont = .systemFont(ofSize: 20.0, weight: .medium)
         segmentedControl.titles            = self.titles
         segmentedControl.addTarget(self, action: #selector(segmentedControlValueChanged(_:)), for: .valueChanged)
     }
@@ -73,7 +73,7 @@ extension Example1ViewController: XZPageViewDelegate {
     }
     
     func pageView(_ pageView: XZPageView, didTransitionPage transition: CGFloat) {
-        segmentedControl.transition = transition
+        segmentedControl.updateInteractiveTransition(transition)
     }
 }
 

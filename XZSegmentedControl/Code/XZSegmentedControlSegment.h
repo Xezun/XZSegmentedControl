@@ -12,9 +12,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class XZSegmentedControl;
 @interface XZSegmentedControlSegment : UICollectionViewCell
-/// 从未选中到选中的转场进度，值在 [0, 1] 之间。
-/// @discussion 因为指示器的转场效果与目标 segment 相关，所以此属性与指示器的 transition 值不一定相同，
-@property (nonatomic) CGFloat transition;
+
+/// 交互式转场通知转场进度。
+/// @discussion
+/// 进度值范围为 [0, 1] 之间，其中 0 表示未选中，值 1 表示已选中。
+/// @discussion
+/// 因为 indicator 的转场与目标 segment 相关，所以此属性与指示器的 interactiveTransition 值不一定相同，
+/// @discussion
+/// 默认该方法不执行任何操作。
+/// @param interactiveTransition 转场进度
+- (void)updateInteractiveTransition:(CGFloat)interactiveTransition;
 
 @end
 

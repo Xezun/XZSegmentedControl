@@ -37,7 +37,7 @@ typedef NS_ENUM(NSUInteger, XZSegmentedControlIndicatorStyle) {
 };
 
 @protocol XZSegmentedControlDataSource;
-@class UISegmentedControl;
+@class UISegmentedControl, UINavigationController;
 
 /// 一种分段的控件，一般用于菜单。
 @interface XZSegmentedControl : UIControl
@@ -78,22 +78,18 @@ typedef NS_ENUM(NSUInteger, XZSegmentedControlIndicatorStyle) {
 /// @note 如果设置时 `indicatorSize` 为空，则将 `indicatorImage.size` 设置为 `indicatorSize` 的值。
 /// @note 本属性与 `indicatorColor` 是同时生效的，但是可以将 `indicatorColor` 置空。
 @property (nonatomic, strong, nullable) UIImage *indicatorImage;
-/// 注册自定义的指示器的类，必须是 `XZSegmentedControlIndicatorView` 的子类。
+/// 注册自定义的指示器的类，必须是 `XZSegmentedControlIndicator` 的子类。
 /// @note
-/// 必须先设置使用 `XZSegmentedControlIndicatorStyleCustom` 样式，然后才能设置此属性。
+/// 必须先设置 `indicatorStyle` 属性为 `XZSegmentedControlIndicatorStyleCustom` 才能设置此属性。
 /// @discussion
-/// 自定义指示器，可以在 `-preferredLayoutAttributesFittingAttributes:` 方法中调整指示器 frame 值，该值默认与 item.frame 相同。
-/// @code
-/// - (UICollectionViewLayoutAttributes *)preferredLayoutAttributesFittingAttributes:(UICollectionViewLayoutAttributes *)layoutAttributes {
-///     layoutAttributes.frame  = ... // set the indicator's frame as you wish
-///     return layoutAttributes;
-/// }
-/// @endcode
+/// 自定义指示器，可以通过 `XZSegmentedControlIndicator` 提供的方法实现自定义布局及交互式转场。
 @property (nonatomic, null_resettable) Class indicatorClass;
 
-/// 值 selectedIndex 的变化进度。
-@property (nonatomic) CGFloat transition;
-
+/// 交互式转场时，可通过此方法，通知控件当前的转场进度。
+/// @discussion
+/// 跨值转场时 `selectedIndex + interactiveTransition` 为趋向转场目标的值。
+/// @param interactiveTransition 转场进度
+- (void)updateInteractiveTransition:(CGFloat)interactiveTransition;
 
 @property (nonatomic, readonly) NSInteger numberOfSegments;
 
@@ -110,7 +106,6 @@ typedef NS_ENUM(NSUInteger, XZSegmentedControlIndicatorStyle) {
 - (void)removeSegmentAtIndex:(NSInteger)index;
 
 - (nullable __kindof XZSegmentedControlSegment *)segmentForItemAtIndex:(NSInteger)index;
-- (nullable UICollectionViewLayoutAttributes *)layoutAttributesForItemAtIndex:(NSInteger)index;
 
 /// 使用 item 标题文本作为数据源。
 /// @note 设置此属性，将取消 dataSource 的设置。

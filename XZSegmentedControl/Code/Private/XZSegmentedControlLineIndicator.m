@@ -25,38 +25,40 @@
     return YES;
 }
 
-+ (CGRect)segmentedControl:(XZSegmentedControl *)segmentedControl frameForIndicatorAtIndex:(NSInteger)selectedIndex {
++ (CGRect)segmentedControl:(XZSegmentedControl *)segmentedControl layout:(XZSegmentedControlLayout)layout frameForIndicatorAtIndex:(NSInteger)index {
     return CGRectZero;
 }
 
-+ (void)segmentedControl:(XZSegmentedControl *)segmentedControl prepareForLayoutAttributes:(XZSegmentedControlIndicatorLayoutAttributes *)indicatorLayoutAttributes {
-    CGFloat   const transition    = indicatorLayoutAttributes.transition;
++ (void)segmentedControl:(XZSegmentedControl *)segmentedControl layout:(XZSegmentedControlLayout)layout prepareForLayoutAttributes:(XZSegmentedControlIndicatorLayoutAttributes *)layoutAttributes {
+    CGFloat   const transition    = layoutAttributes.interactiveTransition;
     NSInteger const count         = segmentedControl.numberOfSegments;
     NSInteger const selectedIndex = segmentedControl.selectedIndex;
     
-    indicatorLayoutAttributes.frame = [self segmentedControl:segmentedControl frameForIndicatorAtIndex:selectedIndex];
+    layoutAttributes.frame = [self segmentedControl:segmentedControl layout:layout frameForIndicatorAtIndex:selectedIndex];
     
-    CGRect to = CGRectZero;
-    if (transition > 0) {
-        NSInteger newIndex = MIN(count - 1, ceil(selectedIndex + transition));
-        to = [self segmentedControl:segmentedControl frameForIndicatorAtIndex:newIndex];
-    } else if (transition < 0) {
-        NSInteger newIndex = MAX(0, floor(selectedIndex + transition));
-        to = [self segmentedControl:segmentedControl frameForIndicatorAtIndex:newIndex];
-    } else {
+    if (transition == 0) {
         return;
     }
     
-    CGRect  const from    = indicatorLayoutAttributes.frame;
+    CGRect to = CGRectZero;
+    if (transition > 0) {
+        NSInteger const newIndex = MIN(count - 1, ceil(selectedIndex + transition));
+        to = [self segmentedControl:segmentedControl layout:layout frameForIndicatorAtIndex:newIndex];
+    } else {
+        NSInteger const newIndex = MAX(0, floor(selectedIndex + transition));
+        to = [self segmentedControl:segmentedControl layout:layout frameForIndicatorAtIndex:newIndex];
+    }
+    
+    CGRect  const from    = layoutAttributes.frame;
     CGFloat const percent = ABS(transition) / ceil(ABS(transition));
     
-    // NSLog(@"from: %@, to: %@, transition: %f, percent: %f", NSStringFromCGRect(from), NSStringFromCGRect(to), transition, percent);
+    XZLog(@"from: %@, to: %@, interactiveTransition: %f, percent: %f", NSStringFromCGRect(from), NSStringFromCGRect(to), transition, percent);
     
     CGFloat x = from.origin.x + (to.origin.x - from.origin.x) * percent;
     CGFloat y = from.origin.y + (to.origin.y - from.origin.y) * percent;
     CGFloat w = from.size.width + (to.size.width - from.size.width) * percent;
     CGFloat h = from.size.height + (to.size.height - to.size.height) * percent;
-    indicatorLayoutAttributes.frame = CGRectMake(x, y, w, h);
+    layoutAttributes.frame = CGRectMake(x, y, w, h);
 }
 
 - (void)applyLayoutAttributes:(XZSegmentedControlIndicatorLayoutAttributes *)layoutAttributes {
@@ -82,8 +84,8 @@
 
 @implementation XZSegmentedControlMarkLineIndicator
 
-+ (CGRect)segmentedControl:(XZSegmentedControl *)segmentedControl frameForIndicatorAtIndex:(NSInteger)selectedIndex {
-    CGRect const frame = [segmentedControl layoutAttributesForItemAtIndex:selectedIndex].frame;
++ (CGRect)segmentedControl:(XZSegmentedControl *)segmentedControl layout:(XZSegmentedControlLayout)layout frameForIndicatorAtIndex:(NSInteger)index {
+    CGRect const frame = [layout layoutAttributesForItemAtIndex:index].frame;
     CGSize const indicatorSize = segmentedControl.indicatorSize;
     switch (segmentedControl.direction) {
         case XZSegmentedControlDirectionHorizontal: {
@@ -110,8 +112,8 @@
 
 @implementation XZSegmentedControlNoteLineIndicator
 
-+ (CGRect)segmentedControl:(XZSegmentedControl *)segmentedControl frameForIndicatorAtIndex:(NSInteger)selectedIndex {
-    CGRect const frame = [segmentedControl layoutAttributesForItemAtIndex:selectedIndex].frame;
++ (CGRect)segmentedControl:(XZSegmentedControl *)segmentedControl layout:(XZSegmentedControlLayout)layout frameForIndicatorAtIndex:(NSInteger)index {
+    CGRect const frame = [layout layoutAttributesForItemAtIndex:index].frame;
     CGSize const indicatorSize = segmentedControl.indicatorSize;
     switch (segmentedControl.direction) {
         case XZSegmentedControlDirectionHorizontal: {

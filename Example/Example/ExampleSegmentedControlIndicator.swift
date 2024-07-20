@@ -18,7 +18,9 @@ class ExampleSegmentedControlIndicator: XZSegmentedControlIndicator {
         indicatorLayoutAttributes.zIndex = -111
         
         let selectedIndex = segmentedControl.selectedIndex;
-        let frame = segmentedControl.layoutAttributesForItem(at: selectedIndex).frame;
+        guard let frame = segmentedControl.layoutAttributesForItem(at: selectedIndex)?.frame else {
+            return
+        }
         
         if segmentedControl.direction == .horizontal {
             indicatorLayoutAttributes.frame = frame.insetBy(dx: 0, dy: 5)
@@ -41,7 +43,9 @@ class ExampleSegmentedControlIndicator: XZSegmentedControlIndicator {
         }
         
         let from = indicatorLayoutAttributes.frame;
-        var to = segmentedControl.layoutAttributesForItem(at: newIndex).frame
+        guard var to = segmentedControl.layoutAttributesForItem(at: newIndex)?.frame else {
+            return
+        }
         
         if segmentedControl.direction == .horizontal {
             to = to.insetBy(dx: 0, dy: 5)

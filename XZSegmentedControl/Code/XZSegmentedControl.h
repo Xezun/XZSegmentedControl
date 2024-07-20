@@ -14,18 +14,21 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class UITableView, UISegmentedControl;
 
+/// 控件中 Segment 的布局方向。
 typedef NS_ENUM(NSUInteger, XZSegmentedControlDirection) {
+    /// 控件中 segment 在水平方向上布局。
     XZSegmentedControlDirectionHorizontal = 0,
+    /// 控件中 segment 在垂直方向上布局。
     XZSegmentedControlDirectionVertical = 1
 };
 
 /// 指示器样式。
 typedef NS_ENUM(NSUInteger, XZSegmentedControlIndicatorStyle) {
-    /// 矩形色块指示器。
+    /// 线形色块指示器。
     /// 1. 横向滚动时，指示器在 segment 底部；
     /// 2. 纵向滚动时，指示器在 segment 右侧。
     XZSegmentedControlIndicatorStyleMarkLine,
-    /// 矩形色块指示器。
+    /// 线形色块指示器。
     /// 1. 横向滚动时，指示器在 segment 顶部；
     /// 2. 纵向滚动时，指示器在 segment 左侧。
     XZSegmentedControlIndicatorStyleNoteLine,
@@ -100,19 +103,21 @@ typedef NS_ENUM(NSUInteger, XZSegmentedControlIndicatorStyle) {
 @property (nonatomic, weak) id<XZSegmentedControlDataSource> dataSource;
 
 /// 当使用数据源时，必须使用此方法更新视图。
+/// @note 刷新操作是异步的，如需在视图更新后执行操作，可使用 `reloadData:completion:` 方法。
 - (void)reloadData;
 - (void)reloadData:(BOOL)animated completion:(void (^_Nullable)(BOOL finished))completion;
 - (void)insertSegmentAtIndex:(NSInteger)index;
 - (void)removeSegmentAtIndex:(NSInteger)index;
 
-- (__kindof XZSegmentedControlSegment *)segmentForItemAtIndex:(NSInteger)index;
-- (XZSegmentedControlIndicatorLayoutAttributes *)layoutAttributesForItemAtIndex:(NSInteger)index;
+- (nullable __kindof XZSegmentedControlSegment *)segmentForItemAtIndex:(NSInteger)index;
+- (nullable UICollectionViewLayoutAttributes *)layoutAttributesForItemAtIndex:(NSInteger)index;
 
 /// 使用 item 标题文本作为数据源。
 /// @note 设置此属性，将取消 dataSource 的设置。
 /// @note 每个 item 的宽度，将根据字体自动计算，同时受 itemSize 属性约束。
 /// @note 设置此属性，并不会立即刷新视图，需要的话，请调用 `-reloadData:completion:` 方法，并在回调中处理。
 @property (nonatomic, copy, nullable) NSArray<NSString *> *titles;
+- (void)setTitles:(NSArray<NSString *> * _Nullable)titles animated:(BOOL)animated;
 
 /// 普通 item 文本颜色。该属性仅在使用 titles 时生效。
 @property (nonatomic, strong, null_resettable) UIColor *titleColor;

@@ -152,20 +152,36 @@
 }
 
 - (void)reloadData {
+    [self reloadData:NO completion:nil];
+}
+
+- (void)reloadData:(BOOL)animated completion:(void (^)(BOOL))completion{
+    [self XZ_updateTitleModelsIfNeeded];
+    
     // 直接在 reloadData 后面 selectItem 操作无效
     typeof(self) __weak wself = self;
-    [_collectionView performBatchUpdates:^{
-        [_collectionView reloadData];
-        NSInteger const count = self.numberOfSegments;
-        NSInteger const newIndex = MAX(0, MIN(count - 1, _flowLayout.selectedIndex));
-        [_flowLayout setSelectedIndex:newIndex animated:NO];
-    } completion:^(BOOL finished) {
-        typeof(self) __strong const self = wself;
-        if (self == nil) return;
-        
-        NSIndexPath *indexPath = [NSIndexPath indexPathForItem:self.selectedIndex inSection:0];
-        [self->_collectionView selectItemAtIndexPath:indexPath animated:NO scrollPosition:(UICollectionViewScrollPositionNone)];
-    }];
+    void (^ const reloadData)(void) = ^{
+        [self->_collectionView performBatchUpdates:^{
+            [self->_collectionView reloadData];
+            NSInteger const count = self.numberOfSegments;
+            NSInteger const newIndex = MAX(0, MIN(count - 1, self->_flowLayout.selectedIndex));
+            [self->_flowLayout setSelectedIndex:newIndex animated:NO];
+        } completion:^(BOOL finished) {
+            typeof(self) __strong const self = wself;
+            if (self == nil) return;
+            
+            NSIndexPath *indexPath = [NSIndexPath indexPathForItem:self.selectedIndex inSection:0];
+            [self->_collectionView selectItemAtIndexPath:indexPath animated:NO scrollPosition:(UICollectionViewScrollPositionNone)];
+            if (completion) {
+                completion(finished);
+            }
+        }];
+    };
+    if (animated) {
+        reloadData();
+    } else {
+        [UIView performWithoutAnimation:reloadData];
+    }
 }
 
 - (void)insertSegmentAtIndex:(NSInteger)index {
@@ -513,7 +529,6 @@
         _titleModels[i].text = titles[i];
     }
     [self XZ_setNeedsUpdateTitleModels];
-    [self XZ_updateTitleModelsIfNeeded];
 }
 
 @synthesize titleFont = _titleFont;
@@ -625,19 +640,22 @@
     }
     _needsUpdateTitleModels = YES;
     [NSRunLoop.mainRunLoop performInModes:@[NSRunLoopCommonModes] block:^{
-        [self XZ_updateTitleModelsIfNeeded];
-        [self reloadData];
+        if ([self XZ_updateTitleModelsIfNeeded]) {
+            [self reloadData:NO completion:nil];
+        }
     }];
 }
 
-- (void)XZ_updateTitleModelsIfNeeded {
-    if (!_needsUpdateTitleModels) return;
+- (BOOL)XZ_updateTitleModelsIfNeeded {
+    if (!_needsUpdateTitleModels) {
+        return NO;
+    }
     _needsUpdateTitleModels = NO;
     
-    CGRect const bounds = self.bounds;
-    NSInteger const count = _titleModels.count;
+    CGRect    const bounds = self.bounds;
+    NSInteger const count  = _titleModels.count;
     if (count == 0) {
-        return;
+        return YES;
     }
     switch (self.direction) {
         case XZSegmentedControlDirectionHorizontal:
@@ -671,6 +689,7 @@
         default:
             break;
     }
+    return YES;
 }
 
 @end

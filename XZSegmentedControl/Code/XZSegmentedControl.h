@@ -101,6 +101,7 @@ typedef NS_ENUM(NSUInteger, XZSegmentedControlIndicatorStyle) {
 
 /// 当使用数据源时，必须使用此方法更新视图。
 - (void)reloadData;
+- (void)reloadData:(BOOL)animated completion:(void (^_Nullable)(BOOL finished))completion;
 - (void)insertSegmentAtIndex:(NSInteger)index;
 - (void)removeSegmentAtIndex:(NSInteger)index;
 
@@ -110,6 +111,7 @@ typedef NS_ENUM(NSUInteger, XZSegmentedControlIndicatorStyle) {
 /// 使用 item 标题文本作为数据源。
 /// @note 设置此属性，将取消 dataSource 的设置。
 /// @note 每个 item 的宽度，将根据字体自动计算，同时受 itemSize 属性约束。
+/// @note 设置此属性，并不会立即刷新视图，需要的话，请调用 `-reloadData:completion:` 方法，并在回调中处理。
 @property (nonatomic, copy, nullable) NSArray<NSString *> *titles;
 
 /// 普通 item 文本颜色。该属性仅在使用 titles 时生效。

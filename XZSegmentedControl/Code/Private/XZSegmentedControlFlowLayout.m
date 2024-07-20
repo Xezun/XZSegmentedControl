@@ -123,6 +123,9 @@
 - (void)setSelectedIndex:(NSInteger)selectedIndex animated:(BOOL)animated {
     if (_selectedIndex != selectedIndex) {
         _selectedIndex = selectedIndex;
+        // 指示器转场，默认进度为 0。
+        // 设置选中时，重置转场进度，因为转场到新的 index 后，转场进度为零。
+        _indicatorLayoutAttributes.interactiveTransition = 0;
         // 更新布局
         [self setNeedsUpdateIndicatorLayout:animated];
     }

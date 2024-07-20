@@ -76,10 +76,16 @@ segmentedControl.indicatorClass = ExampleSegmentedControlIndicatorView.self
 ### 4、指示器支持交互性转场
 
 ```swift
-segmentedControl.indicatorTransition = transition
+segmentedControl.updateInteractiveTransition(transition)
 ```
 
-### 5、支持自定义菜单视图
+### 5、支持自定义 segment 视图
+
+继承 `XZSegmentedControlSegment` 即可自定义 segment 视图。
+
+```swift
+segmentedControl.register(ExampleSegmentedControlSegment.self, forSegmentWithReuseIdentifier: "indicator")
+```
 
 ## Author
 

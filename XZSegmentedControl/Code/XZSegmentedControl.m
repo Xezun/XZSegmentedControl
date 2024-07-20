@@ -54,22 +54,28 @@
     
     // 横向滚动时，自动将元素高度设置为自身高度
     // 纵向滚动时，自动将元素宽度设置为自身宽度
+    
+    CGRect headerFrame     = _headerView.frame;
+    CGRect footerFrame     = _footerView.frame;
+    CGRect collectionFrame = _collectionView.frame;
+    CGSize itemSize        = _flowLayout.itemSize;
+    
     switch (self.direction) {
         case XZSegmentedControlDirectionHorizontal: {
             if (bounds.size.height != _flowLayout.itemSize.height) {
-                _flowLayout.itemSize = CGSizeMake(_flowLayout.itemSize.width, bounds.size.height);
+                itemSize = CGSizeMake(_flowLayout.itemSize.width, bounds.size.height);
             }
             
             switch (self.effectiveUserInterfaceLayoutDirection) {
                 case UIUserInterfaceLayoutDirectionLeftToRight:
-                    _headerView.frame = CGRectMake(0, 0, headerSize.width, bounds.size.height);
-                    _footerView.frame = CGRectMake(bounds.size.width - footerSize.width, 0, footerSize.width, bounds.size.height);
-                    _collectionView.frame = CGRectMake(headerSize.width, 0, bounds.size.width - headerSize.width - footerSize.width, bounds.size.height);
+                    headerFrame = CGRectMake(0, 0, headerSize.width, bounds.size.height);
+                    footerFrame = CGRectMake(bounds.size.width - footerSize.width, 0, footerSize.width, bounds.size.height);
+                    collectionFrame = CGRectMake(headerSize.width, 0, bounds.size.width - headerSize.width - footerSize.width, bounds.size.height);
                     break;
                 case UIUserInterfaceLayoutDirectionRightToLeft:
-                    _headerView.frame = CGRectMake(bounds.size.width - headerSize.width, 0, headerSize.width, bounds.size.height);
-                    _footerView.frame = CGRectMake(0, 0, footerSize.width, bounds.size.height);
-                    _collectionView.frame = CGRectMake(footerSize.width, 0, bounds.size.width - headerSize.width - footerSize.width, bounds.size.height);
+                    headerFrame = CGRectMake(bounds.size.width - headerSize.width, 0, headerSize.width, bounds.size.height);
+                    footerFrame = CGRectMake(0, 0, footerSize.width, bounds.size.height);
+                    collectionFrame = CGRectMake(footerSize.width, 0, bounds.size.width - headerSize.width - footerSize.width, bounds.size.height);
                     break;
                 default:
                     break;
@@ -78,11 +84,11 @@
         }
         case XZSegmentedControlDirectionVertical: {
             if (bounds.size.width != _flowLayout.itemSize.width) {
-                _flowLayout.itemSize = CGSizeMake(bounds.size.width, _flowLayout.itemSize.height);
+                itemSize = CGSizeMake(bounds.size.width, _flowLayout.itemSize.height);
             }
-            _headerView.frame = CGRectMake(0, 0, bounds.size.width, headerSize.height);
-            _footerView.frame = CGRectMake(0, bounds.size.height - footerSize.height, bounds.size.width, footerSize.height);
-            _collectionView.frame = CGRectMake(0, headerSize.height, bounds.size.width, bounds.size.height - headerSize.height - footerSize.height);
+            headerFrame = CGRectMake(0, 0, bounds.size.width, headerSize.height);
+            footerFrame = CGRectMake(0, bounds.size.height - footerSize.height, bounds.size.width, footerSize.height);
+            collectionFrame = CGRectMake(0, headerSize.height, bounds.size.width, bounds.size.height - headerSize.height - footerSize.height);
             break;
         }
         default: {
@@ -90,7 +96,24 @@
         }
     }
     
-    [self XZ_setNeedsUpdateTitleModels];
+    if (!CGRectEqualToRect(_headerView.frame, headerFrame)) {
+        _headerView.frame = headerFrame;
+    }
+    if (!CGRectEqualToRect(_footerView.frame, footerFrame)) {
+        _footerView.frame = footerFrame;
+    }
+    BOOL needsUpdate = NO;
+    if (!CGRectEqualToRect(_collectionView.frame, collectionFrame)) {
+        _collectionView.frame = collectionFrame;
+        needsUpdate = YES;
+    }
+    if (!CGSizeEqualToSize(_flowLayout.itemSize, itemSize)) {
+        _flowLayout.itemSize = itemSize;
+        needsUpdate = YES;
+    }
+    if (needsUpdate) {
+        [self XZ_setNeedsUpdateTitleModels];
+    }
 }
 
 - (void)setSelectedIndex:(NSInteger)selectedIndex animated:(BOOL)animated {
@@ -130,20 +153,18 @@
 
 - (void)reloadData {
     // 直接在 reloadData 后面 selectItem 操作无效
+    typeof(self) __weak wself = self;
     [_collectionView performBatchUpdates:^{
         [_collectionView reloadData];
+        NSInteger const count = self.numberOfSegments;
+        NSInteger const newIndex = MAX(0, MIN(count - 1, _flowLayout.selectedIndex));
+        [_flowLayout setSelectedIndex:newIndex animated:NO];
     } completion:^(BOOL finished) {
+        typeof(self) __strong const self = wself;
+        if (self == nil) return;
+        
         NSIndexPath *indexPath = [NSIndexPath indexPathForItem:self.selectedIndex inSection:0];
-        switch (self.direction) {
-            case XZSegmentedControlDirectionVertical:
-                [self->_collectionView selectItemAtIndexPath:indexPath animated:YES scrollPosition:(UICollectionViewScrollPositionCenteredVertically)];
-                break;
-            case XZSegmentedControlDirectionHorizontal:
-                [self->_collectionView selectItemAtIndexPath:indexPath animated:YES scrollPosition:(UICollectionViewScrollPositionCenteredHorizontally)];
-                break;
-            default:
-                break;
-        }
+        [self->_collectionView selectItemAtIndexPath:indexPath animated:NO scrollPosition:(UICollectionViewScrollPositionNone)];
     }];
 }
 
@@ -206,8 +227,13 @@
 - (__kindof UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     NSInteger const index = indexPath.item;
     
+    // 重置 transition 。
+    // 因为此处仅负责装载数据，且 cell 的 select 状态是由 collectionView 管理的，也最终会被重新赋值。
+    CGFloat const transition = _flowLayout.selectedIndex == index ? 1.0 : 0;
+    
     if (_dataSource) {
         XZSegmentedControlSegment *segment = [_dataSource segmentedControl:self segmentForItemAtIndex:index];
+        segment.transition = transition;
         return segment;
     }
     
@@ -215,10 +241,8 @@
 
     XZSegmentedControlTextSegment *segment = [collectionView dequeueReusableCellWithReuseIdentifier:kReuseIdentifier forIndexPath:indexPath];
     segment.segmentedControl = self;
-    segment.text = model.text;
-    // 重置 transition 。
-    // 因为此处仅负责装载数据，且 cell 的 select 状态是由 collectionView 管理的，也最终会被重新赋值。
-    segment.transition = 0;
+    segment.text             = model.text;
+    segment.transition       = transition;
     
     return segment;
 }
@@ -490,7 +514,6 @@
     }
     [self XZ_setNeedsUpdateTitleModels];
     [self XZ_updateTitleModelsIfNeeded];
-    [self reloadData];
 }
 
 @synthesize titleFont = _titleFont;
@@ -603,7 +626,7 @@
     _needsUpdateTitleModels = YES;
     [NSRunLoop.mainRunLoop performInModes:@[NSRunLoopCommonModes] block:^{
         [self XZ_updateTitleModelsIfNeeded];
-        [self->_collectionView reloadData];
+        [self reloadData];
     }];
 }
 

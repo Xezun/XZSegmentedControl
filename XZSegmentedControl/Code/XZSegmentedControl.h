@@ -105,8 +105,8 @@ typedef NS_ENUM(NSUInteger, XZSegmentedControlIndicatorStyle) {
 - (void)insertSegmentAtIndex:(NSInteger)index;
 - (void)removeSegmentAtIndex:(NSInteger)index;
 
-- (__kindof XZSegmentedControlSegment *)segmentForItemAtIndex:(NSInteger)index;
-- (XZSegmentedControlIndicatorLayoutAttributes *)layoutAttributesForItemAtIndex:(NSInteger)index;
+- (nullable __kindof XZSegmentedControlSegment *)segmentForItemAtIndex:(NSInteger)index;
+- (nullable UICollectionViewLayoutAttributes *)layoutAttributesForItemAtIndex:(NSInteger)index;
 
 /// 使用 item 标题文本作为数据源。
 /// @note 设置此属性，将取消 dataSource 的设置。

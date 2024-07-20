@@ -206,9 +206,9 @@
     return (XZSegmentedControlSegment *)[_collectionView cellForItemAtIndexPath:indexPath];
 }
 
-- (XZSegmentedControlIndicatorLayoutAttributes *)layoutAttributesForItemAtIndex:(NSInteger)index {
+- (UICollectionViewLayoutAttributes *)layoutAttributesForItemAtIndex:(NSInteger)index {
     NSIndexPath *indexPath = [NSIndexPath indexPathForItem:index inSection:0];
-    return (id)[_collectionView layoutAttributesForItemAtIndexPath:indexPath];
+    return [_collectionView layoutAttributesForItemAtIndexPath:indexPath];
 }
 
 - (void)registerClass:(Class)segmentClass forSegmentWithReuseIdentifier:(NSString *)identifier {

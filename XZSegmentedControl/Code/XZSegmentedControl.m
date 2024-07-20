@@ -112,7 +112,7 @@
         needsUpdate = YES;
     }
     if (needsUpdate) {
-        [self XZ_setNeedsUpdateTitleModels];
+        [self XZ_setNeedsUpdateTitleModels:NO];
     }
 }
 
@@ -369,7 +369,7 @@
 - (void)setItemSize:(CGSize)itemSize {
     _flowLayout.itemSize = itemSize;
     
-    [self XZ_setNeedsUpdateTitleModels];
+    [self XZ_setNeedsUpdateTitleModels:NO];
 }
 
 
@@ -513,6 +513,10 @@
 }
 
 - (void)setTitles:(NSArray<NSString *> *)titles {
+    [self setTitles:titles animated:NO];
+}
+
+- (void)setTitles:(NSArray<NSString *> *)titles animated:(BOOL)animated {
     _dataSource = nil;
     if (titles.count == 0) {
         _titleModels = nil;
@@ -529,7 +533,7 @@
     for (NSInteger i = 0; i < _titleModels.count; i++) {
         _titleModels[i].text = titles[i];
     }
-    [self XZ_setNeedsUpdateTitleModels];
+    [self XZ_setNeedsUpdateTitleModels:animated];
 }
 
 @synthesize titleFont = _titleFont;
@@ -544,7 +548,7 @@
 - (void)setTitleFont:(UIFont *)titleFont {
     if (_titleFont != titleFont) {
         _titleFont = titleFont;
-        [self XZ_setNeedsUpdateTitleModels];
+        [self XZ_setNeedsUpdateTitleModels:NO];
     }
 }
 
@@ -563,7 +567,7 @@
 - (void)setSelectedTitleFont:(UIFont *)selectedTitleFont {
     if (_selectedTitleFont != selectedTitleFont) {
         _selectedTitleFont = selectedTitleFont;
-        [self XZ_setNeedsUpdateTitleModels];
+        [self XZ_setNeedsUpdateTitleModels:NO];
     }
 }
 
@@ -635,14 +639,14 @@
     _collectionView.dataSource = self;
 }
 
-- (void)XZ_setNeedsUpdateTitleModels {
+- (void)XZ_setNeedsUpdateTitleModels:(BOOL)animated {
     if (_needsUpdateTitleModels || _titleModels.count == 0) {
         return;
     }
     _needsUpdateTitleModels = YES;
     [NSRunLoop.mainRunLoop performInModes:@[NSRunLoopCommonModes] block:^{
         if ([self XZ_updateTitleModelsIfNeeded]) {
-            [self reloadData:NO completion:nil];
+            [self reloadData:animated completion:nil];
         }
     }];
 }

@@ -117,6 +117,7 @@ typedef NS_ENUM(NSUInteger, XZSegmentedControlIndicatorStyle) {
 /// @note 每个 item 的宽度，将根据字体自动计算，同时受 itemSize 属性约束。
 /// @note 设置此属性，并不会立即刷新视图，需要的话，请调用 `-reloadData:completion:` 方法，并在回调中处理。
 @property (nonatomic, copy, nullable) NSArray<NSString *> *titles;
+- (void)setTitles:(NSArray<NSString *> * _Nullable)titles animated:(BOOL)animated;
 
 /// 普通 item 文本颜色。该属性仅在使用 titles 时生效。
 @property (nonatomic, strong, null_resettable) UIColor *titleColor;

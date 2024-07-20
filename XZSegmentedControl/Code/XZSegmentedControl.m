@@ -103,12 +103,12 @@
         _footerView.frame = footerFrame;
     }
     BOOL needsUpdate = NO;
-    if (!CGRectEqualToRect(_collectionView.frame, collectionFrame)) {
-        _collectionView.frame = collectionFrame;
-        needsUpdate = YES;
-    }
     if (!CGSizeEqualToSize(_flowLayout.itemSize, itemSize)) {
         _flowLayout.itemSize = itemSize;
+        needsUpdate = YES;
+    }
+    if (!CGRectEqualToRect(_collectionView.frame, collectionFrame)) {
+        _collectionView.frame = collectionFrame;
         needsUpdate = YES;
     }
     if (needsUpdate) {
@@ -155,17 +155,15 @@
     [self reloadData:NO completion:nil];
 }
 
-- (void)reloadData:(BOOL)animated completion:(void (^)(BOOL))completion{
+- (void)reloadData:(BOOL)animated completion:(void (^)(BOOL))completion {
     [self XZ_updateTitleModelsIfNeeded];
     
-    // 直接在 reloadData 后面 selectItem 操作无效
+    // 直接在 reloadData 后面 selectItem 操作无效，所以要使用 performBatchUpdates 方法
     typeof(self) __weak wself = self;
     void (^ const reloadData)(void) = ^{
         [self->_collectionView performBatchUpdates:^{
+            // The _flowLayout will change the selectedIndex automatically
             [self->_collectionView reloadData];
-            NSInteger const count = self.numberOfSegments;
-            NSInteger const newIndex = MAX(0, MIN(count - 1, self->_flowLayout.selectedIndex));
-            [self->_flowLayout setSelectedIndex:newIndex animated:NO];
         } completion:^(BOOL finished) {
             typeof(self) __strong const self = wself;
             if (self == nil) return;
@@ -206,11 +204,6 @@
     return (XZSegmentedControlSegment *)[_collectionView cellForItemAtIndexPath:indexPath];
 }
 
-- (UICollectionViewLayoutAttributes *)layoutAttributesForItemAtIndex:(NSInteger)index {
-    NSIndexPath *indexPath = [NSIndexPath indexPathForItem:index inSection:0];
-    return [_collectionView layoutAttributesForItemAtIndexPath:indexPath];
-}
-
 - (void)registerClass:(Class)segmentClass forSegmentWithReuseIdentifier:(NSString *)identifier {
     NSParameterAssert([segmentClass isSubclassOfClass:[XZSegmentedControlSegment class]]);
     NSParameterAssert(![identifier isEqualToString:kReuseIdentifier]);
@@ -249,7 +242,7 @@
     
     if (_dataSource) {
         XZSegmentedControlSegment *segment = [_dataSource segmentedControl:self segmentForItemAtIndex:index];
-        segment.transition = transition;
+        [segment updateInteractiveTransition:transition];
         return segment;
     }
     
@@ -258,7 +251,7 @@
     XZSegmentedControlTextSegment *segment = [collectionView dequeueReusableCellWithReuseIdentifier:kReuseIdentifier forIndexPath:indexPath];
     segment.segmentedControl = self;
     segment.text             = model.text;
-    segment.transition       = transition;
+    [segment updateInteractiveTransition:transition];
     
     return segment;
 }
@@ -393,22 +386,18 @@
     }
 }
 
-- (CGFloat)transition {
-    return _flowLayout.indicatorTransition;
-}
-
-- (void)setTransition:(CGFloat)indicatorTransition {
-    _flowLayout.indicatorTransition = indicatorTransition;
+- (void)updateInteractiveTransition:(CGFloat)interactiveTransition {
+    _flowLayout.interactiveTransition = interactiveTransition;
     
     NSInteger                   const selectedIndex        = _flowLayout.selectedIndex;
     XZSegmentedControlSegment * const selectedSegment      = [self segmentForItemAtIndex:selectedIndex];
     XZSegmentedControlSegment * const oldTransitionSegment = _transitionSegment;
     
-    if (indicatorTransition > 0) {
-        CGFloat const intPart = floor(indicatorTransition);
-        CGFloat const decPart = indicatorTransition - intPart;
+    if (interactiveTransition > 0) {
+        CGFloat const intPart = floor(interactiveTransition);
+        CGFloat const decPart = interactiveTransition - intPart;
         
-        selectedSegment.transition = 1.0 - decPart;
+        [selectedSegment updateInteractiveTransition:(1.0 - decPart)];
         
         NSInteger const count = [_collectionView numberOfItemsInSection:0];
         NSInteger const transitionIndex = selectedIndex + intPart + 1;
@@ -416,42 +405,42 @@
             XZSegmentedControlSegment * const newTransitionSegment = [self segmentForItemAtIndex:transitionIndex];
             if (oldTransitionSegment != newTransitionSegment) {
                 if (oldTransitionSegment != selectedSegment) {
-                    oldTransitionSegment.transition = 0;
+                    [oldTransitionSegment updateInteractiveTransition:0];
                 }
                 _transitionSegment =  newTransitionSegment;
             }
-            _transitionSegment.transition = decPart;
+            [_transitionSegment updateInteractiveTransition:decPart];
         } else if (oldTransitionSegment != nil) {
-            oldTransitionSegment.transition = 0;
+            [oldTransitionSegment updateInteractiveTransition:0];
             _transitionSegment = nil;
         }
-    } else if (indicatorTransition < 0) {
-        CGFloat const intPart = ceil(indicatorTransition);
-        CGFloat const decPart = indicatorTransition - intPart;
+    } else if (interactiveTransition < 0) {
+        CGFloat const intPart = ceil(interactiveTransition);
+        CGFloat const decPart = interactiveTransition - intPart;
         
-        selectedSegment.transition = 1.0 + decPart;
+        [selectedSegment updateInteractiveTransition:(1.0 + decPart)];
         
         NSInteger const transitionIndex = selectedIndex + intPart - 1;
         if (transitionIndex >= 0) {
             XZSegmentedControlSegment * const newTransitionSegment = [self segmentForItemAtIndex:transitionIndex];
             if (oldTransitionSegment != newTransitionSegment) {
                 if (oldTransitionSegment != selectedSegment) {
-                    oldTransitionSegment.transition = 0;
+                    [oldTransitionSegment updateInteractiveTransition:0];
                 }
                 _transitionSegment = newTransitionSegment;
             }
-            _transitionSegment.transition = -decPart;
+            [_transitionSegment updateInteractiveTransition:-decPart];
         } else if (oldTransitionSegment != nil) {
-            oldTransitionSegment.transition = 0;
+            [oldTransitionSegment updateInteractiveTransition:0];
             _transitionSegment = nil;
         }
     } else {
-        selectedSegment.transition = 1.0;
+        [selectedSegment updateInteractiveTransition:1.0];
         
         if (oldTransitionSegment != nil) {
             // oldTransitionSegment 变为了 selectedSegment
             if (oldTransitionSegment != selectedSegment) {
-                oldTransitionSegment.transition = 0;
+                [oldTransitionSegment updateInteractiveTransition:0];
             }
             _transitionSegment = nil;
         }

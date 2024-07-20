@@ -7,10 +7,11 @@
 
 #import <UIKit/UIKit.h>
 #import <XZSegmentedControl/XZSegmentedControl.h>
+#import <XZSegmentedControl/XZSegmentedControlIndicator.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface XZSegmentedControlFlowLayout : UICollectionViewFlowLayout
+@interface XZSegmentedControlFlowLayout : UICollectionViewFlowLayout <XZSegmentedControlLayout>
 @property (nonatomic, weak, readonly) XZSegmentedControl *segmentedControl;
 - (instancetype)initWithSegmentedControl:(XZSegmentedControl *)segmentedControl NS_DESIGNATED_INITIALIZER;
 - (instancetype)init NS_UNAVAILABLE;
@@ -21,7 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, nullable) UIColor *indicatorColor;
 @property (nonatomic, strong, nullable) UIImage *indicatorImage;
 @property (nonatomic) CGSize indicatorSize;
-@property (nonatomic) CGFloat indicatorTransition;
+@property (nonatomic) CGFloat interactiveTransition;
 @property (nonatomic) XZSegmentedControlIndicatorStyle indicatorStyle;
 @property (nonatomic, nullable) Class indicatorClass;
 @end

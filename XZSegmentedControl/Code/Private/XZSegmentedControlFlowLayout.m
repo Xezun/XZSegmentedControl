@@ -23,9 +23,14 @@
         _segmentedControl = segmentedControl;
         _indicatorClass = [XZSegmentedControlMarkLineIndicator class];
         [self registerClass:_indicatorClass forDecorationViewOfKind:NSStringFromClass(_indicatorClass)];
-        [self prepareIndicatorLayoutAttributes];
+        [self loadIndicatorLayoutAttributesIfNeeded];
     }
     return self;
+}
+
+- (UICollectionViewLayoutAttributes *)layoutAttributesForItemAtIndex:(NSInteger)index {
+    NSIndexPath *indexPath = [NSIndexPath indexPathForItem:index inSection:0];
+    return [self layoutAttributesForItemAtIndexPath:indexPath];
 }
 
 - (UIColor *)indicatorColor {
@@ -101,9 +106,9 @@
     }
 }
 
-- (void)setIndicatorTransition:(CGFloat)indicatorTransition {
-    if (_indicatorLayoutAttributes.transition != indicatorTransition) {
-        _indicatorLayoutAttributes.transition = indicatorTransition;
+- (void)setInteractiveTransition:(CGFloat)interactiveTransition {
+    if (_indicatorLayoutAttributes.interactiveTransition != interactiveTransition) {
+        _indicatorLayoutAttributes.interactiveTransition = interactiveTransition;
         
         if ([_indicatorClass supportsInteractiveTransition]) {
             [self setNeedsUpdateIndicatorLayout:NO];
@@ -111,8 +116,8 @@
     }
 }
 
-- (CGFloat)indicatorTransition {
-    return _indicatorLayoutAttributes.transition;
+- (CGFloat)interactiveTransition {
+    return _indicatorLayoutAttributes.interactiveTransition;
 }
 
 - (void)setSelectedIndex:(NSInteger)selectedIndex animated:(BOOL)animated {
@@ -174,7 +179,7 @@
 - (void)prepareIndicatorLayout {
     NSInteger const count = [self.collectionView numberOfItemsInSection:0];
     
-    [self prepareIndicatorLayoutAttributes];
+    [self loadIndicatorLayoutAttributesIfNeeded];
     
     switch (_indicatorStyle) {
         case XZSegmentedControlIndicatorStyleMarkLine: {
@@ -192,7 +197,7 @@
                         break;
                 }
             } else {
-                [_indicatorClass segmentedControl:_segmentedControl prepareForLayoutAttributes:_indicatorLayoutAttributes];
+                [_indicatorClass segmentedControl:_segmentedControl layout:self prepareForLayoutAttributes:_indicatorLayoutAttributes];
             }
             break;
         }
@@ -211,7 +216,7 @@
                         break;
                 }
             } else {
-                [_indicatorClass segmentedControl:_segmentedControl prepareForLayoutAttributes:_indicatorLayoutAttributes];
+                [_indicatorClass segmentedControl:_segmentedControl layout:self prepareForLayoutAttributes:_indicatorLayoutAttributes];
             }
             break;
         }
@@ -229,7 +234,7 @@
                         break;
                 }
             } else {
-                [_indicatorClass segmentedControl:_segmentedControl prepareForLayoutAttributes:_indicatorLayoutAttributes];
+                [_indicatorClass segmentedControl:_segmentedControl layout:self prepareForLayoutAttributes:_indicatorLayoutAttributes];
             }
             break;
         }
@@ -239,7 +244,7 @@
 }
 
 /// 加载指示器属性。
-- (void)prepareIndicatorLayoutAttributes {
+- (void)loadIndicatorLayoutAttributesIfNeeded {
     NSString * const kind = NSStringFromClass(_indicatorClass);
     if ([_indicatorLayoutAttributes.representedElementKind isEqualToString:kind]) {
         return;
@@ -255,7 +260,7 @@
         _indicatorLayoutAttributes.indicatorView = oldValue.indicatorView;
         _indicatorLayoutAttributes.image         = oldValue.image;
         _indicatorLayoutAttributes.color         = oldValue.color;
-        _indicatorLayoutAttributes.transition    = oldValue.transition;
+        _indicatorLayoutAttributes.interactiveTransition = oldValue.interactiveTransition;
     }
 }
 

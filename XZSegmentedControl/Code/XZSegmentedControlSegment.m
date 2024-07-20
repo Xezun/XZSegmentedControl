@@ -10,4 +10,8 @@
 
 @implementation XZSegmentedControlSegment
 
+- (void)updateInteractiveTransition:(CGFloat)interactiveTransition {
+    
+}
+
 @end

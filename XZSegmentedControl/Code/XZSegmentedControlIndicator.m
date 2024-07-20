@@ -6,6 +6,7 @@
 //
 
 #import "XZSegmentedControlIndicator.h"
+#import "XZSegmentedControl.h"
 
 @implementation XZSegmentedControlIndicator
 
@@ -13,7 +14,7 @@
     return NO;
 }
 
-+ (void)segmentedControl:(id)segmentedControl prepareForLayoutAttributes:(XZSegmentedControlIndicatorLayoutAttributes *)layoutAttributes {
++ (void)segmentedControl:(XZSegmentedControl *)segmentedControl layout:(XZSegmentedControlLayout)layout prepareForLayoutAttributes:(XZSegmentedControlIndicatorLayoutAttributes *)layoutAttributes {
     
 }
 
@@ -36,7 +37,7 @@
 
 @implementation XZSegmentedControlIndicatorLayoutAttributes
 
-@synthesize transition = _transition;
+@synthesize interactiveTransition = _interactiveTransition;
 
 - (instancetype)init {
     self = [super init];
@@ -50,7 +51,7 @@
     XZSegmentedControlIndicatorLayoutAttributes *new = [super copyWithZone:zone];
     new->_image = _image;
     new->_color = _color;
-    new->_transition = _transition;
+    new->_interactiveTransition = _interactiveTransition;
     new->_indicatorView = _indicatorView;
     return new;
 }

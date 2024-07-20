@@ -274,6 +274,7 @@
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    if (!self.isEnabled) return;
     [_flowLayout setSelectedIndex:indexPath.item animated:YES];
     [self sendActionsForControlEvents:(UIControlEventValueChanged)];
 }

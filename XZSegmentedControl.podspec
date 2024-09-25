@@ -6,11 +6,9 @@
 # To learn more about a Podspec see https://guides.cocoapods.org/syntax/podspec.html
 #
 
-
-
 Pod::Spec.new do |s|
   s.name             = 'XZSegmentedControl'
-  s.version          = '2.1.1'
+  s.version          = '2.1.2'
   s.summary          = 'A customizable segmented control for iOS'
 
 # This description is used to generate tags and improve search results.

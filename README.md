@@ -5,7 +5,7 @@
 [![License](https://img.shields.io/cocoapods/l/XZSegmentedControl.svg?style=flat)](https://cocoapods.org/pods/XZSegmentedControl)
 [![Platform](https://img.shields.io/cocoapods/p/XZSegmentedControl.svg?style=flat)](https://cocoapods.org/pods/XZSegmentedControl)
 
-基于 UICollectionView 设计的分段控件，主要用于横向或纵向的菜单视图。
+一款支持高度自定义的分段式控件，基于 UICollectionView 打造，可用于横向或纵向的菜单视图。
 
 ```swift
 let control = XZSegmentedControl.init(frame: CGRect(x: 0, y: 0, width: 375, height: 50), direction: .horizontal)

@@ -36,6 +36,7 @@ typedef UICollectionViewLayout<XZSegmentedControlLayout> *XZSegmentedControlLayo
 /// @note
 /// 5、计算 indicator 的布局，应该通过 `layout` 可以获取 segment 的布局信息，而不能使用如下方法来获取。
 /// @code
+/// // not do this
 /// [_collectionView layoutAttributesForItemAtIndexPath:indexPath];
 /// @endcode
 /// 因为该方法，会强制 `layout` 立即计算布局，而 `layout` 在计算布局时，也会计算 indicator 布局，所以如果调用该方法，就会在 `layout` 计算布局时，触发强制计算布局，在控制台产生错误警告。

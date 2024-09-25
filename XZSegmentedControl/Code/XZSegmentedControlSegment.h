@@ -11,6 +11,8 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @class XZSegmentedControl;
+
+/// 分段视图基类。
 @interface XZSegmentedControlSegment : UICollectionViewCell
 
 /// 交互式转场通知转场进度。
